@@ -30,6 +30,7 @@
     <string name="section_stats">Stats</string>
     <string name="dialog_remove_entry">Remove this diary entry?</string>
     <string name="dialog_delete_route">Deleting this route will also remove all related ascents. Continue?</string>
+    <string name="dialog_delete_ascent">Delete this ascent?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="number_abbrv">No.</string>

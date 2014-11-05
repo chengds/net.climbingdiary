@@ -77,9 +77,9 @@ public class AscentsFragment extends LoaderFragment {
         return true;
         
       case R.id.delete:                                   // delete route
-        //DialogFragment deleteDialog = new DeleteRouteDialogFragment(dbhelper, info.id);
-        //deleteDialog.show(getActivity().getSupportFragmentManager(), "delete_route");
-        //return true;
+        DialogFragment deleteDialog = new DeleteAscentDialogFragment(dbhelper, info.id);
+        deleteDialog.show(getActivity().getSupportFragmentManager(), "delete_ascent");
+        return true;
         
       default:
         return super.onContextItemSelected(item);

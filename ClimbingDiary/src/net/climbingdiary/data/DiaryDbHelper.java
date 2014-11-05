@@ -359,6 +359,13 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
     mObservable.notifyChanged();
   }
   
+  // delete the given route and all related ascents.
+  public void deleteAscent(long ascent_id) {
+    String[] whereArgs = new String[]{ String.valueOf(ascent_id) };
+    db.delete(Ascents.TABLE_NAME, Ascents._ID + "=?", whereArgs);
+    mObservable.notifyChanged();
+  }
+  
   /*****************************************************************************************************
    *                                          RETRIEVE/UPDATE DATA
    *****************************************************************************************************/
@@ -455,7 +462,8 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
     // check/create the route for this ascent
     long route_id;
     Cursor c = db.query(Routes.TABLE_NAME, new String[]{ Routes._ID },
-        Routes.COLUMN_NAME + " = ?", new String[]{ info.route_name }, null, null, null);
+        Routes.COLUMN_NAME + " = ? AND " + Routes.COLUMN_PLACE_ID + " = ?",
+        new String[]{ info.route_name, String.valueOf(info.place_id) }, null, null, null);
     if (c.moveToFirst()) {
       route_id = c.getLong(0);    // retrieve the route ID, but return -1 at the end
     } else {

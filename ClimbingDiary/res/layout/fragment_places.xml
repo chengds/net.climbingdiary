@@ -25,6 +25,14 @@
             android:textColor="#FFFF00" />
         
         <TextView
+            android:id="@+id/header_routes"
+            android:layout_width="44sp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/routes"
+            android:textColor="#FFFF00" />
+        
+        <TextView
             android:id="@+id/header_visits"
             android:layout_width="40sp"
             android:layout_height="wrap_content"
@@ -32,7 +40,7 @@
             android:text="@string/visits"
             android:textColor="#FFFF00" />
         
-    </LinearLayout>
+        </LinearLayout>
     
     <ListView
         android:id="@+id/list_places"

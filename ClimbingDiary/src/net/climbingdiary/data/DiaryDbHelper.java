@@ -72,12 +72,14 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       + " LEFT JOIN " + Places.TABLE_NAME + " p ON e." + DiaryEntry.COLUMN_PLACE_ID + " = p._id"
       + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
   
-  // SQL query to get number of visits per place
+  // SQL query to get number of visits, and the number of routes, per place
   private final static String QUERY_VISITS =
-      "SELECT p." + Places._ID + ", p." + Places.COLUMN_NAME + ", COUNT(e._id) visits"
+      "SELECT p." + Places._ID + ", p." + Places.COLUMN_NAME
+      + ", (SELECT COUNT(e." + DiaryEntry._ID + ") FROM " + DiaryEntry.TABLE_NAME + " e"
+              + " WHERE e." + DiaryEntry.COLUMN_PLACE_ID + " = p." + Places._ID + ") visits"
+      + ", (SELECT COUNT(r." + Routes._ID + ") FROM " + Routes.TABLE_NAME + " r"
+              + " WHERE r." + Routes.COLUMN_PLACE_ID + " = p." + Places._ID + ") routes"
   		+ " FROM " + Places.TABLE_NAME + " p"
-      + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON p._id = e." + DiaryEntry.COLUMN_PLACE_ID
-      + " GROUP BY p." + Places._ID
       + " ORDER BY p." + Places.COLUMN_NAME;
   
   // SQL query to get the ascents of a given visit

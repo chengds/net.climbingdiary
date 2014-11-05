@@ -16,7 +16,9 @@ public class PlacesAdapter extends BaseAdapter {
   public void bindView(View row, Context context, Cursor c) {
     TextView name = (TextView) row.findViewById(R.id.place);      // name
     name.setText(c.getString(1));
-    TextView visits = (TextView) row.findViewById(R.id.visits);   // visits
+    TextView routes = (TextView) row.findViewById(R.id.routes);   // number of routes
+    routes.setText(String.valueOf(c.getLong(3)));
+    TextView visits = (TextView) row.findViewById(R.id.visits);   // number of visits
     visits.setText(String.valueOf(c.getLong(2)));
   }
 }

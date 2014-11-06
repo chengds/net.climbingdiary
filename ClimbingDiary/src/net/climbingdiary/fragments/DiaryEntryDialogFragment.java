@@ -3,12 +3,15 @@ package net.climbingdiary.fragments;
 import java.sql.Date;
 
 import net.climbingdiary.R;
+import net.climbingdiary.activities.EntryActivity;
+import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.data.DiaryDbHelper;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -58,9 +61,14 @@ public class DiaryEntryDialogFragment extends DialogFragment {
           int day = vh.dp.getDayOfMonth();
           int mon = vh.dp.getMonth();
           int yea = vh.dp.getYear() - 1900;
-          dbhelper.addEntry(new Date(yea,mon,day),
+          long new_id = dbhelper.addEntry(new Date(yea,mon,day),
               vh.ct.getSelectedItem().toString(),
               vh.pl.getText().toString());
+          
+          // start the entry activity on the newly created entry
+          Intent intent = new Intent(getActivity(), EntryActivity.class);
+          intent.putExtra(MainActivity.EXTRA_ENTRY_ID, new_id);
+          startActivity(intent);
         }
       })
       .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

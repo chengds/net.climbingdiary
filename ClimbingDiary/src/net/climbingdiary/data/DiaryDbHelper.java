@@ -264,7 +264,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   /**
    * Add a new entry in the diary.
    */
-  public void addEntry(Date date, String type, String place) {
+  public long addEntry(Date date, String type, String place) {
     ContentValues values = new ContentValues();
     
     // get type id
@@ -293,8 +293,9 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
     values.put(DiaryEntry.COLUMN_DATE, date.getTime());
     values.put(DiaryEntry.COLUMN_TYPE_ID, typeid);
     values.put(DiaryEntry.COLUMN_PLACE_ID, placeid);
-    db.insert(DiaryEntry.TABLE_NAME, null, values);
+    long route_id = db.insert(DiaryEntry.TABLE_NAME, null, values);
     mObservable.notifyChanged();
+    return route_id;
   }
   
   /**

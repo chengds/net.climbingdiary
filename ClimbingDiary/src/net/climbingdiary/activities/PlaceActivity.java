@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.View;
 
-public class PlaceActivity extends TabbedActivity {
+public class PlaceActivity extends TabbedActivity
+        implements PlaceRoutesFragment.OnRouteSelectedListener {
 
   private DiaryDbHelper dbhelper;   // reference to database helper
   private long place_id;            // ID of the climbing place
@@ -63,5 +65,10 @@ public class PlaceActivity extends TabbedActivity {
     DialogFragment newFragment =
         new RouteDialogFragment(dbhelper,rinfo,R.string.add_route,R.string.add);
     newFragment.show(getSupportFragmentManager(), "route_entry");    
+  }
+
+  @Override
+  public void onRouteSelected(long route_id) {
+    Log.v("place activity", "selected route " + route_id);
   }
 }

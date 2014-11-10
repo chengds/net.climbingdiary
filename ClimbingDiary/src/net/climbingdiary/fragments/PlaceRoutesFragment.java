@@ -4,6 +4,7 @@ import net.climbingdiary.R;
 import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.PlaceRoutesAdapter;
 import net.climbingdiary.data.DiaryContract.Routes;
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,13 +15,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class PlaceRoutesFragment extends LoaderFragment {
 
-  private long place_id;            // ID of the climbing place
+  private long place_id;                        // ID of the climbing place
+  private OnRouteSelectedListener mCallback;    // Callback for route selection
+   
+  /*****************************************************************************************************
+   *                                          COMMUNICATION CALLBACK
+   * The calling activity must implement this interface and deal with route selection.
+   *****************************************************************************************************/
+  public interface OnRouteSelectedListener {
+    public void onRouteSelected(long route_id);
+  }
 
+  /*****************************************************************************************************
+   *                                          LIFECYCLE FUNCTIONS
+   *****************************************************************************************************/
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
           Bundle savedInstanceState) {
@@ -39,6 +54,14 @@ public class PlaceRoutesFragment extends LoaderFragment {
     mAdapter = new PlaceRoutesAdapter(getActivity(), null, 0, R.layout.item_routes);
     routes.setAdapter(mAdapter);
     
+    // setup callback for route selection
+    routes.setOnItemClickListener(new OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+        mCallback.onRouteSelected(id);
+      }
+    });
+    
     // attach a context menu to the ListView
     registerForContextMenu(routes);
     
@@ -48,6 +71,20 @@ public class PlaceRoutesFragment extends LoaderFragment {
     return rootView;
   }
   
+  @Override
+  public void onAttach(Activity activity) {
+      super.onAttach(activity);
+      
+      // This makes sure that the container activity has implemented
+      // the callback interface. If not, it throws an exception
+      try {
+          mCallback = (OnRouteSelectedListener) activity;
+      } catch (ClassCastException e) {
+          throw new ClassCastException(activity.toString()
+                  + " must implement OnRouteSelectedListener");
+      }
+  }
+
   /*****************************************************************************************************
    *                                          CONTEXT MENU
    *****************************************************************************************************/

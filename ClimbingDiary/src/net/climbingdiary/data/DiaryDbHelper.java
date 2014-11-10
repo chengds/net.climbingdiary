@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class DiaryDbHelper extends SQLiteOpenHelper {
   
-  private static DiaryDbHelper instance;                              // singleton pattern  
+  private static DiaryDbHelper instance;                              // Singleton pattern  
   private static final String DATABASE_NAME = "ClimbingDiary.db";     // filename and version of the database
   private static final int DATABASE_VERSION = 6;
   private SQLiteDatabase db = null;               // SQLite database
@@ -50,8 +50,10 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       "SELECT r." + Routes.COLUMN_NAME
       + ", r." + Routes.COLUMN_GRADE_ID + ", r." + Routes.COLUMN_PLACE_ID
       + ", r." + Routes.COLUMN_NOTES + ", p." + Places.COLUMN_NAME
+      + ", g." + Grades.COLUMN_GRADE_YDS + ", g." + Grades.COLUMN_GRADE_FR
       + " FROM " + Routes.TABLE_NAME + " r"
-      + " LEFT JOIN " + Places.TABLE_NAME + " p ON r." + Routes.COLUMN_PLACE_ID + " = p._id"
+      + " LEFT JOIN " + Places.TABLE_NAME + " p ON r." + Routes.COLUMN_PLACE_ID + " = p." + Places._ID
+      + " LEFT JOIN " + Grades.TABLE_NAME + " g ON r." + Routes.COLUMN_GRADE_ID + " = g." + Grades._ID
       + " WHERE r." + Routes._ID + " = ?";
   
   // SQL query to get one route
@@ -104,6 +106,18 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       + " WHERE r." + Routes.COLUMN_PLACE_ID + " = ?"
       + " GROUP BY r." + Routes._ID
       + " ORDER BY g." + Grades.COLUMN_GRADE_FR + ", g." + Grades.COLUMN_GRADE_YDS;
+  
+  // SQL query to get the ascents of a given visit
+  private final static String QUERY_ROUTE_ASCENTS =
+      "SELECT a." + Ascents._ID + ", e." + DiaryEntry.COLUMN_DATE
+      + ", t." + AscentTypes.COLUMN_NAME + ", a." + Ascents.COLUMN_NOTES 
+      + " FROM " + Ascents.TABLE_NAME + " a"
+      + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON a." + Ascents.COLUMN_ENTRY_ID + " = e." + DiaryEntry._ID
+      + " LEFT JOIN " + AscentTypes.TABLE_NAME + " t ON a." + Ascents.COLUMN_TYPE_ID + " = t." + AscentTypes._ID
+      + " LEFT JOIN " + Routes.TABLE_NAME + " r ON a." + Ascents.COLUMN_ROUTE_ID + " = r." + Routes._ID
+      + " LEFT JOIN " + Grades.TABLE_NAME + " g ON r." + Routes.COLUMN_GRADE_ID + " = g." + Grades._ID
+      + " WHERE r." + Routes._ID + " = ?"
+      + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
   
   /*****************************************************************************************************
    *                                          SINGLETON pattern
@@ -387,9 +401,12 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
     return db.rawQuery(QUERY_ASCENTS, new String[]{ String.valueOf(entry_id) });
   }
 
-  /**
-   * Retrieve the entry info by id.
-   */
+  // retrieve the ascents on a given route
+  public Cursor getRouteAscents(long route_id) {
+    return db.rawQuery(QUERY_ROUTE_ASCENTS, new String[]{ String.valueOf(route_id) });
+  }
+
+  // Retrieve the entry info by id.
   public DiaryEntry.Data getEntry(long id) {
     DiaryEntry.Data info = null;
     Cursor c = db.rawQuery(QUERY_ENTRY, new String[]{ String.valueOf(id) });
@@ -418,6 +435,8 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       info.place_id = c.getLong(c.getColumnIndex(Routes.COLUMN_PLACE_ID));
       info.notes = c.getString(c.getColumnIndex(Routes.COLUMN_NOTES));
       info.place_name = c.getString(c.getColumnIndex(Places.COLUMN_NAME));
+      info.grade_yds = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+      info.grade_fr = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
     }
     return info;
   }

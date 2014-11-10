@@ -30,7 +30,6 @@ public class AscentsFragment extends LoaderFragment
   /*****************************************************************************************************
    *                                          LIFECYCLE METHODS
    *****************************************************************************************************/
-  
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
           Bundle savedInstanceState) {

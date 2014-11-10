@@ -37,5 +37,7 @@
     <string name="number_abbrv">No.</string>
     <string name="status">Status</string>
     <string name="best">Best</string>
+    <string name="route_details">Route Details</string>
+    <string name="list_of_ascents">List of Ascents</string>
     
 </resources>

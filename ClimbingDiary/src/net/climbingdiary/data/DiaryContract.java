@@ -128,6 +128,8 @@ public final class DiaryContract {
       public long place_id;
       public String notes;
       public String place_name; // derived
+      public String grade_yds;
+      public String grade_fr;
     }
   }
   

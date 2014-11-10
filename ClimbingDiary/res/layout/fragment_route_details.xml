@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <TextView
+        android:id="@+id/lname"
+        android:layout_alignParentTop="true"
+        android:text="@string/name"
+        android:layout_width="60sp"
+        android:layout_height="26sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+    
+    <TextView
+        android:id="@+id/name"
+        android:layout_toRightOf="@id/lname"
+        android:layout_width="match_parent"
+        android:layout_height="26sp"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/lplace"
+        android:layout_below="@id/name"
+        android:text="@string/place"
+        android:layout_width="60sp"
+        android:layout_height="26sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+    
+    <TextView
+        android:id="@+id/place"
+        android:layout_toRightOf="@id/lplace"
+        android:layout_below="@id/name"
+        android:layout_width="match_parent"
+        android:layout_height="26sp"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/lgrade"
+        android:layout_below="@id/place"
+        android:text="@string/grade"
+        android:layout_width="60sp"
+        android:layout_height="26sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+    
+    <TextView
+        android:id="@+id/grade"
+        android:layout_toRightOf="@id/lgrade"
+        android:layout_below="@id/place"
+        android:layout_width="match_parent"
+        android:layout_height="26sp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/lnotes"
+        android:layout_below="@id/grade"
+        android:text="@string/notes"
+        android:layout_width="60sp"
+        android:layout_height="26sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+    
+    <TextView
+        android:id="@+id/notes"
+        android:layout_toRightOf="@id/lnotes"
+        android:layout_below="@id/grade"
+        android:layout_width="match_parent"
+        android:layout_height="26sp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/lascents"
+        android:layout_below="@id/notes"
+        android:text="@string/list_of_ascents"
+        android:layout_width="match_parent"
+        android:layout_height="24sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+    
+    <TextView
+        android:id="@+id/header_date"
+        android:layout_width="80sp"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:textColor="#FFFF00"
+        android:layout_below="@id/lascents"
+        android:layout_alignParentLeft="true" />
+    
+    <TextView
+        android:id="@+id/header_type"
+        android:layout_width="60sp"
+        android:layout_height="wrap_content"
+        android:text="@string/type"
+        android:textColor="#FFFF00"
+        android:layout_below="@id/lascents"
+        android:layout_toRightOf="@id/header_date" />
+    
+    <TextView
+        android:id="@+id/header_notes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/notes"
+        android:textColor="#FFFF00"
+        android:layout_below="@id/lascents"
+        android:layout_toRightOf="@id/header_type"
+        android:layout_alignParentRight="true" />
+    
+
+    <ListView
+        android:id="@+id/ascents"
+        android:layout_below="@id/header_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

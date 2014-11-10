@@ -36,7 +36,7 @@ public class PlaceRoutesFragment extends LoaderFragment
    * The calling activity must implement this interface and deal with route selection.
    *****************************************************************************************************/
   public interface OnRouteSelectedListener {
-    public void onRouteSelected(long route_id);
+    public void onRouteSelected(long id);
   }
 
   /*****************************************************************************************************

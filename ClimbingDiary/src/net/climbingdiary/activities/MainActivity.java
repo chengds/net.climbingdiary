@@ -17,11 +17,13 @@ public class MainActivity extends TabbedActivity
   public final static String EXTRA_ENTRY_ID = "net.climbingdiary.EXTRA_ENTRY_ID";
   public final static String EXTRA_PLACE_ID = "net.climbingdiary.EXTRA_PLACE_ID";
   public final static String EXTRA_PLACE_NAME = "net.climbingdiary.EXTRA_PLACE_NAME";
+  public final static String EXTRA_ROUTE_ID = "net.climbingdiary.EXTRA_ROUTE_ID";
 
   public final static int LOADER_DIARY = 0;           // IDs of data loaders
   public final static int LOADER_PLACES = 1;
   public final static int LOADER_ASCENTS = 2;
   public final static int LOADER_PLACEROUTES = 3;
+  public final static int LOADER_ROUTEASCENTS = 4;
   
   // these objects will handle the information database
   private static DiaryDbHelper dbhelper;

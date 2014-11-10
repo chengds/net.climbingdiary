@@ -4,6 +4,8 @@ import net.climbingdiary.R;
 import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.AscentsAdapter;
 import net.climbingdiary.data.DiaryContract.Ascents;
+import net.climbingdiary.dialogs.AscentDialogFragment;
+import net.climbingdiary.dialogs.DeleteAscentDialogFragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,15 +14,22 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class AscentsFragment extends LoaderFragment {
+public class AscentsFragment extends LoaderFragment
+       implements OnClickListener {
   
-  private long entry_id;            // ID of the climbing day entry
-  private long place_id;            // ID of the climbing place
+  private long entry_id;                         // ID of the climbing day entry
+  private long place_id;                         // ID of the climbing place
+  
+  /*****************************************************************************************************
+   *                                          LIFECYCLE METHODS
+   *****************************************************************************************************/
   
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +53,10 @@ public class AscentsFragment extends LoaderFragment {
     // attach a context menu to the ListView
     registerForContextMenu(ascents);
     
+    // setup callback for button
+    final Button addAscent = (Button) rootView.findViewById(R.id.add_ascent);
+    addAscent.setOnClickListener(this);
+
     // Prepare the data loaders
     initLoader(MainActivity.LOADER_ASCENTS);
     
@@ -93,5 +106,18 @@ public class AscentsFragment extends LoaderFragment {
   @Override
   public Cursor dataRetrieval() {
     return dbhelper.getAscents(entry_id);
+  }
+  
+  /*****************************************************************************************************
+   *                                          CALLBACKS
+   *****************************************************************************************************/
+  public void onClick(View v) {
+    if (v.getId() == R.id.add_ascent) {
+      Ascents.Data ainfo = new Ascents.Data();
+      ainfo.entry_id = entry_id;
+      ainfo.place_id = place_id;
+      DialogFragment newFragment = new AscentDialogFragment(dbhelper,ainfo,R.string.add_ascent,R.string.add);
+      newFragment.show(getActivity().getSupportFragmentManager(), "ascent_entry");
+    }
   }
 }

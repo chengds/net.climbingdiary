@@ -3,16 +3,15 @@ package net.climbingdiary.activities;
 import net.climbingdiary.R;
 import net.climbingdiary.adapters.TabAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
-import net.climbingdiary.fragments.DiaryEntryDialogFragment;
 import net.climbingdiary.fragments.DiaryFragment;
 import net.climbingdiary.fragments.PlacesFragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
-import android.view.View;
 
-public class MainActivity extends TabbedActivity  {
+public class MainActivity extends TabbedActivity
+       implements DiaryFragment.OnEntrySelectedListener {
   
   // Global identifiers
   public final static String EXTRA_ENTRY_ID = "net.climbingdiary.EXTRA_ENTRY_ID";
@@ -76,12 +75,15 @@ public class MainActivity extends TabbedActivity  {
    * super.onOptionsItemSelected(item); }
    */
 
-  /**********************************************************************************************************
-   * Event handler for the button "Add Entry"
-   */
-  public void addEntry(View view) {
-    DialogFragment newFragment = new DiaryEntryDialogFragment(dbhelper);
-    newFragment.show(getSupportFragmentManager(), "diary_entry");
+  /*****************************************************************************************************
+   *                                          CALLBACKS
+   *****************************************************************************************************/
+  @Override
+  public void onEntrySelected(long id) {
+    // pass the id of the clicked item to the new activity
+    Intent intent = new Intent(this, EntryActivity.class);
+    intent.putExtra(MainActivity.EXTRA_ENTRY_ID, id);
+    startActivity(intent);
   }
 
 }

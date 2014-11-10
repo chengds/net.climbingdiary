@@ -1,4 +1,4 @@
-package net.climbingdiary.fragments;
+package net.climbingdiary.dialogs;
 
 import java.sql.Date;
 

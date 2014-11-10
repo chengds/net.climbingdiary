@@ -58,7 +58,6 @@
         android:id="@+id/add_ascent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_ascent"
-        android:onClick="addAscent" />
+        android:text="@string/add_ascent" />
 
 </LinearLayout>

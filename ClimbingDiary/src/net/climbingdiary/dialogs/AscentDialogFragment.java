@@ -1,8 +1,9 @@
-package net.climbingdiary.fragments;
+package net.climbingdiary.dialogs;
 
 import net.climbingdiary.R;
+import net.climbingdiary.data.DiaryContract.Ascents;
 import net.climbingdiary.data.DiaryDbHelper;
-import net.climbingdiary.data.DiaryContract.Grades;
+import net.climbingdiary.data.DiaryContract.AscentTypes;
 import net.climbingdiary.data.DiaryContract.Routes;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -14,25 +15,25 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 @SuppressLint("InflateParams")
-public class RouteDialogFragment extends DialogFragment {
-
-  private DiaryDbHelper dbhelper;   // database and entry ID of the climbing day
-  private Routes.Data info;
+public class AscentDialogFragment extends DialogFragment {
+  
+  private DiaryDbHelper dbhelper;   // database
+  private Ascents.Data info;
   private int resTitle;
   private int resAccept;
-
+  
   /*****************************************************************************************************
    *                                          VIEW HOLDER PATTERN
    *****************************************************************************************************/
   private class ViewHolder {
-    public TextView name;
-    public TextView place;
-    public Spinner grade;
+    public AutoCompleteTextView route;
+    public Spinner asct;
     public EditText notes;
   };
   private ViewHolder vh = new ViewHolder();
@@ -40,9 +41,9 @@ public class RouteDialogFragment extends DialogFragment {
   /*****************************************************************************************************
    *                                          METHODS
    *****************************************************************************************************/
-  public RouteDialogFragment(DiaryDbHelper dbhelper, Routes.Data info,
+  public AscentDialogFragment(DiaryDbHelper dbhelper, Ascents.Data info,
       int resTitle, int resAccept) {
-    this.dbhelper = dbhelper;
+    this.dbhelper = dbhelper;     // store the database helper and ID
     this.info = info;
     this.resTitle = resTitle;
     this.resAccept = resAccept;
@@ -54,62 +55,75 @@ public class RouteDialogFragment extends DialogFragment {
     setRetainInstance(true); // fix rotation bug
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     LayoutInflater inflater = getActivity().getLayoutInflater();    // Get the layout inflater
-    
+
     // Inflate and set the layout for the dialog
     // Pass null as the parent view because its going in the dialog layout
-    View view = inflater.inflate(R.layout.dialog_route, null);
+    View view = inflater.inflate(R.layout.dialog_ascent, null);
     builder.setTitle(resTitle)
       .setView(view)
       // Add action buttons
       .setPositiveButton(resAccept, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int id) {
-          // add/update the route info
-          info.name = vh.name.getText().toString();
-          info.grade_id = vh.grade.getSelectedItemId();
+          // add the new ascent to the database
+          //long res = dbhelper.addAscent(
+          //    info.entry_id, info.place_id,
+          //    vh.route.getText().toString(),
+          //    vh.asct.getSelectedItemId(),
+          //    vh.notes.getText().toString());
+          info.route_name = vh.route.getText().toString();
+          info.type_id = vh.asct.getSelectedItemId();
           info.notes = vh.notes.getText().toString();
+          long res = dbhelper.updateAscent(info);
           
-          // update the database entry
-          dbhelper.updateRoute(info);
+          if (res > 0) { // prompt the user with a dialog to detail the route just added
+            Routes.Data rinfo = new Routes.Data();
+            rinfo._id = res;
+            rinfo.place_id = info.place_id;
+            DialogFragment newFragment = 
+                new RouteDialogFragment(dbhelper,rinfo,R.string.edit_route,R.string.update);
+            newFragment.show(getActivity().getSupportFragmentManager(), "route_entry");
+            dbhelper.getSource().notifyChanged();
+          }
         }
       })
       .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
-          RouteDialogFragment.this.getDialog().cancel();
+          AscentDialogFragment.this.getDialog().cancel();
         }
       });
     
     // setup VH
-    vh.name = (EditText) view.findViewById(R.id.route_name);
-    vh.place = (TextView) view.findViewById(R.id.place_name);
-    vh.grade = (Spinner) view.findViewById(R.id.route_grade);
-    vh.notes = (EditText) view.findViewById(R.id.route_notes);
+    vh.route = (AutoCompleteTextView) view.findViewById(R.id.route_name);
+    vh.asct = (Spinner) view.findViewById(R.id.ascent_type);
+    vh.notes = (EditText) view.findViewById(R.id.ascent_notes);
     
-    // populate grades spinner
+    // populate TYPE spinner
     SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
-        android.R.layout.simple_spinner_item, dbhelper.getGrades(),
-        new String[]{ Grades.COLUMN_GRADE_YDS, Grades.COLUMN_GRADE_FR },
-        new int[]{ android.R.id.text1, android.R.id.text2 }, 0);
-    adapter.setDropDownViewResource(R.layout.modified_list_item_2);
-    vh.grade.setAdapter(adapter);
+        android.R.layout.simple_spinner_item, dbhelper.getAscentTypes(),
+        new String[]{ AscentTypes.COLUMN_NAME }, new int[]{ android.R.id.text1 }, 0);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    vh.asct.setAdapter(adapter);
+    
+    // link autosuggestions for route name TextView
+    String[] names = dbhelper.getAllRoutes(info.place_id);
+    ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(),
+        android.R.layout.simple_spinner_item,names);
+    vh.route.setAdapter(adapter2);
     
     if (info._id > 0) {
       // retrieve the entry info for editing
-      info = dbhelper.getRoute(info._id);
+      info = dbhelper.getAscent(info._id);
       
       // show current details
-      vh.name.setText(info.name);
-      vh.grade.setSelection((int)info.grade_id - 1);
+      vh.route.setText(info.route_name);
+      vh.asct.setSelection((int)info.type_id - 1);
       vh.notes.setText(info.notes);
     }
     
-    // show place of the route
-    vh.place.setText(info.place_name);
-    
-
     return builder.create();
   }
-
+  
   //fix for rotation bug
   @Override
   public void onDestroyView() {

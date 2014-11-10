@@ -2,16 +2,12 @@ package net.climbingdiary.activities;
 
 import net.climbingdiary.R;
 import net.climbingdiary.adapters.TabAdapter;
-import net.climbingdiary.data.DiaryContract.Ascents;
 import net.climbingdiary.data.DiaryContract.DiaryEntry;
 import net.climbingdiary.data.DiaryDbHelper;
-import net.climbingdiary.fragments.AscentDialogFragment;
 import net.climbingdiary.fragments.AscentsFragment;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.view.View;
 
 public class EntryActivity extends TabbedActivity {
 
@@ -58,19 +54,9 @@ public class EntryActivity extends TabbedActivity {
       actionBar.setSubtitle(info.date + " - " + info.type_desc);
     }
   }
-  
+
   /*****************************************************************************************************
    *                                          CALLBACKS
-   *****************************************************************************************************/
-  /*
-   * Callback for the button "Add Ascent"
-   */
-  public void addAscent(View view) {
-    Ascents.Data ainfo = new Ascents.Data();
-    ainfo.entry_id = info._id;
-    ainfo.place_id = info.place_id;
-    DialogFragment newFragment = new AscentDialogFragment(dbhelper,ainfo,R.string.add_ascent,R.string.add);
-    newFragment.show(getSupportFragmentManager(), "ascent_entry");
-  }
-  
+   *****************************************************************************************************/  
+
 }

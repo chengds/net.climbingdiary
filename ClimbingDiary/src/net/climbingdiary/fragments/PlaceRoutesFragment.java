@@ -4,6 +4,8 @@ import net.climbingdiary.R;
 import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.PlaceRoutesAdapter;
 import net.climbingdiary.data.DiaryContract.Routes;
+import net.climbingdiary.dialogs.DeleteRouteDialogFragment;
+import net.climbingdiary.dialogs.RouteDialogFragment;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -38,7 +40,7 @@ public class PlaceRoutesFragment extends LoaderFragment
   }
 
   /*****************************************************************************************************
-   *                                          LIFECYCLE FUNCTIONS
+   *                                          LIFECYCLE METHODS
    *****************************************************************************************************/
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,8 +72,8 @@ public class PlaceRoutesFragment extends LoaderFragment
     registerForContextMenu(routes);
     
     // setup callback for button
-    final Button add_route = (Button) rootView.findViewById(R.id.add_route);
-    add_route.setOnClickListener(this);
+    final Button addRoute = (Button) rootView.findViewById(R.id.add_route);
+    addRoute.setOnClickListener(this);
     
     // Prepare the data loaders
     initLoader(MainActivity.LOADER_PLACEROUTES);
@@ -81,16 +83,16 @@ public class PlaceRoutesFragment extends LoaderFragment
   
   @Override
   public void onAttach(Activity activity) {
-      super.onAttach(activity);
-      
-      // This makes sure that the container activity has implemented
-      // the callback interface. If not, it throws an exception
-      try {
-          mCallback = (OnRouteSelectedListener) activity;
-      } catch (ClassCastException e) {
-          throw new ClassCastException(activity.toString()
-                  + " must implement OnRouteSelectedListener");
-      }
+    super.onAttach(activity);
+
+    // This makes sure that the container activity has implemented
+    // the callback interface. If not, it throws an exception
+    try {
+      mCallback = (OnRouteSelectedListener) activity;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(activity.toString()
+          + " must implement OnRouteSelectedListener");
+    }
   }
 
   /*****************************************************************************************************

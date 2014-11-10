@@ -1,27 +1,43 @@
 package net.climbingdiary.fragments;
 
 import net.climbingdiary.R;
-import net.climbingdiary.activities.EntryActivity;
 import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.DiaryAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
+import net.climbingdiary.dialogs.DiaryEntryDialogFragment;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class DiaryFragment extends LoaderFragment {
+public class DiaryFragment extends LoaderFragment
+       implements OnClickListener {
 
+  private OnEntrySelectedListener mCallback;    // Callback for diary entry selection
+  
+  /*****************************************************************************************************
+   *                                          COMMUNICATION CALLBACK
+   * The calling activity must implement this interface and deal with diary entry selection.
+   *****************************************************************************************************/
+  public interface OnEntrySelectedListener {
+    public void onEntrySelected(long id);
+  }
+  
+  /*****************************************************************************************************
+   *                                          LIFECYCLE METHODS
+   *****************************************************************************************************/
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
           Bundle savedInstanceState) {
@@ -44,16 +60,33 @@ public class DiaryFragment extends LoaderFragment {
     entries.setOnItemClickListener(new OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // pass the id of the clicked item to the new activity
-        Intent intent = new Intent(getActivity(), EntryActivity.class);
-        intent.putExtra(MainActivity.EXTRA_ENTRY_ID, id);
-        startActivity(intent);
+        mCallback.onEntrySelected(id);
       }
     });
 
+    // setup callback for button
+    final Button addEntry = (Button) rootView.findViewById(R.id.add_entry);
+    addEntry.setOnClickListener(this);
+
+    // Prepare the data loaders
     initLoader(MainActivity.LOADER_DIARY);
+    
     return rootView;
   }
+  
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+
+    // This makes sure that the container activity has implemented
+    // the callback interface. If not, it throws an exception
+    try {
+      mCallback = (OnEntrySelectedListener) activity;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(activity.toString()
+          + " must implement OnEntrySelectedListener");
+    }
+ }
   
   /**********************************************************************************************************
    * A {@link DialogFragment} that ask for confirmation of entry removal.
@@ -101,4 +134,14 @@ public class DiaryFragment extends LoaderFragment {
     return dbhelper.getEntries();
   }
 
+  /*****************************************************************************************************
+   *                                          CALLBACKS
+   *****************************************************************************************************/
+  @Override
+  public void onClick(View v) {
+    if (v.getId() == R.id.add_entry) {
+      DialogFragment newFragment = new DiaryEntryDialogFragment(dbhelper);
+      newFragment.show(getActivity().getSupportFragmentManager(), "diary_entry");
+    }
+  }
 }

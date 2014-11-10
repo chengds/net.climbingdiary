@@ -13,16 +13,20 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 
-public class PlaceRoutesFragment extends LoaderFragment {
+public class PlaceRoutesFragment extends LoaderFragment
+        implements OnClickListener {
 
   private long place_id;                        // ID of the climbing place
+  private String place_name;                    // name of the climbing place
   private OnRouteSelectedListener mCallback;    // Callback for route selection
    
   /*****************************************************************************************************
@@ -64,6 +68,10 @@ public class PlaceRoutesFragment extends LoaderFragment {
     
     // attach a context menu to the ListView
     registerForContextMenu(routes);
+    
+    // setup callback for button
+    final Button add_route = (Button) rootView.findViewById(R.id.add_route);
+    add_route.setOnClickListener(this);
     
     // Prepare the data loaders
     initLoader(MainActivity.LOADER_PLACEROUTES);
@@ -128,4 +136,21 @@ public class PlaceRoutesFragment extends LoaderFragment {
   public Cursor dataRetrieval() {
     return dbhelper.getRoutes(place_id);
   }
+
+  /*****************************************************************************************************
+   *                                          CALLBACKS
+   *****************************************************************************************************/
+  @Override
+  public void onClick(View v) {
+    if (v.getId() == R.id.add_route) {
+      Routes.Data rinfo = new Routes.Data();
+      rinfo._id = -1;
+      rinfo.place_id = place_id;
+      rinfo.place_name = place_name;
+      DialogFragment newFragment =
+          new RouteDialogFragment(dbhelper,rinfo,R.string.add_route,R.string.add);
+      newFragment.show(getActivity().getSupportFragmentManager(), "route_entry");
+    }
+  }
+
 }

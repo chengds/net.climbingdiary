@@ -54,6 +54,8 @@ public class AscentsAdapter extends BaseAdapter {
       dot.getPaint().setColor(Color.parseColor("#FFD700"));
     } else if (type.equalsIgnoreCase("flash")) {
       dot.getPaint().setColor(Color.parseColor("#EE7600"));
+    } else if (type.equalsIgnoreCase("pinkpoint")) {
+      dot.getPaint().setColor(Color.parseColor("#FF748C"));
     } else {
       dot.getPaint().setColor(Color.BLACK);
     }

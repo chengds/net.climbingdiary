@@ -5,14 +5,9 @@ import net.climbingdiary.data.DiaryContract.AscentTypes;
 import net.climbingdiary.data.DiaryContract.Ascents;
 import net.climbingdiary.data.DiaryContract.Grades;
 import net.climbingdiary.data.DiaryContract.Routes;
+import net.climbingdiary.utils.Graphics;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,8 +24,8 @@ public class AscentsAdapter extends BaseAdapter {
     TextView text = (TextView) row.findViewById(R.id.ascent_type);
     text.setText(type);
     
-    // add colored dots to the background of the TextView
-    setDots(text, type);
+    // add colored dot to the background of the TextView
+    Graphics.drawDot(text, type, new int[]{0,0,42,12});
     
     // route grade
     TextView text2 = (TextView) row.findViewById(R.id.route_grade);
@@ -43,26 +38,5 @@ public class AscentsAdapter extends BaseAdapter {
     // ascent notes
     TextView text4 = (TextView) row.findViewById(R.id.ascent_notes);
     text4.setText(c.getString(c.getColumnIndex(Ascents.COLUMN_NOTES)));
-  }
-
-  public void setDots(View view, String type) {
-    ShapeDrawable dot = new ShapeDrawable(new OvalShape());
-    
-    if (type.equalsIgnoreCase("redpoint")) {
-      dot.getPaint().setColor(Color.RED);
-    } else if (type.equalsIgnoreCase("onsight")) {
-      dot.getPaint().setColor(Color.parseColor("#FFD700"));
-    } else if (type.equalsIgnoreCase("flash")) {
-      dot.getPaint().setColor(Color.parseColor("#EE7600"));
-    } else if (type.equalsIgnoreCase("pinkpoint")) {
-      dot.getPaint().setColor(Color.parseColor("#FF748C"));
-    } else {
-      dot.getPaint().setColor(Color.BLACK);
-    }
-    
-    LayerDrawable d = new LayerDrawable(new Drawable[]{dot});
-    d.setLayerInset(0, 0, 0, 42, 12);
-    
-    view.setBackgroundDrawable(d);
   }
 }

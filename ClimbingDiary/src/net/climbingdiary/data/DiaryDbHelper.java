@@ -107,7 +107,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       + " GROUP BY r." + Routes._ID
       + " ORDER BY g." + Grades.COLUMN_GRADE_FR + ", g." + Grades.COLUMN_GRADE_YDS;
   
-  // SQL query to get the ascents of a given visit
+  // SQL query to get the ascents of a given route
   private final static String QUERY_ROUTE_ASCENTS =
       "SELECT a." + Ascents._ID + ", e." + DiaryEntry.COLUMN_DATE
       + ", t." + AscentTypes.COLUMN_NAME + ", a." + Ascents.COLUMN_NOTES 
@@ -244,8 +244,9 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
 
   // update the cache with grades
   private void updateGradesCache() {
-    // query the database for all the climbing grades
-    cache_grades = db.query(Grades.TABLE_NAME, null, null, null, null, null, Grades.COLUMN_GRADE_FR);
+    // query the database for all the climbing grades, in ascending order
+    cache_grades = db.query(Grades.TABLE_NAME, null, null, null, null, null,
+        Grades.COLUMN_GRADE_FR + "," + Grades.COLUMN_GRADE_YDS);
   }
 
   // return a list of all the climbing types
@@ -293,8 +294,35 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
     return db.rawQuery(QUERY_ROUTES_BY_PLACE, new String[]{ String.valueOf(place_id) });
   }
   
-  // returns the climbing pyramid for the given type of climbing            NOT WORKING
+  // returns the climbing pyramid for the given type of climbing
   public Cursor getPyramid(String ctype) {
+    // check each grade, in descending order
+    boolean started = false;
+    cache_grades.moveToLast();
+    do {
+      // the current grade
+      long id = cache_grades.getLong(cache_grades.getColumnIndex(Grades._ID));
+      
+      // find all the routes with the current grade
+      Cursor r = db.query(Routes.TABLE_NAME, null,
+          Routes.COLUMN_GRADE_ID + "=?", new String[]{ String.valueOf(id) }, null, null, null);
+      
+      // find ascents of the given climbing type for each route
+      if (r.moveToFirst()) {
+        // the current route
+        long rid = r.getLong(r.getColumnIndex(Routes._ID));
+        
+        // the ascents
+        // INCOMPLETE
+      } else {
+        if (started) {
+          // log an empty set of ascents for this grade
+        }
+      }
+      
+    } while (cache_grades.moveToPrevious());
+    
+    
     // retrieve all the ascents for each grade
     Cursor c = db.rawQuery(QUERY_GRADE_ASCENTS, new String[]{ ctype });
     

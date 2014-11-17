@@ -119,6 +119,39 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       + " WHERE r." + Routes._ID + " = ?"
       + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
   
+  // SQL query to get the climbing pyramid of a given climbing type
+  // Set of ascents of routes in crags ordered by desc grade and date
+  private final static String QUERY_GRADE_ASCENTS = 
+      "SELECT g." + Grades._ID + ", g." + Grades.COLUMN_GRADE_YDS
+      + ", g." + Grades.COLUMN_GRADE_FR
+      + ", (SELECT GROUP_CONCAT(a." + Ascents.COLUMN_TYPE_ID + ") FROM " + Ascents.TABLE_NAME + " a"
+        + " LEFT JOIN " + Routes.TABLE_NAME + " r ON a." + Ascents.COLUMN_ROUTE_ID + " = r." + Routes._ID
+        + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON a." + Ascents.COLUMN_ENTRY_ID + " = e." + DiaryEntry._ID
+        + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c." + ClimbingTypes._ID
+        + " WHERE r." + Routes.COLUMN_GRADE_ID + " = g." + Grades._ID
+        + " AND c." + ClimbingTypes.COLUMN_DESCRIPTION + " = ?"
+        + " ORDER BY e." + DiaryEntry.COLUMN_DATE
+        + ") ascents"
+      + " FROM " + Grades.TABLE_NAME + " g"
+      + " ORDER BY g." + Grades.COLUMN_GRADE_FR + " DESC, g." + Grades.COLUMN_GRADE_YDS + " DESC";
+  
+  private final static String QUERY_GRADE_ASCENTS_FILTERED = 
+      "SELECT g." + Grades._ID + ", g." + Grades.COLUMN_GRADE_YDS
+      + ", g." + Grades.COLUMN_GRADE_FR
+      + ", (SELECT GROUP_CONCAT(t." + AscentTypes.COLUMN_NAME + ") FROM " + Ascents.TABLE_NAME + " a"
+        + " LEFT JOIN " + AscentTypes.TABLE_NAME + " t ON a." + Ascents.COLUMN_TYPE_ID + " = t." + AscentTypes._ID
+        + " LEFT JOIN " + Routes.TABLE_NAME + " r ON a." + Ascents.COLUMN_ROUTE_ID + " = r." + Routes._ID
+        + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON a." + Ascents.COLUMN_ENTRY_ID + " = e." + DiaryEntry._ID
+        + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c." + ClimbingTypes._ID
+        + " WHERE r." + Routes.COLUMN_GRADE_ID + " = g." + Grades._ID
+        + " AND c." + ClimbingTypes.COLUMN_DESCRIPTION + " = ?"
+        + " ORDER BY e." + DiaryEntry.COLUMN_DATE
+        + ") ascents"
+      + " FROM " + Grades.TABLE_NAME + " g"
+      + " WHERE g." + Grades.COLUMN_GRADE_FR + " <= ?"
+      + " ORDER BY g." + Grades.COLUMN_GRADE_FR + " DESC, g." + Grades.COLUMN_GRADE_YDS + " DESC";
+  
+  
   /*****************************************************************************************************
    *                                          SINGLETON pattern
    *****************************************************************************************************/
@@ -258,6 +291,36 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   // returns a cursor with all the routes in a given place
   public Cursor getRoutes(long place_id) {
     return db.rawQuery(QUERY_ROUTES_BY_PLACE, new String[]{ String.valueOf(place_id) });
+  }
+  
+  // returns the climbing pyramid for the given type of climbing            NOT WORKING
+  public Cursor getPyramid(String ctype) {
+    // retrieve all the ascents for each grade
+    Cursor c = db.rawQuery(QUERY_GRADE_ASCENTS, new String[]{ ctype });
+    
+    // find the highest grade with an attempt
+    String fr, yds;
+    if (c.moveToFirst()) {
+      // set the filter to the first grade (highest)
+      fr = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
+      yds = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+      
+      // search the list of ascents
+      do {
+        String ascents = c.getString(c.getColumnIndex("ascents"));
+        if (ascents != null) {
+          // update filter
+          fr = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
+          yds = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+          break;
+        }
+      } while (c.moveToNext());
+    } else {
+      return null;
+    }
+    
+    // filter the ascents, keeping only those with grades lower than the highest attempt
+    return db.rawQuery(QUERY_GRADE_ASCENTS_FILTERED, new String[]{ ctype,fr });
   }
 
   /*****************************************************************************************************

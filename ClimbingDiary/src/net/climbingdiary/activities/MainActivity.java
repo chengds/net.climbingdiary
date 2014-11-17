@@ -4,6 +4,7 @@ import net.climbingdiary.R;
 import net.climbingdiary.adapters.TabAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.fragments.DiaryFragment;
+import net.climbingdiary.fragments.OverallStatsFragment;
 import net.climbingdiary.fragments.PlacesFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class MainActivity extends TabbedActivity
   public final static int LOADER_ASCENTS = 2;
   public final static int LOADER_PLACEROUTES = 3;
   public final static int LOADER_ROUTEASCENTS = 4;
+  public final static int LOADER_CRAGPYRAMID = 5;
   
   // these objects will handle the information database
   private static DiaryDbHelper dbhelper;
@@ -39,7 +41,7 @@ public class MainActivity extends TabbedActivity
     
     // create the pager adapter and initialize the layout
     mAdapter = new TabAdapter(getSupportFragmentManager(),this,
-        data,new int[]{ R.string.section_diary, R.string.section_places }) {
+        data,new int[]{ R.string.section_diary, R.string.section_places, R.string.section_stats }) {
           @Override
           public Fragment getItem(int i) {
             switch (i) {
@@ -48,12 +50,13 @@ public class MainActivity extends TabbedActivity
               return new DiaryFragment();
               
             case 1:
-            default:
               // the second section lists all the places
               return new PlacesFragment();
-              
-              // the third section lists all the routes
-              //return new DiaryFragment(data);
+            
+            case 2:
+            default:
+              // the third section shows overall stats
+              return new OverallStatsFragment();
             }
           }
         };

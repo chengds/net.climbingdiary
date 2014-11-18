@@ -328,6 +328,9 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
         }
       }
       
+      // stop at 5.9
+      String yds = grades.getString(grades.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+      if (yds.equalsIgnoreCase("5.9")) break;
     } while (grades.moveToPrevious());
         
     return pyramid;

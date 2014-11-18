@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item type="color" name="redpoint">#FF0000</item>
+    <item type="color" name="onsight">#FFD700</item>
+    <item type="color" name="flash">#EE7600</item>
+    <item type="color" name="pinkpoint">#FF748C</item>
+    <item type="color" name="solo">#00FF00</item>
+    
+</resources>

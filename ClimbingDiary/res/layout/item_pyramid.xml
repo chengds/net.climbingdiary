@@ -8,14 +8,8 @@
         android:id="@+id/grade"
         android:layout_width="40sp"
         android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        android:layout_marginLeft="4sp"
+        android:textSize="12sp"
+        android:paddingRight="4sp" />
 
-    <GridView
-        android:id="@+id/ascents"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:numColumns="10"
-        android:stretchMode="columnWidth" />
-    
 </LinearLayout>

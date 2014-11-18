@@ -1,5 +1,8 @@
 package net.climbingdiary.utils;
 
+import net.climbingdiary.R;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -36,5 +39,24 @@ public class Graphics {
     } else {
       view.setBackgroundDrawable(null);
     }
+  }
+  
+  public static int getColor(Context context, String type) {
+    int color = 0;
+    Resources res = context.getResources();
+    
+    if (type.equalsIgnoreCase("redpoint")) {
+      color = res.getColor(R.color.redpoint);
+    } else if (type.equalsIgnoreCase("onsight")) {
+      color = res.getColor(R.color.onsight);
+    } else if (type.equalsIgnoreCase("flash")) {
+      color = res.getColor(R.color.flash);
+    } else if (type.equalsIgnoreCase("pinkpoint")) {
+      color = res.getColor(R.color.pinkpoint);
+    } else if (type.equalsIgnoreCase("solo")) {
+      color = res.getColor(R.color.solo);
+    }
+    
+    return color;
   }
 }

@@ -240,6 +240,7 @@ public final class DiaryContract {
       200, 201,
       1, 5, 0
     };
+    public static final String completed = "4,5,6,7,21,22,23";
 
     public static void create(SQLiteDatabase db) {
       db.execSQL(SQL_CREATE_TABLE);

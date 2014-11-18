@@ -16,7 +16,7 @@ public abstract class LoaderFragment extends Fragment implements LoaderCallbacks
 
   public LoaderFragment() {
     // keep a reference to the active database
-    this.dbhelper = DiaryDbHelper.getInstance(getActivity());    
+    this.dbhelper = DiaryDbHelper.getInstance(getActivity());
   }
     
   // initialize the loader with the given code

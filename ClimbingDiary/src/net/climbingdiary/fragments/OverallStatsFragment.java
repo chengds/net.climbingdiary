@@ -1,16 +1,18 @@
 package net.climbingdiary.fragments;
 
+import java.util.ArrayList;
+
 import net.climbingdiary.R;
-import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.PyramidAdapter;
-import android.database.Cursor;
+import net.climbingdiary.data.DiaryDbHelper;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class OverallStatsFragment extends LoaderFragment {
+public class OverallStatsFragment extends Fragment {
 
   /*****************************************************************************************************
    *                                          LIFECYCLE METHODS
@@ -21,23 +23,15 @@ public class OverallStatsFragment extends LoaderFragment {
     // create the layout, a set of climbing pyramids
     View rootView = inflater.inflate(R.layout.fragment_overallstats, container, false);
     
-    // connect the list view with the custom diary adapter
-    final ListView pyramid = (ListView) rootView.findViewById(R.id.crag_pyramid);
-    mAdapter = new PyramidAdapter(getActivity(), null, 0, R.layout.item_pyramid);
-    pyramid.setAdapter(mAdapter);
+    // retrieve the pyramid
+    DiaryDbHelper dbhelper = DiaryDbHelper.getInstance(getActivity());
+    ArrayList<ArrayList<String>> pyramid = dbhelper.getPyramid("Crag");
     
-    // Prepare the data loaders
-    initLoader(MainActivity.LOADER_CRAGPYRAMID);
+    // connect the list and the adapter
+    final ListView list = (ListView) rootView.findViewById(R.id.crag_pyramid);
+    list.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid));
     
     return rootView;
   }
   
-  /*****************************************************************************************************
-   *                                          DATA RETRIEVAL
-   *****************************************************************************************************/
-  @Override
-  public Cursor dataRetrieval() {
-    return dbhelper.getPyramid("Crag");
-  }
-
 }

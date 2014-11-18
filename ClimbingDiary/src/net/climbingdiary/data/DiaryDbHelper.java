@@ -2,7 +2,7 @@ package net.climbingdiary.data;
 
 import java.sql.Date;
 import java.text.DateFormat;
-
+import java.util.ArrayList;
 import net.climbingdiary.data.DiaryContract.*;
 
 import android.content.ContentValues;
@@ -119,23 +119,21 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       + " WHERE r." + Routes._ID + " = ?"
       + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
   
-  // SQL query to get the climbing pyramid of a given climbing type
-  // Set of ascents of routes in crags ordered by desc grade and date
-  private final static String QUERY_GRADE_ASCENTS = 
-      "SELECT g." + Grades._ID + ", g." + Grades.COLUMN_GRADE_YDS
-      + ", g." + Grades.COLUMN_GRADE_FR
-      + ", (SELECT GROUP_CONCAT(a." + Ascents.COLUMN_TYPE_ID + ") FROM " + Ascents.TABLE_NAME + " a"
-        + " LEFT JOIN " + Routes.TABLE_NAME + " r ON a." + Ascents.COLUMN_ROUTE_ID + " = r." + Routes._ID
-        + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON a." + Ascents.COLUMN_ENTRY_ID + " = e." + DiaryEntry._ID
-        + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c." + ClimbingTypes._ID
-        + " WHERE r." + Routes.COLUMN_GRADE_ID + " = g." + Grades._ID
-        + " AND c." + ClimbingTypes.COLUMN_DESCRIPTION + " = ?"
-        + " ORDER BY e." + DiaryEntry.COLUMN_DATE
-        + ") ascents"
-      + " FROM " + Grades.TABLE_NAME + " g"
-      + " ORDER BY g." + Grades.COLUMN_GRADE_FR + " DESC, g." + Grades.COLUMN_GRADE_YDS + " DESC";
+  // SQL query to get completed ascents of a given grade
+  private final static String QUERY_COMPLETED_ASCENTS_BY_GRADE_BY_TYPE = 
+      "SELECT a." + Ascents._ID + ", t." + AscentTypes.COLUMN_NAME
+      + ", r." + Routes._ID + ", e." + DiaryEntry.COLUMN_DATE
+      + " FROM " + Ascents.TABLE_NAME + " a"
+      + " LEFT JOIN " + AscentTypes.TABLE_NAME + " t ON a." + Ascents.COLUMN_TYPE_ID + " = t." + AscentTypes._ID
+      + " LEFT JOIN " + Routes.TABLE_NAME + " r ON a." + Ascents.COLUMN_ROUTE_ID + " = r." + Routes._ID
+      + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON a." + Ascents.COLUMN_ENTRY_ID + " = e." + DiaryEntry._ID
+      + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c." + ClimbingTypes._ID
+      + " WHERE a." + Ascents.COLUMN_TYPE_ID + " IN (" + AscentTypes.completed + ")"
+      + " AND r." + Routes.COLUMN_GRADE_ID + " = ?"
+      + " AND c." + ClimbingTypes.COLUMN_DESCRIPTION + " = ?"
+      + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
   
-  private final static String QUERY_GRADE_ASCENTS_FILTERED = 
+/*  private final static String QUERY_GRADE_ASCENTS_FILTERED = 
       "SELECT g." + Grades._ID + ", g." + Grades.COLUMN_GRADE_YDS
       + ", g." + Grades.COLUMN_GRADE_FR
       + ", (SELECT GROUP_CONCAT(t." + AscentTypes.COLUMN_NAME + ") FROM " + Ascents.TABLE_NAME + " a"
@@ -150,7 +148,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       + " FROM " + Grades.TABLE_NAME + " g"
       + " WHERE g." + Grades.COLUMN_GRADE_FR + " <= ?"
       + " ORDER BY g." + Grades.COLUMN_GRADE_FR + " DESC, g." + Grades.COLUMN_GRADE_YDS + " DESC";
-  
+  */
   
   /*****************************************************************************************************
    *                                          SINGLETON pattern
@@ -295,60 +293,44 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   }
   
   // returns the climbing pyramid for the given type of climbing
-  public Cursor getPyramid(String ctype) {
+  public ArrayList<ArrayList<String>> getPyramid(String ctype) {
+    ArrayList<ArrayList<String>> pyramid = null; 
+
     // check each grade, in descending order
-    boolean started = false;
-    cache_grades.moveToLast();
+    Cursor grades = getGrades();
+    grades.moveToLast();
     do {
       // the current grade
-      long id = cache_grades.getLong(cache_grades.getColumnIndex(Grades._ID));
+      long id = grades.getLong(grades.getColumnIndex(Grades._ID));
       
-      // find all the routes with the current grade
-      Cursor r = db.query(Routes.TABLE_NAME, null,
-          Routes.COLUMN_GRADE_ID + "=?", new String[]{ String.valueOf(id) }, null, null, null);
+      // find completed ascents
+      Cursor a = db.rawQuery(QUERY_COMPLETED_ASCENTS_BY_GRADE_BY_TYPE,
+                             new String[]{ String.valueOf(id), ctype });
+
+      // create a list of the completed ascents types with the grade first
+      ArrayList<String> ascents = new ArrayList<String>();
+      ascents.add(grades.getString(grades.getColumnIndex(Grades.COLUMN_GRADE_YDS)));
       
-      // find ascents of the given climbing type for each route
-      if (r.moveToFirst()) {
-        // the current route
-        long rid = r.getLong(r.getColumnIndex(Routes._ID));
+      if (a.moveToFirst()) {
+        do {
+          ascents.add(a.getString(a.getColumnIndex(AscentTypes.COLUMN_NAME)));
+        } while (a.moveToNext());
         
-        // the ascents
-        // INCOMPLETE
+        // add the list to the pyramid
+        if (pyramid == null) {
+          pyramid = new ArrayList<ArrayList<String>>();
+        }
+        pyramid.add(ascents);
       } else {
-        if (started) {
+        if (pyramid != null) {
           // log an empty set of ascents for this grade
+          pyramid.add(ascents);
         }
       }
       
-    } while (cache_grades.moveToPrevious());
-    
-    
-    // retrieve all the ascents for each grade
-    Cursor c = db.rawQuery(QUERY_GRADE_ASCENTS, new String[]{ ctype });
-    
-    // find the highest grade with an attempt
-    String fr, yds;
-    if (c.moveToFirst()) {
-      // set the filter to the first grade (highest)
-      fr = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
-      yds = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
-      
-      // search the list of ascents
-      do {
-        String ascents = c.getString(c.getColumnIndex("ascents"));
-        if (ascents != null) {
-          // update filter
-          fr = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
-          yds = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
-          break;
-        }
-      } while (c.moveToNext());
-    } else {
-      return null;
-    }
-    
-    // filter the ascents, keeping only those with grades lower than the highest attempt
-    return db.rawQuery(QUERY_GRADE_ASCENTS_FILTERED, new String[]{ ctype,fr });
+    } while (grades.moveToPrevious());
+        
+    return pyramid;
   }
 
   /*****************************************************************************************************

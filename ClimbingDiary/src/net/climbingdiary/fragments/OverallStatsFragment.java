@@ -23,13 +23,16 @@ public class OverallStatsFragment extends Fragment {
     // create the layout, a set of climbing pyramids
     View rootView = inflater.inflate(R.layout.fragment_overallstats, container, false);
     
-    // retrieve the pyramid
+    // retrieve the pyramids
     DiaryDbHelper dbhelper = DiaryDbHelper.getInstance(getActivity());
-    ArrayList<ArrayList<String>> pyramid = dbhelper.getPyramid("Crag");
+    ArrayList<ArrayList<String>> pyramid1 = dbhelper.getPyramid("Crag");
+    ArrayList<ArrayList<String>> pyramid2 = dbhelper.getPyramid("Wall");
     
-    // connect the list and the adapter
-    final ListView list = (ListView) rootView.findViewById(R.id.crag_pyramid);
-    list.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid));
+    // connect the lists and the adapters
+    final ListView list1 = (ListView) rootView.findViewById(R.id.crag_pyramid);
+    final ListView list2 = (ListView) rootView.findViewById(R.id.wall_pyramid);
+    list1.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid1));
+    list2.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid2));
     
     return rootView;
   }

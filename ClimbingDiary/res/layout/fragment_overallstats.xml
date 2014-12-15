@@ -17,4 +17,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
         
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_marginLeft="4sp"
+        android:textColor="#FFFF00"
+        android:text="@string/wall_pyramid" />
+    
+    <ListView
+        android:id="@+id/wall_pyramid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        
 </LinearLayout>

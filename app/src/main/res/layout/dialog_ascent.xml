@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+		<LinearLayout 
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		
+		    <AutoCompleteTextView
+		        android:id="@+id/route_name"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+            android:hint="@string/name"
+		        android:imeOptions="actionNext"
+		        android:inputType="textCapWords" />
+		
+		    <Spinner
+		        android:id="@+id/ascent_type"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:focusable="true" />
+		
+		    <EditText
+		        android:id="@+id/ascent_notes"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+            android:hint="@string/notes"
+            android:inputType="textCapSentences"
+		        android:focusable="true" />
+		
+		</LinearLayout>
+</ScrollView>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+		<LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		
+		    <AutoCompleteTextView
+		        android:id="@+id/entry_place"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:hint="@string/place"
+		        android:imeOptions="actionNext"
+		        android:inputType="textCapWords" />
+		
+		    <Spinner
+		        android:id="@+id/entry_type"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:focusable="true" />
+		
+		    <DatePicker
+		        android:id="@+id/entry_date"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:focusable="true" />
+		
+		</LinearLayout>
+</ScrollView>

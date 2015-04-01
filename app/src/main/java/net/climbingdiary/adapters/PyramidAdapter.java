@@ -7,6 +7,7 @@ import net.climbingdiary.R;
 import net.climbingdiary.utils.Graphics;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,15 +43,20 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
       row = (LinearLayout) v;
     }
     
-    // list of ascents
+    // get grade and list of ascents
     ArrayList<String> list = pyramid.get(position);
     
     // set grade text
     TextView grade = (TextView) row.findViewById(R.id.grade);
     grade.setText(list.get(0));
-    
-    // grid of colored squares
+
+    // convert square size 28dip into pixels
+    int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,28f,
+            context.getResources().getDisplayMetrics());
+
+    // set grid of colored squares
     for (int i=0; i<8; i++) {
+      // create/retrieve the i-th square
       TextView image;
       if (v == null) {
         image = new TextView(context);
@@ -59,7 +65,7 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
         image.setTextColor(Color.BLACK);
         image.setGravity(Gravity.CENTER);
         image.setPadding(2, 2, 2, 2);
-        row.addView(image,28,28);
+        row.addView(image, side, side);
       } else {
         image = (TextView) row.getChildAt(i+1);
       }

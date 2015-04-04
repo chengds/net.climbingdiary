@@ -76,7 +76,20 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
         image.setBackgroundColor(Color.DKGRAY);
       }
     }
-    
+
+    // add total count of routes
+    TextView count;
+    if (v == null) {
+      count = new TextView(context);
+      row.addView(count, 2*side, side);
+    } else {
+      count = (TextView) row.getChildAt(9);
+    }
+    count.setText(String.valueOf(list.size()-1));
+    count.setTextSize(12);
+    count.setTextColor(Color.GRAY);
+    count.setGravity(Gravity.CENTER);
+
     return row;
   }
 

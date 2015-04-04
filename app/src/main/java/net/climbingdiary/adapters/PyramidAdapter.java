@@ -77,18 +77,37 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
       }
     }
 
-    // add total count of routes
+    // find the number of completed routes
+    int completed = 0;
+    while (completed < list.size()-1 && !list.get(completed+1).equalsIgnoreCase("uncompleted")) {
+      completed++;
+    }
+
+    // add count of completed routes
     TextView count;
     if (v == null) {
       count = new TextView(context);
-      row.addView(count, 2*side, side);
+      row.addView(count, side, side);
     } else {
       count = (TextView) row.getChildAt(9);
     }
-    count.setText(String.valueOf(list.size()-1));
+    count.setText(String.valueOf(completed));
     count.setTextSize(12);
-    count.setTextColor(Color.GRAY);
+    count.setTextColor(Color.WHITE);
     count.setGravity(Gravity.CENTER);
+
+    // add count of uncompleted routes
+    TextView ucount;
+    if (v == null) {
+      ucount = new TextView(context);
+      row.addView(ucount, side, side);
+    } else {
+      ucount = (TextView) row.getChildAt(10);
+    }
+    ucount.setText(String.valueOf(list.size()-1 - completed));
+    ucount.setTextSize(12);
+    ucount.setTextColor(Color.GRAY);
+    ucount.setGravity(Gravity.CENTER);
 
     return row;
   }

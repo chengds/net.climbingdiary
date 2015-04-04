@@ -6,5 +6,6 @@
     <item type="color" name="flash">#EE7600</item>
     <item type="color" name="pinkpoint">#FF748C</item>
     <item type="color" name="solo">#00FF00</item>
-    
+    <item type="color" name="uncompleted">#888888</item>
+
 </resources>

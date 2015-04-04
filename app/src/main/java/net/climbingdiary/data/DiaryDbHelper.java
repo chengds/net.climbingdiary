@@ -124,7 +124,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   // the code will break on multiple completions, as each completion will be reported separately.
   private final static String QUERY_COMPLETED_ASCENTS_BY_GRADE_BY_TYPE = 
       "SELECT a." + Ascents._ID + ", t." + AscentTypes.COLUMN_NAME
-      + ", r." + Routes._ID + ", e." + DiaryEntry.COLUMN_DATE
+      + ", r." + Routes._ID + ", r." + Routes.COLUMN_NAME + ", e." + DiaryEntry.COLUMN_DATE
       + " FROM " + Ascents.TABLE_NAME + " a"
       + " LEFT JOIN " + AscentTypes.TABLE_NAME + " t ON a." + Ascents.COLUMN_TYPE_ID + " = t." + AscentTypes._ID
       + " LEFT JOIN " + Routes.TABLE_NAME + " r ON a." + Ascents.COLUMN_ROUTE_ID + " = r." + Routes._ID
@@ -134,7 +134,21 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       + " AND r." + Routes.COLUMN_GRADE_ID + " = ?"
       + " AND c." + ClimbingTypes.COLUMN_DESCRIPTION + " = ?"
       + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
-  
+
+  // SQL query to get all the uncompleted routes of a given grade of a given climbing type
+  private final static String QUERY_UNCOMPLETED_ROUTES_BY_GRADE_BY_TYPE =
+      "SELECT * FROM ("
+      + "SELECT r." + Routes._ID + ", r." + Routes.COLUMN_NAME
+      + ", SUM(a." + Ascents.COLUMN_TYPE_ID + " IN (" + AscentTypes.completed + ")) completed"
+      + " FROM " + Routes.TABLE_NAME + " r"
+      + " LEFT JOIN " + Ascents.TABLE_NAME + " a ON a." + Ascents.COLUMN_ROUTE_ID + " = r." +  Routes._ID
+      + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON a." + Ascents.COLUMN_ENTRY_ID + " = e." + DiaryEntry._ID
+      + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c." + ClimbingTypes._ID
+      + " WHERE r." + Routes.COLUMN_GRADE_ID + " = ?"
+      + " AND c." + ClimbingTypes.COLUMN_DESCRIPTION + " = ?"
+      + " GROUP BY r." + Routes._ID
+      + ") WHERE completed = 0";
+
 /*  private final static String QUERY_GRADE_ASCENTS_FILTERED = 
       "SELECT g." + Grades._ID + ", g." + Grades.COLUMN_GRADE_YDS
       + ", g." + Grades.COLUMN_GRADE_FR
@@ -306,29 +320,42 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       long id = grades.getLong(grades.getColumnIndex(Grades._ID));
       String yds = grades.getString(grades.getColumnIndex(Grades.COLUMN_GRADE_YDS));
 
-      // find completed ascents
+      // find completed and uncompleted routes
       Cursor a = db.rawQuery(QUERY_COMPLETED_ASCENTS_BY_GRADE_BY_TYPE,
                              new String[]{ String.valueOf(id), ctype });
-
-      // alternatively, we could make a list of all routes for each grade ordered by date, then split the completed
-      // from the uncompleted, move the first at the beginning of the list, keeping the best/last attempt
-      // for the uncompleted
+      Cursor b = db.rawQuery(QUERY_UNCOMPLETED_ROUTES_BY_GRADE_BY_TYPE,
+                             new String[]{ String.valueOf(id), ctype });
 
       // create a list of the completed ascents types with the grade first
       ArrayList<String> ascents = new ArrayList<String>();
       ascents.add(yds);
 
       if (a.moveToFirst()) {
+        // make a list of the climbing type of completed routes
         do {
           ascents.add(a.getString(a.getColumnIndex(AscentTypes.COLUMN_NAME)));
         } while (a.moveToNext());
-        
+
+        // add a list of uncompleted
+        if (b.moveToFirst()) {
+          do {
+            ascents.add("Uncompleted");
+          } while (b.moveToNext());
+        }
+
         // add the list to the pyramid
         if (pyramid == null) {
           pyramid = new ArrayList<ArrayList<String>>();
         }
         pyramid.add(ascents);
-      } else {
+      } else { // no completed routes
+        // add a list of uncompleted
+        if (b.moveToFirst()) {
+          do {
+            ascents.add("Uncompleted");
+          } while (b.moveToNext());
+        }
+
         if (pyramid != null) {
           // log an empty set of ascents for this grade
           pyramid.add(ascents);

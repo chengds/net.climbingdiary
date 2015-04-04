@@ -14,8 +14,8 @@ public final class DiaryContract {
   public static class DiaryEntry implements BaseColumns {
     public static final String TABLE_NAME = "dentry";
     public static final String COLUMN_DATE = "entry_date";
-    public static final String COLUMN_TYPE_ID = "typeid";
-    public static final String COLUMN_PLACE_ID = "placeid";
+    public static final String COLUMN_TYPE_ID = "typeid";     // what type of climbing
+    public static final String COLUMN_PLACE_ID = "placeid";   // which place
     
     private static final String SQL_CREATE_TABLE = 
         "CREATE TABLE " + TABLE_NAME + " ("

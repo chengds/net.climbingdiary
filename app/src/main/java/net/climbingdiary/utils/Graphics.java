@@ -55,6 +55,8 @@ public class Graphics {
       color = res.getColor(R.color.pinkpoint);
     } else if (type.equalsIgnoreCase("solo")) {
       color = res.getColor(R.color.solo);
+    } else if (type.equalsIgnoreCase("uncompleted")) {
+      color = res.getColor(R.color.uncompleted);
     }
     
     return color;

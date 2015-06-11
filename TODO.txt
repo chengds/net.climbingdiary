@@ -1,0 +1,9 @@
+Add Entry dialog: change color of climbing type (crag/wall/etc) to white
+Add Entry dialog: make place/type combinations available as fast options
+Add Entry dialog: make next focus on date and remove keyboard
+Climbing Diary tab: remove back button
+Climbing Diary tab: use reverse order or month-based collapse
+Places tab: add remove place functionality
+PlaceRoutes frame: add back button callback
+Stats tab: add frame to show list of sends and projects
+Stats tab: add labels for sent/projects

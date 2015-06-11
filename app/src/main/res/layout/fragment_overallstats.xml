@@ -3,28 +3,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <TextView 
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="10sp"
-        android:layout_marginLeft="4sp"
-        android:textColor="#FFFF00"
-        android:text="@string/crag_pyramid" />
-    
+        android:layout_marginLeft="4sp" >
+
+        <TextView
+            android:layout_width="264sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/crag_pyramid" />
+
+        <TextView
+            android:layout_width="34sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/sent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/tried" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/crag_pyramid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-        
-    <TextView 
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="20sp"
-        android:layout_marginLeft="4sp"
-        android:textColor="#FFFF00"
-        android:text="@string/wall_pyramid" />
-    
+        android:layout_marginLeft="4sp" >
+
+        <TextView
+            android:layout_width="264sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/wall_pyramid" />
+
+        <TextView
+            android:layout_width="34sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/sent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/tried" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/wall_pyramid"
         android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
+import android.view.MenuItem;
 
 public class TabbedActivity extends ActionBarActivity implements TabListener {
 
@@ -38,10 +39,6 @@ public class TabbedActivity extends ActionBarActivity implements TabListener {
     final ActionBar actionBar = getSupportActionBar();
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
   
-    // Specify that the Home button should show an "Up" caret, indicating that touching the
-    // button will take the user one step up in the application's hierarchy.
-    actionBar.setDisplayHomeAsUpEnabled(true);
-
     // Set up the ViewPager, attaching the adapter and setting up a listener for when the
     // user swipes between sections.
     mViewPager = (ViewPager) findViewById(R.id.pager1);
@@ -81,4 +78,17 @@ public class TabbedActivity extends ActionBarActivity implements TabListener {
   public void onTabUnselected(Tab tab, FragmentTransaction fragmentTransaction) {
   }
 
+  // Make the Up button behave like the Back button
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        // make Up/Home the same as the Back button
+        finish();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
 }

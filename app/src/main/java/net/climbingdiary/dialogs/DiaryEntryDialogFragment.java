@@ -86,10 +86,10 @@ public class DiaryEntryDialogFragment extends DialogFragment {
     String[] types = dbhelper.getAllTypes();
     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
         android.R.layout.simple_spinner_item,types);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
     vh.ct.setAdapter(adapter);
     
-    // link autosuggestions for PLACE textview
+    // link auto-suggestions for PLACE textview
     String[] places = dbhelper.getAllPlaces();
     ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(),
         android.R.layout.simple_spinner_item,places);

@@ -16,17 +16,29 @@ package="net.climbingdiary" >
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    <activity
+        <activity
             android:name=".activities.EntryActivity"
-            android:label="@string/climbing_day" >
+            android:label="@string/climbing_day"
+            android:parentActivityName=".activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.PlaceActivity"
-            android:label="@string/place" >
+            android:label="@string/place"
+            android:parentActivityName=".activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.RouteActivity"
-            android:label="@string/route_details" >
+            android:label="@string/route_details"
+            android:parentActivityName=".activities.PlaceActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.PlaceActivity" />
         </activity>
     </application>
 

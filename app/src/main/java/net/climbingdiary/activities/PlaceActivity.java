@@ -44,6 +44,10 @@ public class PlaceActivity extends TabbedActivity
     // set title
     final ActionBar actionBar = getSupportActionBar();
     actionBar.setTitle(place_name);
+
+    // Specify that the Home button should show an "Up" caret, indicating that touching the
+    // button will take the user one step up in the application's hierarchy.
+    actionBar.setDisplayHomeAsUpEnabled(true);
   }
   
   /*****************************************************************************************************

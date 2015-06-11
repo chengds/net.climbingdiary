@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 
 public class RouteActivity extends ActionBarActivity {
 
@@ -51,9 +52,22 @@ public class RouteActivity extends ActionBarActivity {
     actionBar.setDisplayHomeAsUpEnabled(true);
     actionBar.setTitle(R.string.route_details);
   }
-  
+
   /*****************************************************************************************************
    *                                          CALLBACKS
    *****************************************************************************************************/
+  // Make the Up button behave like the Back button
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        // make Up/Home the same as the Back button
+        finish();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
 
 }

@@ -61,7 +61,6 @@ public class MainActivity extends TabbedActivity
           }
         };
     super.onCreate(savedInstanceState, R.layout.activity_main);
-
   }
 
   @Override

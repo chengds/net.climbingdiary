@@ -1,9 +1,10 @@
-Add Entry dialog: change color of climbing type (crag/wall/etc) to white
-Add Entry dialog: make place/type combinations available as fast options
-Add Entry dialog: make next focus on date and remove keyboard
-Climbing Diary tab: remove back button
 Climbing Diary tab: use reverse order or month-based collapse
 Places tab: add remove place functionality
-PlaceRoutes frame: add back button callback
-Stats tab: add frame to show list of sends and projects
-Stats tab: add labels for sent/projects
+Stats tab: add fragment to show list of sends and projects
+Add Entry dialog: make place/type combinations available as fast options          may be hard because autocompletetext automatically fills in suggestions
+
+Add Entry dialog: change color of climbing type (crag/wall/etc) to white          DONE June 12 by adding custom spinner_dropdown_item.xml layout
+Add Entry dialog: make next focus on date and remove keyboard                     DONE June 12 by changing imeOptions to actionDone
+Climbing Diary tab: remove back button                                            DONE June 12: removed default Up button from TabbedActivity, must be added to needing activities; made Up behave like Back to avoid scroll reset
+PlaceRoutes fragment: add back button callback                                    DONE June 12: see other back buttons
+Stats tab: add labels for sent/projects                                           DONE June 12: added Sent/Tried labels

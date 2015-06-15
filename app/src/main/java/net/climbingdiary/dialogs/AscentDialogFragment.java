@@ -102,7 +102,7 @@ public class AscentDialogFragment extends DialogFragment {
     SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
         android.R.layout.simple_spinner_item, dbhelper.getAscentTypes(),
         new String[]{ AscentTypes.COLUMN_NAME }, new int[]{ android.R.id.text1 }, 0);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
     vh.asct.setAdapter(adapter);
     
     // link autosuggestions for route name TextView

@@ -472,8 +472,9 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   /**
    * Remove an entry from the diary.
    */
-  public void removeEntry(long id) {
-    db.delete(DiaryEntry.TABLE_NAME, "_id = ?", new String[] { String.valueOf(id) });
+  public void removeEntry(long entry_id) {
+    String[] whereArgs = new String[]{ String.valueOf(entry_id) };
+    db.delete(DiaryEntry.TABLE_NAME, DiaryEntry._ID + "=?", whereArgs);
     mObservable.notifyChanged();
   }
   
@@ -485,13 +486,23 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
     mObservable.notifyChanged();
   }
   
-  // delete the given route and all related ascents.
+  // delete the given ascent.
   public void deleteAscent(long ascent_id) {
     String[] whereArgs = new String[]{ String.valueOf(ascent_id) };
     db.delete(Ascents.TABLE_NAME, Ascents._ID + "=?", whereArgs);
     mObservable.notifyChanged();
   }
-  
+
+  /**
+   * Remove a place and all related diary entries.
+   */
+  public void removePlace(long place_id) {
+    String[] whereArgs = new String[]{ String.valueOf(place_id) };
+    db.delete(DiaryEntry.TABLE_NAME, DiaryEntry.COLUMN_PLACE_ID + "=?", whereArgs);
+    db.delete(Places.TABLE_NAME, Places._ID + "=?", whereArgs);
+    mObservable.notifyChanged();
+  }
+
   /*****************************************************************************************************
    *                                          RETRIEVE/UPDATE DATA
    *****************************************************************************************************/

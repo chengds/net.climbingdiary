@@ -19,6 +19,7 @@
     <string name="routes">Routes</string>
     <string name="name">Name</string>
     <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
     <string name="add">Add</string>
     <string name="update">Update</string>
     <string name="edit">Edit</string>
@@ -30,6 +31,8 @@
     <string name="section_ascents">Ascents</string>
     <string name="section_stats">Stats</string>
     <string name="dialog_remove_entry">Remove this diary entry?</string>
+    <string name="dialog_remove_place">Remove this place?</string>
+    <string name="dialog_warning_place">Remove the routes to be able to remove the place.</string>
     <string name="dialog_delete_route">Deleting this route will also remove all related ascents. Continue?</string>
     <string name="dialog_delete_ascent">Delete this ascent?</string>
     <string name="dialog_yes">Yes</string>

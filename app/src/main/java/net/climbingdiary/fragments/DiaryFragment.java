@@ -94,12 +94,12 @@ public class DiaryFragment extends LoaderFragment
   public static class RemoveEntry extends DialogFragment {
     DiaryDbHelper dbhelper;
     long entryid;
-    
+
     public RemoveEntry(DiaryDbHelper dbhelper, long entryid) {
       this.dbhelper = dbhelper;
       this.entryid = entryid;
     }
-    
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
       setRetainInstance(true); // fix rotation bug
@@ -116,7 +116,7 @@ public class DiaryFragment extends LoaderFragment
       // Create the AlertDialog object and return it
       return builder.create();
     }
-    
+
     // fix for rotation bug
     @Override
     public void onDestroyView() {

@@ -1,10 +1,22 @@
 Climbing Diary tab: use reverse order or month-based collapse
-Stats tab: add fragment to show list of sends and projects
+Add Route dialog: add notes for quick search suggestions
+PlaceActivity: add additional fragments, like pictures, maps, etc.
 Add Entry dialog: make place/type combinations available as fast options          may be hard because autocompletetext automatically fills in suggestions
 
+Stats tab: add fragment to show list of sends and projects                        DONE June 20
+OverallStats Fragment layout: made the pyramids occupy proportional space         DONE June 19
+  (only one was visible in landscape)
+PlaceFragment: move place selection code into a callback in the MainActivity      DONE June 19
 Places tab: add remove place functionality                                        DONE June 16 by adding dialogs and dbhelper members
 Add Entry dialog: change color of climbing type (crag/wall/etc) to white          DONE June 12 by adding custom spinner_dropdown_item.xml layout
 Add Entry dialog: make next focus on date and remove keyboard                     DONE June 12 by changing imeOptions to actionDone
 Climbing Diary tab: remove back button                                            DONE June 12: removed default Up button from TabbedActivity, must be added to needing activities; made Up behave like Back to avoid scroll reset
 PlaceRoutes fragment: add back button callback                                    DONE June 12: see other back buttons
 Stats tab: add labels for sent/projects                                           DONE June 12: added Sent/Tried labels
+
+
+HOWTO backup the database
+cd d:\programs\android\sdk\platform-tools
+adb shell
+su -
+cp /data/data/net.climbingdiary/databases/ClimbingDiary.db /mnt/sdcard/climbing/ClimbingDiary-backup.db

@@ -1,7 +1,8 @@
 package net.climbingdiary.activities;
 
 import net.climbingdiary.R;
-import net.climbingdiary.fragments.RouteFragment;
+import net.climbingdiary.fragments.GradeFragment;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,14 +11,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 /**
- * RouteActivity is an ActionBarActivity that shows the details of a route
- * selected from the parent PlaceActivity/PlaceRoutesFragment.
+ * GradeActivity is an ActionBarActivity that shows the list of sent and
+ * attempted routes of a given grade selected from the parent
+ * MainActivity/OverallStatsFragment.
+ *
+ * Created by ChengDS on 6/19/2015.
  */
-public class RouteActivity extends ActionBarActivity {
+public class GradeActivity extends ActionBarActivity {
 
-  private long route_id;            // ID of the route
-  private long place_id;            // ID of the climbing place
-  private String place_name;        // name of the climbing place
+  private String place_type;        // type of the climbing place
+  private String grade_value;       // selected grade
 
   /*****************************************************************************************************
    *                                          LIFECYCLE METHODS
@@ -25,27 +28,25 @@ public class RouteActivity extends ActionBarActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
-    // retrieve the entry information to display in the title
-    route_id = getIntent().getLongExtra(MainActivity.EXTRA_ROUTE_ID,0);
-    place_id = getIntent().getLongExtra(MainActivity.EXTRA_PLACE_ID,0);
-    place_name = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_NAME);
+
+    // retrieve the selected information
+    place_type = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_TYPE);
+    grade_value = getIntent().getStringExtra(MainActivity.EXTRA_GRADE_VALUE);
 
     // package some extra data in the bundle
     Bundle data = new Bundle();
-    data.putLong(MainActivity.EXTRA_ROUTE_ID, route_id);
-    data.putLong(MainActivity.EXTRA_PLACE_ID, place_id);
-    data.putString(MainActivity.EXTRA_PLACE_NAME, place_name);
+    data.putString(MainActivity.EXTRA_PLACE_TYPE, place_type);
+    data.putString(MainActivity.EXTRA_GRADE_VALUE, grade_value);
 
     // create layout
-    setContentView(R.layout.activity_route);
-    
+    setContentView(R.layout.activity_grade);
+
     // retrieve fragment management
     FragmentManager manager = getSupportFragmentManager();
     FragmentTransaction transaction = manager.beginTransaction();
-    
-    // add the route fragment
-    RouteFragment frag = new RouteFragment();
+
+    // add the grade details fragment
+    GradeFragment frag = new GradeFragment();
     frag.setArguments(data);
     transaction.add(R.id.frag1, frag);
     transaction.commit();
@@ -54,7 +55,7 @@ public class RouteActivity extends ActionBarActivity {
     // button will take the user one step up in the application's hierarchy.
     final ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setTitle(R.string.route_details);
+    actionBar.setTitle(R.string.grade_details);
   }
 
   /*****************************************************************************************************
@@ -73,5 +74,4 @@ public class RouteActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
   }
-
 }

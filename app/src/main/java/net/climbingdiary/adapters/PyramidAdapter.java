@@ -21,9 +21,6 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
   private LayoutInflater inflater;
   private int layout;
   private List<ArrayList<String>> pyramid;
-//  private final static int[] imageId = new int[]
-//      { R.id.image1, R.id.image2, R.id.image3, R.id.image4, R.id.image5,
-//        R.id.image6, R.id.image7, R.id.image8 }; 
 
   public PyramidAdapter(Context context, int layout, List<ArrayList<String>> objects) {
     super(context, layout, objects);

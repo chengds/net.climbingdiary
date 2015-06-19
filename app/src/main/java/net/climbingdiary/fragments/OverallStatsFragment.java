@@ -5,14 +5,30 @@ import java.util.ArrayList;
 import net.climbingdiary.R;
 import net.climbingdiary.adapters.PyramidAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 public class OverallStatsFragment extends Fragment {
+
+  private OnGradeSelectedListener mCallback;    // Callback for diary entry selection
+
+  /*****************************************************************************************************
+   *                                          COMMUNICATION CALLBACK
+   * The calling activity must implement this interface and deal with grade selection.
+   * For example to show the details side-by-side on a tablet.
+   *****************************************************************************************************/
+  public interface OnGradeSelectedListener {
+    public void onGradeSelected(String type, String grade);
+  }
 
   /*****************************************************************************************************
    *                                          LIFECYCLE METHODS
@@ -33,8 +49,32 @@ public class OverallStatsFragment extends Fragment {
     final ListView list2 = (ListView) rootView.findViewById(R.id.wall_pyramid);
     list1.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid1));
     list2.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid2));
-    
+
+    // set up callbacks
+    list1.setOnItemClickListener(new OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // retrieve the grade text
+        TextView grade = (TextView) view.findViewById(R.id.grade);
+
+        mCallback.onGradeSelected("Crag", grade.getText().toString());
+      }
+    });
+
     return rootView;
   }
-  
+
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+
+    // This makes sure that the container activity has implemented
+    // the callback interface. If not, it throws an exception
+    try {
+      mCallback = (OnGradeSelectedListener) activity;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(activity.toString()
+          + " must implement OnGradeSelectedListener");
+    }
+  }
 }

@@ -183,6 +183,12 @@ public final class DiaryContract {
     public static void destroy(SQLiteDatabase db) {
       db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
+
+    public static class Data {
+      public long _id;
+      public String yds;
+      public String french;
+    }
   }
   
   /*****************************************************************************************************

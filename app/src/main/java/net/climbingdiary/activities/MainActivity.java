@@ -12,21 +12,25 @@ import android.support.v4.app.Fragment;
 import android.view.Menu;
 
 public class MainActivity extends TabbedActivity
-       implements DiaryFragment.OnEntrySelectedListener {
+       implements DiaryFragment.OnEntrySelectedListener,
+                    PlacesFragment.OnPlaceSelectedListener,
+                    OverallStatsFragment.OnGradeSelectedListener {
   
   // Global identifiers
   public final static String EXTRA_ENTRY_ID = "net.climbingdiary.EXTRA_ENTRY_ID";
   public final static String EXTRA_PLACE_ID = "net.climbingdiary.EXTRA_PLACE_ID";
   public final static String EXTRA_PLACE_NAME = "net.climbingdiary.EXTRA_PLACE_NAME";
   public final static String EXTRA_ROUTE_ID = "net.climbingdiary.EXTRA_ROUTE_ID";
+  public final static String EXTRA_GRADE_VALUE = "net.climbingdiary.EXTRA_GRADE_VALUE";
+  public final static String EXTRA_PLACE_TYPE = "net.climbingdiary.EXTRA_PLACE_TYPE";
 
   public final static int LOADER_DIARY = 0;           // IDs of data loaders
   public final static int LOADER_PLACES = 1;
   public final static int LOADER_ASCENTS = 2;
   public final static int LOADER_PLACEROUTES = 3;
   public final static int LOADER_ROUTEASCENTS = 4;
-  public final static int LOADER_CRAGPYRAMID = 5;
-  
+  public final static int LOADER_GRADE_COMPLETED = 5;
+
   // these objects will handle the information database
   private static DiaryDbHelper dbhelper;
 
@@ -90,4 +94,21 @@ public class MainActivity extends TabbedActivity
     startActivity(intent);
   }
 
+  @Override
+  public void onPlaceSelected(long id, String name) {
+    // pass the id and name of the clicked place to the new activity
+    Intent intent = new Intent(this, PlaceActivity.class);
+    intent.putExtra(MainActivity.EXTRA_PLACE_ID, id);
+    intent.putExtra(MainActivity.EXTRA_PLACE_NAME, name);
+    startActivity(intent);
+  }
+
+  @Override
+  public void onGradeSelected(String type, String grade) {
+    // pass the id and type of the clicked grade to the new activity
+    Intent intent = new Intent(this, GradeActivity.class);
+    intent.putExtra(MainActivity.EXTRA_PLACE_TYPE, type);
+    intent.putExtra(MainActivity.EXTRA_GRADE_VALUE, grade);
+    startActivity(intent);
+  }
 }

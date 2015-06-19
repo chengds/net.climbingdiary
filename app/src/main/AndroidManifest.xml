@@ -33,6 +33,14 @@ package="net.climbingdiary" >
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
+            android:name=".activities.GradeActivity"
+            android:label="@string/grade_details"
+            android:parentActivityName=".activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity
             android:name=".activities.RouteActivity"
             android:label="@string/route_details"
             android:parentActivityName=".activities.PlaceActivity" >

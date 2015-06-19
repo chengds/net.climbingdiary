@@ -17,8 +17,11 @@ public class Graphics {
    */
   public static void drawDot(View view, String type, int[] inset) {
     ShapeDrawable dot = null;
-    
-    if (type.equalsIgnoreCase("redpoint")) {
+
+    dot = new ShapeDrawable((new OvalShape()));
+    dot.getPaint().setColor(getColor(view.getContext(), type));
+
+    /*if (type.equalsIgnoreCase("redpoint")) {
       dot = new ShapeDrawable(new OvalShape());
       dot.getPaint().setColor(Color.RED);
     } else if (type.equalsIgnoreCase("onsight")) {
@@ -30,7 +33,7 @@ public class Graphics {
     } else if (type.equalsIgnoreCase("pinkpoint")) {
       dot = new ShapeDrawable(new OvalShape());
       dot.getPaint().setColor(Color.parseColor("#FF748C"));
-    }
+    }*/
 
     if (dot != null) {
       LayerDrawable d = new LayerDrawable(new Drawable[]{dot});

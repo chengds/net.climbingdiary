@@ -30,6 +30,7 @@ public class DiaryFragment extends LoaderFragment
   /*****************************************************************************************************
    *                                          COMMUNICATION CALLBACK
    * The calling activity must implement this interface and deal with diary entry selection.
+   * For example to show the diary entry details side-by-side on a tablet.
    *****************************************************************************************************/
   public interface OnEntrySelectedListener {
     public void onEntrySelected(long id);

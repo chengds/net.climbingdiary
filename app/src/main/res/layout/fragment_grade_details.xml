@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/lgrade"
+        android:layout_alignParentTop="true"
+        android:text="@string/grade"
+        android:layout_width="60sp"
+        android:layout_height="26sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+
+    <TextView
+        android:id="@+id/grade"
+        android:layout_toRightOf="@id/lgrade"
+        android:layout_width="match_parent"
+        android:layout_height="26sp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/ltype"
+        android:layout_below="@id/grade"
+        android:text="@string/type"
+        android:layout_width="60sp"
+        android:layout_height="26sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_toRightOf="@id/ltype"
+        android:layout_below="@id/grade"
+        android:layout_width="match_parent"
+        android:layout_height="26sp"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/lsent"
+        android:layout_below="@id/type"
+        android:text="@string/list_of_sent"
+        android:layout_width="match_parent"
+        android:layout_height="24sp"
+        android:textSize="16sp"
+        android:gravity="bottom"
+        android:textColor="#FFFF00" />
+
+    <TextView
+        android:id="@+id/header_status"
+        android:layout_width="34sp"
+        android:layout_height="wrap_content"
+        android:text="@string/best"
+        android:textColor="#FFFF00"
+        android:paddingRight="4sp"
+        android:layout_below="@id/lsent"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/header_route"
+        android:layout_width="146sp"
+        android:layout_height="wrap_content"
+        android:text="@string/route"
+        android:textColor="#FFFF00"
+        android:paddingRight="4sp"
+        android:layout_below="@id/lsent"
+        android:layout_toRightOf="@id/header_status" />
+
+    <TextView
+        android:id="@+id/header_place"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/place"
+        android:textColor="#FFFF00"
+        android:paddingRight="4sp"
+        android:layout_below="@id/lsent"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/header_route" />
+
+    <ListView
+        android:id="@+id/completed"
+        android:layout_below="@id/header_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

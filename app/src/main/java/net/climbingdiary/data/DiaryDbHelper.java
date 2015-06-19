@@ -125,11 +125,13 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   private final static String QUERY_COMPLETED_ASCENTS_BY_GRADE_BY_TYPE = 
       "SELECT a." + Ascents._ID + ", t." + AscentTypes.COLUMN_NAME
       + ", r." + Routes._ID + ", r." + Routes.COLUMN_NAME + ", e." + DiaryEntry.COLUMN_DATE
+      + ", p." + Places.COLUMN_NAME
       + " FROM " + Ascents.TABLE_NAME + " a"
       + " LEFT JOIN " + AscentTypes.TABLE_NAME + " t ON a." + Ascents.COLUMN_TYPE_ID + " = t." + AscentTypes._ID
       + " LEFT JOIN " + Routes.TABLE_NAME + " r ON a." + Ascents.COLUMN_ROUTE_ID + " = r." + Routes._ID
       + " LEFT JOIN " + DiaryEntry.TABLE_NAME + " e ON a." + Ascents.COLUMN_ENTRY_ID + " = e." + DiaryEntry._ID
       + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c." + ClimbingTypes._ID
+      + " LEFT JOIN " + Places.TABLE_NAME + " p ON r." + Routes.COLUMN_PLACE_ID + " = p." + Places._ID
       + " WHERE a." + Ascents.COLUMN_TYPE_ID + " IN (" + AscentTypes.completed + ")"
       + " AND r." + Routes.COLUMN_GRADE_ID + " = ?"
       + " AND c." + ClimbingTypes.COLUMN_DESCRIPTION + " = ?"
@@ -307,7 +309,18 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   public Cursor getRoutes(long place_id) {
     return db.rawQuery(QUERY_ROUTES_BY_PLACE, new String[]{ String.valueOf(place_id) });
   }
-  
+
+  // returns a cursor with all the completed routes of a given grade and type
+  public Cursor getCompleted(long grade_id, String ctype) {
+    return db.rawQuery(QUERY_COMPLETED_ASCENTS_BY_GRADE_BY_TYPE,
+        new String[]{ String.valueOf(grade_id), ctype });
+  }
+
+  // return a cursor with all the uncompleted routes of a given grade and type
+  public Cursor getUncompleted(long grade_id, String ctype) {
+    return db.rawQuery(QUERY_UNCOMPLETED_ROUTES_BY_GRADE_BY_TYPE,
+        new String[]{ String.valueOf(grade_id), ctype });
+  }
   // returns the climbing pyramid for the given type of climbing
   public ArrayList<ArrayList<String>> getPyramid(String ctype) {
     ArrayList<ArrayList<String>> pyramid = null; 
@@ -321,10 +334,8 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       String yds = grades.getString(grades.getColumnIndex(Grades.COLUMN_GRADE_YDS));
 
       // find completed and uncompleted routes
-      Cursor a = db.rawQuery(QUERY_COMPLETED_ASCENTS_BY_GRADE_BY_TYPE,
-                             new String[]{ String.valueOf(id), ctype });
-      Cursor b = db.rawQuery(QUERY_UNCOMPLETED_ROUTES_BY_GRADE_BY_TYPE,
-                             new String[]{ String.valueOf(id), ctype });
+      Cursor a = getCompleted(id, ctype);
+      Cursor b = getUncompleted(id, ctype);
 
       // create a list of the completed ascents types with the grade first
       ArrayList<String> ascents = new ArrayList<String>();
@@ -627,5 +638,19 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
     }
     mObservable.notifyChanged();
     return res;
+  }
+
+  // retrieve grade info by yds value
+  public Grades.Data getGrade(String yds) {
+    Grades.Data info = null;
+    Cursor c = db.query(Grades.TABLE_NAME, null, Grades.COLUMN_GRADE_YDS + "=?",
+        new String[]{yds}, null, null, null);
+    if (c.moveToFirst()) {
+      info = new Grades.Data();
+      info._id = c.getLong(c.getColumnIndex(Grades._ID));
+      info.yds = yds;
+      info.french = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
+    }
+    return info;
   }
 }

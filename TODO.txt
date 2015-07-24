@@ -1,5 +1,5 @@
 Climbing Diary tab: use reverse order or month-based collapse
-Add Route dialog: add notes for quick search suggestions
+Add Route dialog: add route picker from place
 PlaceActivity: add additional fragments, like pictures, maps, etc.
 Add Entry dialog: make place/type combinations available as fast options          may be hard because autocompletetext automatically fills in suggestions
 

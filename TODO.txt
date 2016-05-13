@@ -1,3 +1,11 @@
+
+Re-engineer the data part using Realm or similar portable toolkit for iOS
+Add edit diary entry to change wall/gym type
+Add dates in pyramid done routes
+Add Bouldering pyramid
+Add Bouldering place type and route types with V grades
+Add Edit place name
+
 Climbing Diary tab: use reverse order or month-based collapse
 Add Route dialog: add route picker from place
 PlaceActivity: add additional fragments, like pictures, maps, etc.

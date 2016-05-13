@@ -64,6 +64,9 @@ public class MainActivity extends TabbedActivity
             }
           }
         };
+
+    // cancel the launch image before showing the main activity
+    setTheme(R.style.AppTheme);
     super.onCreate(savedInstanceState, R.layout.activity_main);
   }
 

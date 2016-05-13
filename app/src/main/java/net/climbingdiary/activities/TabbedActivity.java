@@ -6,12 +6,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.view.MenuItem;
 
-public class TabbedActivity extends ActionBarActivity implements TabListener {
+public class TabbedActivity extends AppCompatActivity implements TabListener {
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the

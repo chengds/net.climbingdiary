@@ -8,4 +8,6 @@
     <item type="color" name="solo">#00FF00</item>
     <item type="color" name="uncompleted">#888888</item>
 
+    <color name="statusBarColor">#b71c1c</color>
+    <color name="statusColorBar">#b71c1c</color>
 </resources>

@@ -55,9 +55,13 @@ public class PlaceRoutesFragment extends LoaderFragment
     // create the layout, a list of routes
     View rootView = inflater.inflate(R.layout.fragment_routes, container, false);
 
-    // connect the list view with the custom diary adapter
+    // retrieve desired grade display setting
+    boolean value = dbhelper.getSetting("useFrenchGrades").equals("on");
+
+    // connect the list view with the custom adapter
     final ListView routes = (ListView) rootView.findViewById(R.id.routes_list);
     mAdapter = new PlaceRoutesAdapter(getActivity(), null, 0, R.layout.item_routes);
+    ((PlaceRoutesAdapter)mAdapter).useFrenchGrades(value);
     routes.setAdapter(mAdapter);
     
     // setup callback for route selection

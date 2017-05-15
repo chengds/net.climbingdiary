@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends TabbedActivity
        implements DiaryFragment.OnEntrySelectedListener,
@@ -113,5 +114,19 @@ public class MainActivity extends TabbedActivity
     intent.putExtra(MainActivity.EXTRA_PLACE_TYPE, type);
     intent.putExtra(MainActivity.EXTRA_GRADE_VALUE, grade);
     startActivity(intent);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_settings:
+        // open the settings page
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 }

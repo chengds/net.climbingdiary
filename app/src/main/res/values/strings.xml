@@ -49,5 +49,6 @@
     <string name="grade_details">Grade Details</string>
     <string name="list_of_sent">List of Routes Sent</string>
     <string name="list_of_tried">List of Routes Tried</string>
+    <string name="general">General</string>
 
 </resources>

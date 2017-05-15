@@ -3,6 +3,7 @@ package net.climbingdiary.data;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.util.ArrayList;
+
 import net.climbingdiary.data.DiaryContract.*;
 
 import android.content.ContentValues;
@@ -11,18 +12,20 @@ import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
 public class DiaryDbHelper extends SQLiteOpenHelper {
   
   private static DiaryDbHelper instance;                              // Singleton pattern  
   private static final String DATABASE_NAME = "ClimbingDiary.db";     // filename and version of the database
-  private static final int DATABASE_VERSION = 6;
+  private static final int DATABASE_VERSION = 7;
   private SQLiteDatabase db = null;               // SQLite database
   private String[] cache_types = null;            // caches
   private String[] cache_places = null;
   private Cursor cache_asctypes = null;
   private Cursor cache_grades = null;
+	private SimpleArrayMap<String,String> cache_settings = null;
   
   /*****************************************************************************************************
    *                                          OBSERVER pattern
@@ -214,8 +217,11 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
         Routes.create(db);
         AscentTypes.create(db);
         Ascents.create(db);
-      case 7: // future version undefined yet
-      case 8: // future version undefined yet
+      case 7: // add settings data
+        Log.v("debug", "upgrading database to v7");
+        Settings.create(db);
+      case 8:
+        // future version undefined yet, just add further below
     }
   }
   
@@ -325,13 +331,21 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   public ArrayList<ArrayList<String>> getPyramid(String ctype) {
     ArrayList<ArrayList<String>> pyramid = null; 
 
+	  // use yds or french
+	  boolean useFrench = getSetting("useFrenchGrades").equals("on");
+
     // check each grade, in descending order
     Cursor grades = getGrades();
     grades.moveToLast();
     do {
       // the current grade
       long id = grades.getLong(grades.getColumnIndex(Grades._ID));
-      String yds = grades.getString(grades.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+      String gradeval;
+	    if (useFrench) {
+		    gradeval = grades.getString(grades.getColumnIndex(Grades.COLUMN_GRADE_FR));
+	    } else {
+		    gradeval = grades.getString(grades.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+	    }
 
       // find completed and uncompleted routes
       Cursor a = getCompleted(id, ctype);
@@ -339,7 +353,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
 
       // create a list of the completed ascents types with the grade first
       ArrayList<String> ascents = new ArrayList<String>();
-      ascents.add(yds);
+      ascents.add(gradeval);
 
       if (a.moveToFirst()) {
         // make a list of the climbing type of completed routes
@@ -374,15 +388,39 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       }
       
       // stop at 5.9
-      if (yds.equalsIgnoreCase("5.9")) break;
+      if (gradeval.equalsIgnoreCase("5.9") || gradeval.equalsIgnoreCase("5c")) break;
     } while (grades.moveToPrevious());
         
     return pyramid;
   }
 
-  /*****************************************************************************************************
-   *                                          ADD DATA
-   *****************************************************************************************************/
+  // update the settings cache
+	public void updateSettingsCache() {
+		cache_settings = new SimpleArrayMap<>();
+		Cursor c = db.query(Settings.TABLE_NAME, null, null, null, null, null, null);
+		if (c.moveToFirst()) {
+			do {
+				cache_settings.put(c.getString(c.getColumnIndex(Settings.COLUMN_SETTING_NAME)),
+						c.getString(c.getColumnIndex(Settings.COLUMN_SETTING_VALUE)));
+			} while (c.moveToNext());
+		}
+	}
+
+	// returns all the settings current values
+	public SimpleArrayMap<String,String> getSettings() {
+		if (cache_settings == null) updateSettingsCache();
+		return cache_settings;
+	}
+
+	// return the value of the given setting
+	public String getSetting(String name) {
+		if (cache_settings == null) updateSettingsCache();
+		return cache_settings.get(name);
+	}
+
+	/*****************************************************************************************************
+	 *                                          ADD DATA
+	 *****************************************************************************************************/
   /**
    * Add a new place. Update the cache of places.
    */
@@ -652,5 +690,24 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       info.french = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
     }
     return info;
+  }
+
+  // change a setting value
+  public void updateSetting(String name, String value) {
+    ContentValues values = new ContentValues();
+    values.put(Settings.COLUMN_SETTING_NAME, name);
+    values.put(Settings.COLUMN_SETTING_VALUE, value);
+
+    // find the setting
+    long id;
+    Cursor c = db.query(Settings.TABLE_NAME, null, Settings.COLUMN_SETTING_NAME + "=?",
+        new String[]{name}, null, null, null);
+    if (c.moveToFirst()) {
+      id = c.getLong(0);
+      db.update(Settings.TABLE_NAME, values, Settings._ID + "=?", new String[]{String.valueOf(id)});
+
+	    // update cache too
+	    cache_settings.put(name, value);
+    }
   }
 }

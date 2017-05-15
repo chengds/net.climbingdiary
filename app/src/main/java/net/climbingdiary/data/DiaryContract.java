@@ -300,7 +300,7 @@ public final class DiaryContract {
         + COLUMN_TYPE_ID + " INTEGER,"
         + COLUMN_NOTES + " TEXT"
         + ");";
-    
+
     public static void create(SQLiteDatabase db) {
       db.execSQL(SQL_CREATE_TABLE);
     }
@@ -317,6 +317,45 @@ public final class DiaryContract {
       public String notes;
       public long place_id; // extra
       public String route_name;
+    }
+  }
+
+  /*****************************************************************************************************
+   *                                          SETTINGS
+   *****************************************************************************************************/
+  public static class Settings implements BaseColumns {
+    public static final String TABLE_NAME = "settings";
+    public static final String COLUMN_SETTING_NAME = "name";       // shortname
+    public static final String COLUMN_SETTING_VALUE = "value";     // value
+
+    private static final String SQL_CREATE_TABLE =
+        "CREATE TABLE " + TABLE_NAME + " ("
+        + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+        + COLUMN_SETTING_NAME + " TEXT,"
+        + COLUMN_SETTING_VALUE + " TEXT"
+        + ");";
+
+    private static final String[] names = new String[] {
+      "useFrenchGrades"
+    };
+    private static final String[] default_values = new String[] {
+      "off"
+    };
+
+    public static void create(SQLiteDatabase db) {
+      db.execSQL(SQL_CREATE_TABLE);
+
+      // insert default valued settings
+      ContentValues values = new ContentValues();
+      for (int i=0; i<names.length; i++) {
+        values.put(COLUMN_SETTING_NAME, names[i]);
+        values.put(COLUMN_SETTING_VALUE, default_values[i]);
+        db.insert(TABLE_NAME, null, values);
+      }
+    }
+
+    public static void destroy(SQLiteDatabase db) {
+      db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
   }
 }

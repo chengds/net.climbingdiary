@@ -12,9 +12,15 @@ import android.view.View;
 import android.widget.TextView;
 
 public class AscentsAdapter extends BaseAdapter {
-  
+
+  protected boolean useFrenchGrades = false;
+
   public AscentsAdapter(Context context, Cursor c, int flags, int layout) {
     super(context, c, flags, layout);
+  }
+
+  public void useFrenchGrades(boolean value) {
+    useFrenchGrades = value;
   }
 
   @Override
@@ -29,8 +35,12 @@ public class AscentsAdapter extends BaseAdapter {
     
     // route grade
     TextView text2 = (TextView) row.findViewById(R.id.route_grade);
-    String grade = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
-        //+ "/" + c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
+    String grade;
+    if (useFrenchGrades) {
+      grade = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
+    } else {
+      grade = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+    }
     text2.setText(grade);
     // route name
     TextView text3 = (TextView) row.findViewById(R.id.route_name);

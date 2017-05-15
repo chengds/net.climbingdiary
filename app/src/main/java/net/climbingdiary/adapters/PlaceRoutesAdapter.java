@@ -12,15 +12,26 @@ import android.widget.TextView;
 
 public class PlaceRoutesAdapter extends BaseAdapter {
 
+  protected boolean useFrenchGrades = false;
+
   public PlaceRoutesAdapter(Context context, Cursor c, int flags, int layout) {
     super(context, c, flags, layout);
+  }
+
+  public void useFrenchGrades(boolean value) {
+    useFrenchGrades = value;
   }
 
   @Override
   public void bindView(View row, Context context, Cursor c) {
     
     TextView text2 = (TextView) row.findViewById(R.id.route_grade);         // route grade
-    String grade = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+    String grade;
+    if (useFrenchGrades) {
+      grade = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
+    } else {
+      grade = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+    }
     text2.setText(grade);
     TextView text3 = (TextView) row.findViewById(R.id.route_name);          // route name
     text3.setText(c.getString(c.getColumnIndex(Routes.COLUMN_NAME)));

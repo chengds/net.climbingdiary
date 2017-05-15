@@ -44,9 +44,13 @@ public class AscentsFragment extends LoaderFragment
     // create the layout, a list of diary entries
     View rootView = inflater.inflate(R.layout.fragment_ascents, container, false);
 
-    // connect the list view with the custom diary adapter
+    // retrieve desired grade display setting
+    boolean value = dbhelper.getSetting("useFrenchGrades").equals("on");
+
+    // connect the list view with the custom adapter
     final ListView ascents = (ListView) rootView.findViewById(R.id.ascents_list);
     mAdapter = new AscentsAdapter(getActivity(), null, 0, R.layout.item_ascents);
+    ((AscentsAdapter)mAdapter).useFrenchGrades(value);
     ascents.setAdapter(mAdapter);
     
     // attach a context menu to the ListView

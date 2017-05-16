@@ -47,8 +47,8 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
     TextView grade = (TextView) row.findViewById(R.id.grade);
     grade.setText(list.get(0));
 
-    // convert square size 28dip into pixels
-    int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,28f,
+    // convert square size 30sp into pixels
+    int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,30f,
             context.getResources().getDisplayMetrics());
 
     // set grid of colored squares
@@ -80,11 +80,14 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
       completed++;
     }
 
+    int sent = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,34f,
+        context.getResources().getDisplayMetrics());
+
     // add count of completed routes
     TextView count;
     if (v == null) {
       count = new TextView(context);
-      row.addView(count, side, side);
+      row.addView(count, sent, side);
     } else {
       count = (TextView) row.getChildAt(9);
     }
@@ -97,7 +100,7 @@ public class PyramidAdapter extends ArrayAdapter<ArrayList<String>> {
     TextView ucount;
     if (v == null) {
       ucount = new TextView(context);
-      row.addView(ucount, side, side);
+      row.addView(ucount, sent, side);
     } else {
       ucount = (TextView) row.getChildAt(10);
     }

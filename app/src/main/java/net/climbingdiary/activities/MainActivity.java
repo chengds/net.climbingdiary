@@ -1,16 +1,17 @@
 package net.climbingdiary.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import net.climbingdiary.R;
 import net.climbingdiary.adapters.TabAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.fragments.DiaryFragment;
 import net.climbingdiary.fragments.OverallStatsFragment;
 import net.climbingdiary.fragments.PlacesFragment;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class MainActivity extends TabbedActivity
        implements DiaryFragment.OnEntrySelectedListener,
@@ -45,8 +46,8 @@ public class MainActivity extends TabbedActivity
     Bundle data = new Bundle();
     
     // create the pager adapter and initialize the layout
-    mAdapter = new TabAdapter(getSupportFragmentManager(),this,
-        data,new int[]{ R.string.section_diary, R.string.section_places, R.string.section_stats }) {
+    mAdapter = new TabAdapter(getSupportFragmentManager(),
+        MainActivity.this,data,new int[]{ R.string.section_diary, R.string.section_places, R.string.section_stats }) {
           @Override
           public Fragment getItem(int i) {
             switch (i) {
@@ -68,7 +69,8 @@ public class MainActivity extends TabbedActivity
 
     // cancel the launch image before showing the main activity
     setTheme(R.style.AppTheme);
-    super.onCreate(savedInstanceState, R.layout.activity_main);
+    super.onCreate(savedInstanceState);
+    actionBar.setDisplayHomeAsUpEnabled(false);
   }
 
   @Override

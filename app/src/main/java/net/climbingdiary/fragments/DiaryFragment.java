@@ -22,8 +22,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class DiaryFragment extends LoaderFragment
-       implements OnClickListener {
+public class DiaryFragment extends LoaderFragment implements OnClickListener {
 
   private OnEntrySelectedListener mCallback;    // Callback for diary entry selection
   

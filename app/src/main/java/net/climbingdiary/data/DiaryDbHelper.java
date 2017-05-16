@@ -679,7 +679,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   }
 
   // retrieve grade info by yds value
-  public Grades.Data getGrade(String yds) {
+  public Grades.Data getGradeYDS(String yds) {
     Grades.Data info = null;
     Cursor c = db.query(Grades.TABLE_NAME, null, Grades.COLUMN_GRADE_YDS + "=?",
         new String[]{yds}, null, null, null);
@@ -688,6 +688,20 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       info._id = c.getLong(c.getColumnIndex(Grades._ID));
       info.yds = yds;
       info.french = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_FR));
+    }
+    return info;
+  }
+
+  // retrieve grade info by french value
+  public Grades.Data getGradeFR(String french) {
+    Grades.Data info = null;
+    Cursor c = db.query(Grades.TABLE_NAME, null, Grades.COLUMN_GRADE_FR + "=?",
+        new String[]{french}, null, null, null);
+    if (c.moveToFirst()) {
+      info = new Grades.Data();
+      info._id = c.getLong(c.getColumnIndex(Grades._ID));
+      info.yds = c.getString(c.getColumnIndex(Grades.COLUMN_GRADE_YDS));
+      info.french = french;
     }
     return info;
   }

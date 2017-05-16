@@ -6,8 +6,11 @@ import net.climbingdiary.data.DiaryContract.DiaryEntry;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.fragments.AscentsFragment;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 
 public class EntryActivity extends TabbedActivity {
 
@@ -44,19 +47,14 @@ public class EntryActivity extends TabbedActivity {
             return ascents;
           }
         };
-    super.onCreate(savedInstanceState, R.layout.activity_pager);
+    super.onCreate(savedInstanceState);
         
     // show place and date in the title
-    final ActionBar actionBar = getSupportActionBar();
     if (info != null) {
       // set title and subtitle
       actionBar.setTitle(info.place_name);
       actionBar.setSubtitle(info.date + " - " + info.type_desc);
     }
-
-    // Specify that the Home button should show an "Up" caret, indicating that touching the
-    // button will take the user one step up in the application's hierarchy.
-    actionBar.setDisplayHomeAsUpEnabled(true);
   }
 
   /*****************************************************************************************************

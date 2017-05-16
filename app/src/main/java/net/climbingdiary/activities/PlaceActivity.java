@@ -1,12 +1,12 @@
 package net.climbingdiary.activities;
 
-import net.climbingdiary.R;
-import net.climbingdiary.adapters.TabAdapter;
-import net.climbingdiary.fragments.PlaceRoutesFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+
+import net.climbingdiary.R;
+import net.climbingdiary.adapters.TabAdapter;
+import net.climbingdiary.fragments.PlaceRoutesFragment;
 
 public class PlaceActivity extends TabbedActivity
        implements PlaceRoutesFragment.OnRouteSelectedListener {
@@ -39,15 +39,10 @@ public class PlaceActivity extends TabbedActivity
             return proutes; 
           }
         };
-    super.onCreate(savedInstanceState, R.layout.activity_pager);
+    super.onCreate(savedInstanceState);
 
     // set title
-    final ActionBar actionBar = getSupportActionBar();
     actionBar.setTitle(place_name);
-
-    // Specify that the Home button should show an "Up" caret, indicating that touching the
-    // button will take the user one step up in the application's hierarchy.
-    actionBar.setDisplayHomeAsUpEnabled(true);
   }
   
   /*****************************************************************************************************

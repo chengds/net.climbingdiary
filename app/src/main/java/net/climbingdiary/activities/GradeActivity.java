@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 /**
@@ -17,10 +18,7 @@ import android.view.MenuItem;
  *
  * Created by ChengDS on 6/19/2015.
  */
-public class GradeActivity extends ActionBarActivity {
-
-  private String place_type;        // type of the climbing place
-  private String grade_value;       // selected grade
+public class GradeActivity extends AppCompatActivity {
 
   /*****************************************************************************************************
    *                                          LIFECYCLE METHODS
@@ -30,8 +28,8 @@ public class GradeActivity extends ActionBarActivity {
     super.onCreate(savedInstanceState);
 
     // retrieve the selected information
-    place_type = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_TYPE);
-    grade_value = getIntent().getStringExtra(MainActivity.EXTRA_GRADE_VALUE);
+    String place_type = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_TYPE);
+    String grade_value = getIntent().getStringExtra(MainActivity.EXTRA_GRADE_VALUE);
 
     // package some extra data in the bundle
     Bundle data = new Bundle();

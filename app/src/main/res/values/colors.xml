@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <item type="color" name="redpoint">#FF0000</item>
-    <item type="color" name="onsight">#FFD700</item>
-    <item type="color" name="flash">#EE7600</item>
-    <item type="color" name="pinkpoint">#FF748C</item>
-    <item type="color" name="solo">#00FF00</item>
-    <item type="color" name="uncompleted">#888888</item>
+<resources>
 
-    <color name="statusBarColor">#b71c1c</color>
-    <color name="statusColorBar">#b71c1c</color>
+    <color name="yellow_accent_700">#ffd600</color>
+    <color name="red_accent_700">#d50000</color>
+    <color name="material_orange_700">#f57c00</color>
+    <color name="material_pink_300">#f06292</color>
+    <color name="light_green_accent_700">#64dd17</color>
+
+    <!-- ascent type colors -->
+    <color name="redpoint">@color/red_accent_700</color>
+    <color name="onsight">@color/yellow_accent_700</color>
+    <color name="flash">@color/material_orange_700</color>
+    <color name="pinkpoint">@color/material_pink_300</color>
+    <color name="solo">@color/light_green_accent_700</color>
+    <color name="uncompleted">@color/material_grey_600</color>
+
+    <!-- material theme colors -->
+    <color name="primary">@color/material_grey_900</color>
+    <color name="primary_dark">@android:color/black</color>
+    <color name="accent">@color/yellow_accent_700</color>
 </resources>

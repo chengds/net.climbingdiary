@@ -14,8 +14,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends TabbedActivity
        implements DiaryFragment.OnEntrySelectedListener,
-                    PlacesFragment.OnPlaceSelectedListener,
-                    OverallStatsFragment.OnGradeSelectedListener {
+                  PlacesFragment.OnPlaceSelectedListener,
+                  OverallStatsFragment.OnGradeSelectedListener {
   
   // Global identifiers
   public final static String EXTRA_ENTRY_ID = "net.climbingdiary.EXTRA_ENTRY_ID";

@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 /**
  * RouteActivity is an ActionBarActivity that shows the details of a route
  * selected from the parent PlaceActivity/PlaceRoutesFragment.
  */
-public class RouteActivity extends ActionBarActivity {
+public class RouteActivity extends AppCompatActivity {
 
   private long route_id;            // ID of the route
   private long place_id;            // ID of the climbing place

@@ -19,7 +19,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   
   private static DiaryDbHelper instance;                              // Singleton pattern  
   private static final String DATABASE_NAME = "ClimbingDiary.db";     // filename and version of the database
-  private static final int DATABASE_VERSION = 7;
+  private static final int DATABASE_VERSION = 8;
   private SQLiteDatabase db = null;               // SQLite database
   private String[] cache_types = null;            // caches
   private String[] cache_places = null;
@@ -221,6 +221,10 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
         Log.v("debug", "upgrading database to v7");
         Settings.create(db);
       case 8:
+        Log.v("debug", "upgrading database to v8");
+        Grades.destroy(db);
+        Grades.create(db);
+      case 9:
         // future version undefined yet, just add further below
     }
   }

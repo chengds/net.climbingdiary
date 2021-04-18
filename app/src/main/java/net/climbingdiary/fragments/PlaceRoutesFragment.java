@@ -7,6 +7,7 @@ import net.climbingdiary.data.DiaryContract.Routes;
 import net.climbingdiary.dialogs.DeleteRouteDialogFragment;
 import net.climbingdiary.dialogs.RouteDialogFragment;
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -86,15 +87,15 @@ public class PlaceRoutesFragment extends LoaderFragment
   }
   
   @Override
-  public void onAttach(Activity activity) {
-    super.onAttach(activity);
+  public void onAttach(Context context) {
+    super.onAttach(context);
 
     // This makes sure that the container activity has implemented
     // the callback interface. If not, it throws an exception
     try {
-      mCallback = (OnRouteSelectedListener) activity;
+      mCallback = (OnRouteSelectedListener) getActivity();
     } catch (ClassCastException e) {
-      throw new ClassCastException(activity.toString()
+      throw new ClassCastException(getActivity().toString()
           + " must implement OnRouteSelectedListener");
     }
   }

@@ -8,6 +8,7 @@ import net.climbingdiary.data.DiaryDbHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -77,15 +78,15 @@ public class PlacesFragment extends LoaderFragment {
   }
 
   @Override
-  public void onAttach(Activity activity) {
-    super.onAttach(activity);
+  public void onAttach(Context context) {
+    super.onAttach(context);
 
     // This makes sure that the container activity has implemented
     // the callback interface. If not, it throws an exception
     try {
-      mCallback = (OnPlaceSelectedListener) activity;
+      mCallback = (OnPlaceSelectedListener) getActivity();
     } catch (ClassCastException e) {
-      throw new ClassCastException(activity.toString()
+      throw new ClassCastException(getActivity().toString()
           + " must implement OnPlaceSelectedListener");
     }
   }

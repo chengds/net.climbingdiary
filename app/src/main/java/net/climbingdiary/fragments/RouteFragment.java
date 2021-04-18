@@ -42,7 +42,7 @@ public class RouteFragment extends LoaderFragment {
     TextView text2 = (TextView) rootView.findViewById(R.id.place);
     text2.setText(info.place_name);
     TextView text3 = (TextView) rootView.findViewById(R.id.grade);
-    text3.setText(info.grade_yds + " / " + info.grade_fr);
+    text3.setText(info.grade_yds + " - " + info.grade_fr);
     TextView text4 = (TextView) rootView.findViewById(R.id.notes);
     text4.setText(info.notes);
 

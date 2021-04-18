@@ -53,7 +53,7 @@ public class GradeFragment extends LoaderFragment {
     TextView text1 = (TextView) rootView.findViewById(R.id.type);
     text1.setText(place_type);
     TextView text2 = (TextView) rootView.findViewById(R.id.grade);
-    text2.setText(info.yds + " / " + info.french);
+    text2.setText(info.yds + " - " + info.french);
 
     // connect the list view with the custom diary adapter
     final ListView completed = (ListView) rootView.findViewById(R.id.completed);

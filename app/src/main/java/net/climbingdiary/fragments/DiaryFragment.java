@@ -5,14 +5,14 @@ import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.DiaryAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.dialogs.DiaryEntryDialogFragment;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

@@ -12,7 +12,7 @@ import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v4.util.SimpleArrayMap;
+import androidx.collection.SimpleArrayMap;
 import android.util.Log;
 
 public class DiaryDbHelper extends SQLiteOpenHelper {

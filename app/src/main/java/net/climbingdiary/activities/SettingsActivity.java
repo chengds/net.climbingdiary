@@ -1,7 +1,7 @@
 package net.climbingdiary.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import net.climbingdiary.R;
 import net.climbingdiary.adapters.TabAdapter;

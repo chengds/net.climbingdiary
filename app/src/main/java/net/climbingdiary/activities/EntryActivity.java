@@ -6,11 +6,10 @@ import net.climbingdiary.data.DiaryContract.DiaryEntry;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.fragments.AscentsFragment;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EntryActivity extends TabbedActivity {
 

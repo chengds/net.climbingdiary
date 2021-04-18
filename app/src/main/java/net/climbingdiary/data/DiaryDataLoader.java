@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 
 /*
  * This class is modeled after CursorLoader, but instead of querying

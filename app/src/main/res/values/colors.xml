@@ -7,10 +7,15 @@
     <color name="material_pink_300">#f06292</color>
     <color name="light_green_accent_700">#64dd17</color>
 
+    <!-- colors used by 8a.nu -->
+    <color name="onsight_8a">#00978f</color>
+    <color name="flash_8a">#f8a82d</color>
+    <color name="redpoint_8a">#d00b48</color>
+
     <!-- ascent type colors -->
-    <color name="redpoint">@color/red_accent_700</color>
-    <color name="onsight">@color/yellow_accent_700</color>
-    <color name="flash">@color/material_orange_700</color>
+    <color name="redpoint">@color/redpoint_8a</color>
+    <color name="onsight">@color/onsight_8a</color>
+    <color name="flash">@color/flash_8a</color>
     <color name="pinkpoint">@color/material_pink_300</color>
     <color name="solo">@color/light_green_accent_700</color>
     <color name="uncompleted">@color/material_grey_600</color>

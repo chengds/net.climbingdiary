@@ -19,7 +19,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   
   private static DiaryDbHelper instance;                              // Singleton pattern  
   private static final String DATABASE_NAME = "ClimbingDiary.db";     // filename and version of the database
-  private static final int DATABASE_VERSION = 8;
+  private static final int DATABASE_VERSION = 9;
   private SQLiteDatabase db = null;               // SQLite database
   private String[] cache_types = null;            // caches
   private String[] cache_places = null;
@@ -225,6 +225,10 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
         Grades.destroy(db);
         Grades.create(db);
       case 9:
+        Log.v("debug", "upgrading database to v9");
+        Grades.destroy(db);
+        Grades.create(db);
+      case 10:
         // future version undefined yet, just add further below
     }
   }
@@ -335,8 +339,8 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   public ArrayList<ArrayList<String>> getPyramid(String ctype) {
     ArrayList<ArrayList<String>> pyramid = null; 
 
-	  // use yds or french
-	  boolean useFrench = getSetting("useFrenchGrades").equals("on");
+    // use yds or french
+    boolean useFrench = getSetting("useFrenchGrades").equals("on");
 
     // check each grade, in descending order
     Cursor grades = getGrades();

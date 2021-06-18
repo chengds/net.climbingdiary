@@ -23,7 +23,9 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class DiaryFragment extends LoaderFragment implements OnClickListener {
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+public class DiaryFragment extends LoaderFragment {
 
   private OnEntrySelectedListener mCallback;    // Callback for diary entry selection
   
@@ -66,8 +68,14 @@ public class DiaryFragment extends LoaderFragment implements OnClickListener {
     });
 
     // setup callback for button
-    final Button addEntry = (Button) rootView.findViewById(R.id.add_entry);
-    addEntry.setOnClickListener(this);
+    FloatingActionButton addEntry = rootView.findViewById(R.id.add_entry);
+    addEntry.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        DialogFragment newFragment = new DiaryEntryDialogFragment(dbhelper);
+        newFragment.show(getActivity().getSupportFragmentManager(), "diary_entry");
+      }
+    });
 
     // Prepare the data loaders
     initLoader(MainActivity.LOADER_DIARY);
@@ -138,11 +146,4 @@ public class DiaryFragment extends LoaderFragment implements OnClickListener {
   /*****************************************************************************************************
    *                                          CALLBACKS
    *****************************************************************************************************/
-  @Override
-  public void onClick(View v) {
-    if (v.getId() == R.id.add_entry) {
-      DialogFragment newFragment = new DiaryEntryDialogFragment(dbhelper);
-      newFragment.show(getActivity().getSupportFragmentManager(), "diary_entry");
-    }
-  }
 }

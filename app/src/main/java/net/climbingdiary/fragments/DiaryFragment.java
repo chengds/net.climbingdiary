@@ -1,29 +1,28 @@
 package net.climbingdiary.fragments;
 
-import net.climbingdiary.R;
-import net.climbingdiary.activities.MainActivity;
-import net.climbingdiary.adapters.DiaryAdapter;
-import net.climbingdiary.data.DiaryDbHelper;
-import net.climbingdiary.dialogs.DiaryEntryDialogFragment;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ListView;
+
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import net.climbingdiary.R;
+import net.climbingdiary.activities.MainActivity;
+import net.climbingdiary.adapters.DiaryAdapter;
+import net.climbingdiary.data.DiaryDbHelper;
+import net.climbingdiary.dialogs.DiaryEntryDialogFragment;
 
 public class DiaryFragment extends LoaderFragment {
 

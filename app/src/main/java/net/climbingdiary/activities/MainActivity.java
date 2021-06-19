@@ -7,8 +7,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +14,6 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import net.climbingdiary.R;
-import net.climbingdiary.adapters.TabAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.fragments.DiaryFragment;
 import net.climbingdiary.fragments.OverallStatsFragment;

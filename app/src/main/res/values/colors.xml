@@ -24,4 +24,6 @@
     <color name="primary">@color/material_grey_900</color>
     <color name="primary_dark">@android:color/black</color>
     <color name="accent">@color/yellow_accent_700</color>
+    <color name="active">@color/yellow_accent_700</color>
+    <color name="inactive">@color/material_grey_600</color>
 </resources>

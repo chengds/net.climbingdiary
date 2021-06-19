@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/diary"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        android:title="@string/section_diary"/>
+    <item
+        android:id="@+id/places"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_place_24"
+        android:title="@string/section_places"/>
+    <item
+        android:id="@+id/stats"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_analytics_24"
+        android:title="@string/section_stats"/>
+</menu>

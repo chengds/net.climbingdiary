@@ -5,16 +5,18 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-<com.google.android.material.tabs.TabLayout
-    android:id="@+id/sliding_tabs"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:tabMode="fixed" />
+    <include
+        layout="@layout/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1" />
 
-<androidx.viewpager.widget.ViewPager
-    android:id="@+id/pager1"
-    android:layout_width="match_parent"
-    android:layout_height="0px"
-    android:layout_weight="1" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:itemIconTint="@color/bottom_nav_color" />
 
 </LinearLayout>

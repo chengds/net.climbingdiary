@@ -2,9 +2,18 @@ package net.climbingdiary.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import net.climbingdiary.R;
 import net.climbingdiary.adapters.TabAdapter;
@@ -13,11 +22,20 @@ import net.climbingdiary.fragments.DiaryFragment;
 import net.climbingdiary.fragments.OverallStatsFragment;
 import net.climbingdiary.fragments.PlacesFragment;
 
-public class MainActivity extends TabbedActivity
+public class MainActivity extends AppCompatActivity
        implements DiaryFragment.OnEntrySelectedListener,
                   PlacesFragment.OnPlaceSelectedListener,
                   OverallStatsFragment.OnGradeSelectedListener {
-  
+
+  protected ActionBar actionBar;
+  protected BottomNavigationView navigation;
+
+  protected Fragment fragment1;
+  protected Fragment fragment2;
+  protected Fragment fragment3;
+  protected FragmentManager fm;
+  protected Fragment active;
+
   // Global identifiers
   public final static String EXTRA_ENTRY_ID = "net.climbingdiary.EXTRA_ENTRY_ID";
   public final static String EXTRA_PLACE_ID = "net.climbingdiary.EXTRA_PLACE_ID";
@@ -44,34 +62,54 @@ public class MainActivity extends TabbedActivity
     
     // package some extra data in the bundle
     Bundle data = new Bundle();
-    
-    // create the pager adapter and initialize the layout
-    mAdapter = new TabAdapter(getSupportFragmentManager(),
-        MainActivity.this,data,new int[]{ R.string.section_diary, R.string.section_places, R.string.section_stats }) {
-          @Override
-          public Fragment getItem(int i) {
-            switch (i) {
-            case 0:
-              // the first section lists the diary entries
-              return new DiaryFragment();
-              
-            case 1:
-              // the second section lists all the places
-              return new PlacesFragment();
-            
-            case 2:
-            default:
-              // the third section shows overall stats
-              return new OverallStatsFragment();
-            }
-          }
-        };
 
     // cancel the launch image before showing the main activity
     setTheme(R.style.AppTheme);
     super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    // create the permanent fragments
+    fragment1 = new DiaryFragment();
+    fragment2 = new PlacesFragment();
+    fragment3 = new OverallStatsFragment();
+
+    // hide all the fragments except the first
+    fm = getSupportFragmentManager();
+    fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
+    fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
+    fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
+    active = fragment1;
+
+    // setup the actionbar
+    actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(false);
+
+    // setup bottom navigation bar
+    navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
   }
+
+  private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+          = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+        case R.id.diary:
+          fm.beginTransaction().hide(active).show(fragment1).commit();
+          active = fragment1;
+          return true;
+        case R.id.places:
+          fm.beginTransaction().hide(active).show(fragment2).commit();
+          active = fragment2;
+          return true;
+        case R.id.stats:
+          fm.beginTransaction().hide(active).show(fragment3).commit();
+          active = fragment3;
+          return true;
+      }
+      return false;
+    }
+  };
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {

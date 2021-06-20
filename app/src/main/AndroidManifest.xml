@@ -11,7 +11,8 @@ package="net.climbingdiary" >
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.BrandedLaunch" >
+            android:theme="@style/AppTheme.BrandedLaunch"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
 
     // Open/create the SQL database and create the managing adapter.
     dbhelper = DiaryDbHelper.getInstance(this);
-    
+
     // package some extra data in the bundle
     Bundle data = new Bundle();
 
@@ -66,24 +66,27 @@ public class MainActivity extends AppCompatActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // create the permanent fragments
-    fragment1 = new DiaryFragment();
-    fragment2 = new PlacesFragment();
-    fragment3 = new TabbedStatsFragment();
+    // Create the permanent fragments only when starting from scratch
+    if (savedInstanceState == null) {
+        fragment1 = new DiaryFragment();
+        fragment2 = new PlacesFragment();
+        fragment3 = new TabbedStatsFragment();
+    }
 
     // hide all the fragments except the first
     fm = getSupportFragmentManager();
     fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
     fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
-    fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
+    fm.beginTransaction().add(R.id.main_container, fragment1, "1").commit();
     active = fragment1;
 
     // setup the actionbar
-    actionBar = getSupportActionBar();
-    actionBar.setDisplayHomeAsUpEnabled(false);
+    if ((actionBar = getSupportActionBar()) != null) {
+        actionBar.setDisplayHomeAsUpEnabled(false);
+    }
 
     // setup bottom navigation bar
-    navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+    navigation = findViewById(R.id.bottom_navigation);
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
   }
 
@@ -91,16 +94,16 @@ public class MainActivity extends AppCompatActivity
           = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
-        case R.id.diary:
-          fm.beginTransaction().hide(active).show(fragment1).commit();
-          active = fragment1;
-          return true;
-        case R.id.places:
-          fm.beginTransaction().hide(active).show(fragment2).commit();
-          active = fragment2;
-          return true;
-        case R.id.stats:
+      int id = item.getItemId();
+      if (id == R.id.diary) {
+        fm.beginTransaction().hide(active).show(fragment1).commit();
+        active = fragment1;
+        return true;
+      } else if (id == R.id.places) {
+        fm.beginTransaction().hide(active).show(fragment2).commit();
+        active = fragment2;
+        return true;
+      } else if (id == R.id.stats) {
           fm.beginTransaction().hide(active).show(fragment3).commit();
           active = fragment3;
           return true;
@@ -156,15 +159,13 @@ public class MainActivity extends AppCompatActivity
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.action_settings:
-        // open the settings page
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-        return true;
-
-      default:
-        return super.onOptionsItemSelected(item);
-    }
+      if (item.getItemId() ==  R.id.action_settings) {
+          // open the settings page
+          Intent intent = new Intent(this, SettingsActivity.class);
+          startActivity(intent);
+          return true;
+      } else {
+          return super.onOptionsItemSelected(item);
+      }
   }
 }

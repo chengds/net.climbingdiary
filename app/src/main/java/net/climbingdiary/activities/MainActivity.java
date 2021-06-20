@@ -16,13 +16,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import net.climbingdiary.R;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.fragments.DiaryFragment;
-import net.climbingdiary.fragments.OverallStatsFragment;
+import net.climbingdiary.fragments.StatsFragment;
 import net.climbingdiary.fragments.PlacesFragment;
+import net.climbingdiary.fragments.TabbedStatsFragment;
 
 public class MainActivity extends AppCompatActivity
        implements DiaryFragment.OnEntrySelectedListener,
                   PlacesFragment.OnPlaceSelectedListener,
-                  OverallStatsFragment.OnGradeSelectedListener {
+                  StatsFragment.OnGradeSelectedListener {
 
   protected ActionBar actionBar;
   protected BottomNavigationView navigation;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     // create the permanent fragments
     fragment1 = new DiaryFragment();
     fragment2 = new PlacesFragment();
-    fragment3 = new OverallStatsFragment();
+    fragment3 = new TabbedStatsFragment();
 
     // hide all the fragments except the first
     fm = getSupportFragmentManager();

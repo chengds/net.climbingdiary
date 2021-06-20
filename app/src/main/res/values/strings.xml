@@ -50,5 +50,8 @@
     <string name="list_of_sent">List of Routes Sent</string>
     <string name="list_of_tried">List of Routes Tried</string>
     <string name="general">General</string>
+    <string name="all_time">All Time</string>
+    <string name="last_year">Last Year</string>
+    <string name="last_month">Last Month</string>
 
 </resources>

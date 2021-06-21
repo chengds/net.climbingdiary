@@ -27,14 +27,14 @@ public class TabbedStatsFragment extends TabbedFragment {
         mAdapter = new ViewPagerAdapter(
                 getActivity(),
                 new Fragment[] {
-                        new StatsFragment(),
-                        //new StatsFragment(),
-                        //new StatsFragment(),
+                        new StatsFragment(0),
+                        new StatsFragment(1),
+                        new StatsFragment(2),
                 },
                 new String[] {
                         getString(R.string.all_time),
-                        //getString(R.string.last_year),
-                        //getString(R.string.last_month),
+                        getString(R.string.last_year),
+                        getString(R.string.last_month),
                 });
 
         return super.onCreateView(inflater, container, savedInstanceState);

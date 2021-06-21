@@ -21,7 +21,12 @@ import android.widget.TextView;
 
 public class StatsFragment extends Fragment {
 
-    private OnGradeSelectedListener mCallback;    // Callback for diary entry selection
+    private OnGradeSelectedListener mCallback;      // Callback for diary entry selection
+    private int dateModifier;                       // Specifies entries of all time, last year, last month
+
+    public StatsFragment(int modifier) {
+        dateModifier = modifier;
+    }
 
     /*****************************************************************************************************
     *                                          COMMUNICATION CALLBACK
@@ -45,25 +50,29 @@ public class StatsFragment extends Fragment {
 
         // retrieve the pyramids
         DiaryDbHelper dbhelper = DiaryDbHelper.getInstance(getActivity());
-        ArrayList<ArrayList<String>> pyramid1 = dbhelper.getPyramid("Crag");
-        ArrayList<ArrayList<String>> pyramid2 = dbhelper.getPyramid("Wall");
+        ArrayList<ArrayList<String>> pyramid1 = dbhelper.getPyramid("Crag", dateModifier);
+        ArrayList<ArrayList<String>> pyramid2 = dbhelper.getPyramid("Wall", dateModifier);
 
         // connect the lists and the adapters
-        final ListView list1 = rootView.findViewById(R.id.crag_pyramid);
-        final ListView list2 = rootView.findViewById(R.id.wall_pyramid);
-        list1.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid1));
-        list2.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid2));
+        if (pyramid1 != null) {
+            final ListView list1 = rootView.findViewById(R.id.crag_pyramid);
+            list1.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid1));
 
-        // set up callbacks
-        list1.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // retrieve the grade text
-                TextView grade = view.findViewById(R.id.grade);
+            // set up callbacks
+            list1.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // retrieve the grade text
+                    TextView grade = view.findViewById(R.id.grade);
 
-                mCallback.onGradeSelected("Crag", grade.getText().toString());
-            }
-        });
+                    mCallback.onGradeSelected("Crag", grade.getText().toString());
+                }
+            });
+        }
+        if (pyramid2 != null) {
+            final ListView list2 = rootView.findViewById(R.id.wall_pyramid);
+            list2.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid2));
+        }
 
         return rootView;
     }

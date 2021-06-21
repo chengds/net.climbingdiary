@@ -71,6 +71,6 @@ public class GradeFragment extends LoaderFragment {
    *****************************************************************************************************/
   @Override
   public Cursor dataRetrieval() {
-    return dbhelper.getCompleted(info._id, place_type);
+    return dbhelper.getCompleted(info._id, place_type, 0);
   }
 }

@@ -70,13 +70,18 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
   
   // SQL query to get all entries
   private final static String QUERY_ENTRIES =
-      "SELECT e." + DiaryEntry._ID + ", e." + DiaryEntry.COLUMN_DATE
-      + ", c." + ClimbingTypes.COLUMN_DESCRIPTION + ", p." + Places.COLUMN_NAME 
-      + " FROM " + DiaryEntry.TABLE_NAME + " e"
-      + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c._id"
-      + " LEFT JOIN " + Places.TABLE_NAME + " p ON e." + DiaryEntry.COLUMN_PLACE_ID + " = p._id"
-      + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
-  
+          "SELECT e." + DiaryEntry._ID
+                  + ", e." + DiaryEntry.COLUMN_DATE
+                  + ", c." + ClimbingTypes.COLUMN_DESCRIPTION
+                  + ", p." + Places.COLUMN_NAME
+                  //+ ", COUNT(a." + Ascents._ID + ")"
+                  + " FROM " + DiaryEntry.TABLE_NAME + " e"
+                  + " LEFT JOIN " + ClimbingTypes.TABLE_NAME + " c ON e." + DiaryEntry.COLUMN_TYPE_ID + " = c." + ClimbingTypes._ID
+                  + " LEFT JOIN " + Places.TABLE_NAME + " p ON e." + DiaryEntry.COLUMN_PLACE_ID + " = p." + Places._ID
+                  //+ " LEFT JOIN " + Ascents.TABLE_NAME + " a ON e." + DiaryEntry._ID + " = a." + Ascents.COLUMN_ENTRY_ID
+                  //+ " GROUP BY e." + DiaryEntry._ID
+                  + " ORDER BY e." + DiaryEntry.COLUMN_DATE;
+
   // SQL query to get number of visits, and the number of routes, per place
   private final static String QUERY_VISITS =
       "SELECT p." + Places._ID + ", p." + Places.COLUMN_NAME

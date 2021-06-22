@@ -1,25 +1,28 @@
 package net.climbingdiary.fragments;
 
-import net.climbingdiary.R;
-import net.climbingdiary.activities.MainActivity;
-import net.climbingdiary.adapters.AscentsAdapter;
-import net.climbingdiary.data.DiaryContract.Ascents;
-import net.climbingdiary.dialogs.AscentDialogFragment;
-import net.climbingdiary.dialogs.DeleteAscentDialogFragment;
 import android.database.Cursor;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ListView;
+
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import net.climbingdiary.R;
+import net.climbingdiary.activities.MainActivity;
+import net.climbingdiary.adapters.AscentsAdapter;
+import net.climbingdiary.data.DiaryContract.Ascents;
+import net.climbingdiary.dialogs.AscentDialogFragment;
+import net.climbingdiary.dialogs.DeleteAscentDialogFragment;
 
 public class AscentsFragment extends LoaderFragment
        implements OnClickListener {
@@ -57,7 +60,7 @@ public class AscentsFragment extends LoaderFragment
     registerForContextMenu(ascents);
     
     // setup callback for button
-    final Button addAscent = (Button) rootView.findViewById(R.id.add_ascent);
+    FloatingActionButton addAscent = rootView.findViewById(R.id.add_ascent);
     addAscent.setOnClickListener(this);
 
     // Prepare the data loaders

@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -23,6 +24,8 @@ import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.DiaryAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.dialogs.DiaryEntryDialogFragment;
+
+import java.util.Objects;
 
 public class DiaryFragment extends LoaderFragment {
 
@@ -50,31 +53,22 @@ public class DiaryFragment extends LoaderFragment {
     final ListView entries = (ListView) rootView.findViewById(R.id.diary_entries);
     mAdapter = new DiaryAdapter(getActivity(), null, 0, R.layout.item_diary);
     entries.setAdapter(mAdapter);
-    
-    // set up longclick and click callbacks
-    entries.setOnItemLongClickListener(new OnItemLongClickListener() {
-      @Override
-      public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        new RemoveEntry(dbhelper,id).show(getActivity().getSupportFragmentManager(), "remove_entry");
-        return false;
-      }
-    });
-    entries.setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mCallback.onEntrySelected(id);
-      }
-    });
 
-    // setup callback for button
-    FloatingActionButton addEntry = rootView.findViewById(R.id.add_entry);
-    addEntry.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        DialogFragment newFragment = new DiaryEntryDialogFragment(dbhelper);
-        newFragment.show(getActivity().getSupportFragmentManager(), "diary_entry");
-      }
+    // retrieve fragment manager
+    FragmentManager fm = requireActivity().getSupportFragmentManager();
+    
+    // set up long click and click callbacks
+    entries.setOnItemLongClickListener((parent, view, position, id) -> {
+      new RemoveEntry(dbhelper,id).show(fm, "remove_entry");
+      return true;
     });
+    entries.setOnItemClickListener((parent, view, position, id) -> mCallback.onEntrySelected(id));
+
+    // setup callback for add new entry button
+    FloatingActionButton addEntry = rootView.findViewById(R.id.add_entry);
+    addEntry.setOnClickListener(view ->
+      new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry")
+    );
 
     // Prepare the data loaders
     initLoader(MainActivity.LOADER_DIARY);

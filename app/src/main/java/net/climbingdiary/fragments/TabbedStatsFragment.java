@@ -1,6 +1,5 @@
 package net.climbingdiary.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,10 +37,5 @@ public class TabbedStatsFragment extends TabbedFragment {
                 });
 
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
     }
 }

@@ -43,12 +43,7 @@ public class TabbedFragment extends Fragment {
         viewPager.setAdapter(mAdapter);
         tabLayout = rootView.findViewById(R.id.tabs);
         new TabLayoutMediator(tabLayout, viewPager,
-            new TabLayoutMediator.TabConfigurationStrategy() {
-                @Override
-                public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                    tab.setText(mAdapter.mTabNames[position]);
-                }
-            }
+                (tab, position) -> tab.setText(mAdapter.mTabNames[position])
         ).attach();
         return rootView;
     }

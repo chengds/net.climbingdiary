@@ -12,8 +12,9 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="284sp"
+            android:layout_width="0px"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/crag_pyramid"
             android:textColor="#FFFF00"/>
 
@@ -24,7 +25,7 @@
             android:text="@string/sent" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="34sp"
             android:layout_height="wrap_content"
             android:textColor="#FFFF00"
             android:text="@string/tried" />
@@ -44,8 +45,9 @@
         android:layout_marginTop="20sp" >
 
         <TextView
-            android:layout_width="284sp"
+            android:layout_width="0px"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/wall_pyramid"
             android:textColor="#FFFF00"/>
 
@@ -56,7 +58,7 @@
             android:text="@string/sent" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="34sp"
             android:layout_height="wrap_content"
             android:textColor="#FFFF00"
             android:text="@string/tried" />

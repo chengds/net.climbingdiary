@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.climbingdiary.R;
+import net.climbingdiary.activities.EntryActivity;
 import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.DiaryAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
@@ -29,17 +31,15 @@ import java.util.Objects;
 
 public class DiaryFragment extends LoaderFragment {
 
-  private OnEntrySelectedListener mCallback;    // Callback for diary entry selection
-  
-  /*****************************************************************************************************
-   *                                          COMMUNICATION CALLBACK
-   * The calling activity must implement this interface and deal with diary entry selection.
-   * For example to show the diary entry details side-by-side on a tablet.
-   *****************************************************************************************************/
-  public interface OnEntrySelectedListener {
-    public void onEntrySelected(long id);
-  }
-  
+    private Context myContext;
+
+    public void onEntrySelected(Context parent, long id) {
+        // pass the id of the clicked item to the new activity
+        Intent intent = new Intent(parent, EntryActivity.class);
+        intent.putExtra(MainActivity.EXTRA_ENTRY_ID, id);
+        startActivity(intent);
+    }
+
   /*****************************************************************************************************
    *                                          LIFECYCLE METHODS
    *****************************************************************************************************/
@@ -62,7 +62,7 @@ public class DiaryFragment extends LoaderFragment {
       new RemoveEntry(dbhelper,id).show(fm, "remove_entry");
       return true;
     });
-    entries.setOnItemClickListener((parent, view, position, id) -> mCallback.onEntrySelected(id));
+    entries.setOnItemClickListener((parent, view, position, id) -> onEntrySelected(myContext, id));
 
     // setup callback for add new entry button
     FloatingActionButton addEntry = rootView.findViewById(R.id.add_entry);
@@ -76,20 +76,12 @@ public class DiaryFragment extends LoaderFragment {
     return rootView;
   }
   
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-
-    // This makes sure that the container activity has implemented
-    // the callback interface. If not, it throws an exception
-    try {
-      mCallback = (OnEntrySelectedListener) getActivity();
-    } catch (ClassCastException e) {
-      throw new ClassCastException(getActivity().toString()
-          + " must implement OnEntrySelectedListener");
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        myContext = context;
     }
- }
-  
+
   /**********************************************************************************************************
    * A {@link DialogFragment} that ask for confirmation of entry removal.
    */

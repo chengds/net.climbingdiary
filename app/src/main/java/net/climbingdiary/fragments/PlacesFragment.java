@@ -2,6 +2,7 @@ package net.climbingdiary.fragments;
 
 import net.climbingdiary.R;
 import net.climbingdiary.activities.MainActivity;
+import net.climbingdiary.activities.PlaceActivity;
 import net.climbingdiary.adapters.PlacesAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 
@@ -9,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
@@ -22,16 +24,16 @@ import android.widget.ListView;
 
 public class PlacesFragment extends LoaderFragment {
 
-  private OnPlaceSelectedListener mCallback;    // Callback for diary entry selection
+    private Context myContext;
 
-  /*****************************************************************************************************
-   *                                          COMMUNICATION CALLBACK
-   * The calling activity must implement this interface and deal with place selection.
-   * For example to show the details side-by-side on a tablet.
-   *****************************************************************************************************/
-  public interface OnPlaceSelectedListener {
-    public void onPlaceSelected(long id, String name);
-  }
+    public void onPlaceSelected(Context context, long id, String name) {
+        // pass the id and name of the clicked place to the new activity
+        Intent intent = new Intent(context, PlaceActivity.class);
+        intent.putExtra(MainActivity.EXTRA_PLACE_ID, id);
+        intent.putExtra(MainActivity.EXTRA_PLACE_NAME, name);
+        startActivity(intent);
+    }
+
 
   /*****************************************************************************************************
    *                                          LIFECYCLE METHODS
@@ -52,7 +54,7 @@ public class PlacesFragment extends LoaderFragment {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView name = (TextView) view.findViewById(R.id.place);
-        mCallback.onPlaceSelected(id, name.getText().toString());
+        onPlaceSelected(myContext, id, name.getText().toString());
       }
     });
     list_places.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -76,19 +78,13 @@ public class PlacesFragment extends LoaderFragment {
     return rootView;
   }
 
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-
-    // This makes sure that the container activity has implemented
-    // the callback interface. If not, it throws an exception
-    try {
-      mCallback = (OnPlaceSelectedListener) getActivity();
-    } catch (ClassCastException e) {
-      throw new ClassCastException(getActivity().toString()
-          + " must implement OnPlaceSelectedListener");
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        myContext = context;
     }
-  }
+
+
 
   /**********************************************************************************************************
    * A {@link DialogFragment} that warns the user about a place being still used.

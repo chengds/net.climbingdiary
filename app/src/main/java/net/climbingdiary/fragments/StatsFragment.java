@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.climbingdiary.R;
 import net.climbingdiary.adapters.PyramidAdapter;
+import net.climbingdiary.adapters.StatsAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,28 +54,28 @@ public class StatsFragment extends Fragment {
         // retrieve the pyramids
         DiaryDbHelper dbhelper = DiaryDbHelper.getInstance(getActivity());
         ArrayList<ArrayList<String>> pyramid1 = dbhelper.getPyramid("Crag", dateModifier);
-        ArrayList<ArrayList<String>> pyramid2 = dbhelper.getPyramid("Wall", dateModifier);
+        //ArrayList<ArrayList<String>> pyramid2 = dbhelper.getPyramid("Wall", dateModifier);
 
         // connect the lists and the adapters
-        if (pyramid1 != null) {
+ /*       if (pyramid1 != null) {
             final ListView list1 = rootView.findViewById(R.id.crag_pyramid);
             list1.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid1));
 
             // set up callbacks
-            list1.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // retrieve the grade text
-                    TextView grade = view.findViewById(R.id.grade);
-
-                    mCallback.onGradeSelected("Crag", grade.getText().toString());
-                }
+            list1.setOnItemClickListener((parent, view, position, id) -> {
+                // retrieve the grade text
+                TextView grade = view.findViewById(R.id.grade);
+                mCallback.onGradeSelected("Crag", grade.getText().toString());
             });
+        }*/
+        if (pyramid1 != null) {
+            RecyclerView list = rootView.findViewById(R.id.crag_pyramid);
+            list.setAdapter(new StatsAdapter(getActivity(), pyramid1));
         }
-        if (pyramid2 != null) {
-            final ListView list2 = rootView.findViewById(R.id.wall_pyramid);
-            list2.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid2));
-        }
+        //if (pyramid2 != null) {
+        //    final ListView list2 = rootView.findViewById(R.id.wall_pyramid);
+        //    list2.setAdapter(new PyramidAdapter(getActivity(), R.layout.item_pyramid, pyramid2));
+        //}
 
         return rootView;
     }

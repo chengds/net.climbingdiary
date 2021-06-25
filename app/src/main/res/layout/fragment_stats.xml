@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="net.climbingdiary.activities.MainActivity" >
+    tools:context="net.climbingdiary.activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,43 +33,49 @@
 
     </LinearLayout>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/crag_pyramid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20sp" >
-
-        <TextView
-            android:layout_width="0px"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <!--
+        <ListView
+            android:id="@+id/crag_pyramid"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/wall_pyramid"
-            android:textColor="#FFFF00"/>
+            android:layout_gravity="top" />
 
-        <TextView
-            android:layout_width="34sp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFF00"
-            android:text="@string/sent" />
+            android:orientation="horizontal"
+            android:layout_marginTop="20sp" >
 
-        <TextView
-            android:layout_width="34sp"
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wall_pyramid"
+                android:textColor="#FFFF00"/>
+
+            <TextView
+                android:layout_width="34sp"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFF00"
+                android:text="@string/sent" />
+
+            <TextView
+                android:layout_width="34sp"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFF00"
+                android:text="@string/tried" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/wall_pyramid"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFF00"
-            android:text="@string/tried" />
-
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/wall_pyramid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"/>
-        
+            android:layout_gravity="top"/>
+            -->
 </LinearLayout>

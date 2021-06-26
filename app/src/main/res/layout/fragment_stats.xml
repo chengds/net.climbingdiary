@@ -38,44 +38,101 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    <!--
-        <ListView
-            android:id="@+id/crag_pyramid"
-            android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0px"
             android:layout_height="wrap_content"
-            android:layout_gravity="top" />
+            android:layout_weight="1"
+            android:text="@string/trad_pyramid"
+            android:textColor="#FFFF00"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="34sp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20sp" >
+            android:textColor="#FFFF00"
+            android:text="@string/sent" />
 
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/wall_pyramid"
-                android:textColor="#FFFF00"/>
-
-            <TextView
-                android:layout_width="34sp"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFF00"
-                android:text="@string/sent" />
-
-            <TextView
-                android:layout_width="34sp"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFF00"
-                android:text="@string/tried" />
-
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/wall_pyramid"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="34sp"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"/>
-            -->
+            android:textColor="#FFFF00"
+            android:text="@string/tried" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trad_pyramid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/wall_pyramid"
+            android:textColor="#FFFF00"/>
+
+        <TextView
+            android:layout_width="34sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/sent" />
+
+        <TextView
+            android:layout_width="34sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/tried" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wall_pyramid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/gym_pyramid"
+            android:textColor="#FFFF00"/>
+
+        <TextView
+            android:layout_width="34sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/sent" />
+
+        <TextView
+            android:layout_width="34sp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF00"
+            android:text="@string/tried" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gym_pyramid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 </LinearLayout>

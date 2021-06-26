@@ -1,8 +1,10 @@
 package net.climbingdiary.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -151,5 +153,18 @@ public class MainActivity extends AppCompatActivity {
                 navigation.getMenu().findItem(R.id.stats).setChecked(true);
                 break;
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Fragment fragment = fm.findFragmentById(R.id.content_main);
+        if (fragment == null) return;
+        String tag = fragment.getTag();
+        if (tag == null) return;
+
+        // refresh stats fragment to correctly show boxes
+        if (tag.equals("stats")) navigation.setSelectedItemId(R.id.stats);
     }
 }

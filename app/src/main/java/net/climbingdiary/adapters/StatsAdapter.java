@@ -56,24 +56,26 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
 
         // Get parts of the row
         //public LinearLayout getBoxes() { return boxes; }
-        public TextView getGrade() {
-            return grade;
-        }
-        public TextView getSent() {
-            return sent;
-        }
-        public TextView getTried() {
-            return tried;
-        }
+        // public TextView getGrade() { return grade; }
+        //public TextView getSent() { return sent; }
+        //public TextView getTried() { return tried; }
 
         // Update number of boxes
         public void updateBoxes(Context context, ArrayList<String> list) {
+            if (list != null) {
+                grade.setText(list.get(0));
+                grade.setTag(list.get(1));
+            }
+
             // Calculate size of box
             int width = context.getResources().getDisplayMetrics().widthPixels;
             int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,30f,
                     context.getResources().getDisplayMetrics());
             int fixed = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,108f,
                     context.getResources().getDisplayMetrics());
+
+            // if there is only one box, remove it as it was used for a header
+            if (boxes.getChildCount() == 1) boxes.removeAllViews();
 
             // Create the maximum number of boxes
             int num = (width - fixed) / side;
@@ -95,12 +97,51 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
 
             // appropriately color each box
             for (int i=0; i<num; i++) {
-                if (list != null && i < list.size()-1) {
-                    boxes.getChildAt(i).setBackgroundColor(Graphics.getColor(context, list.get(i+1)));
+                if (list != null && i < list.size()-2) {
+                    boxes.getChildAt(i).setBackgroundColor(Graphics.getColor(context, list.get(i+2)));
                 } else {
                     boxes.getChildAt(i).setBackgroundColor(Color.DKGRAY);
                 }
             }
+
+            // find the number of completed routes
+            int completed = 0, uncompleted = 0;
+            if (list != null) {
+                while (completed < list.size() - 2 && !list.get(completed + 2).equalsIgnoreCase("uncompleted")) {
+                    completed++;
+                }
+                uncompleted = list.size() - 2 - completed;
+            }
+
+            // setup sent and tried text views
+            sent.setText(String.valueOf(completed));
+            sent.setTextSize(12);
+            sent.setTextColor(Color.WHITE);
+            sent.setPadding(4,0,4,0);
+            tried.setText(String.valueOf(uncompleted));
+            tried.setTextSize(12);
+            tried.setTextColor(Color.WHITE);
+            tried.setPadding(4,0,4,0);
+        }
+
+        public void setAsHeader(Context context, ArrayList<String> list) {
+            grade.setText("");
+            boxes.removeAllViews();
+            TextView name = new TextView(context);
+            name.setText(list.get(1));
+            name.setTextSize(14);
+            name.setTextColor(context.getResources().getColor(R.color.accent));
+            name.setGravity(Gravity.START);
+            name.setBackgroundColor(Color.BLACK);
+            boxes.addView(name);
+            sent.setText(list.get(2));
+            sent.setTextSize(14);
+            sent.setTextColor(context.getResources().getColor(R.color.accent));
+            sent.setPadding(0,0,0,0);
+            tried.setText(list.get(3));
+            tried.setTextSize(14);
+            tried.setTextColor(context.getResources().getColor(R.color.accent));
+            tried.setPadding(0,0,0,0);
         }
 
         public void bind(final OnItemClickListener listener) {
@@ -127,20 +168,16 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         ArrayList<String> list = myData.get(position);
-        viewHolder.getGrade().setText(list.get(0));
 
-        // Re-calculate number of boxes
-        viewHolder.updateBoxes(myContext, list);
-
-        // find the number of completed routes
-        int completed = 0;
-        while (completed < list.size()-1 && !list.get(completed+1).equalsIgnoreCase("uncompleted")) {
-            completed++;
+        if (list.get(0).equals("")) {
+            // this ia a header
+            viewHolder.setAsHeader(myContext, list);
+        } else {
+            // update boxes
+            viewHolder.updateBoxes(myContext, list);
         }
-        viewHolder.getSent().setText(String.valueOf(completed));
-        viewHolder.getTried().setText(String.valueOf(list.size()-1 - completed));
 
         // add click listener
         viewHolder.bind(myListener);

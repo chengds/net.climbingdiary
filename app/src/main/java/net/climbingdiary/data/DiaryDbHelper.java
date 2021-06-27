@@ -443,6 +443,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       // create a list of the completed ascents types with the grade first
       ArrayList<String> ascents = new ArrayList<String>();
       ascents.add(gradeval);
+      ascents.add(ctype);
 
       if (a.moveToFirst()) {
         // make a list of the climbing type of completed routes
@@ -470,7 +471,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
             ascents.add("Uncompleted");
           } while (b.moveToNext());
         }
-        if (ascents.size() == 1) continue;
+        if (ascents.size() == 2) continue;
 
         // add the list to the pyramid
         if (pyramid == null) {
@@ -481,7 +482,7 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
       }
       
       // stop at 5.9
-      if (gradeval.equalsIgnoreCase("5.9") || gradeval.equalsIgnoreCase("5c")) break;
+      if (gradeval.equalsIgnoreCase("5.8") || gradeval.equalsIgnoreCase("5b")) break;
     } while (grades.moveToPrevious());
         
     return pyramid;

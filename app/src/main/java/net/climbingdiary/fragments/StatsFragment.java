@@ -1,6 +1,7 @@
 package net.climbingdiary.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.climbingdiary.R;
 import net.climbingdiary.activities.GradeActivity;
@@ -52,49 +53,38 @@ public class StatsFragment extends Fragment {
         // get the db
         DiaryDbHelper dbhelper = DiaryDbHelper.getInstance(getActivity());
 
-        // retrieve and set the crag pyramid
+        // retrieve all the pyramids with their respective headers
+        ArrayList<ArrayList<String>> allPyramid = new ArrayList<>();
         ArrayList<ArrayList<String>> pyramid = dbhelper.getPyramid("Crag", dateModifier);
         if (pyramid != null) {
-            RecyclerView list = rootView.findViewById(R.id.crag_pyramid);
-            StatsAdapter adapter = new StatsAdapter(getActivity(), pyramid, view -> {
-                TextView grade = view.findViewById(R.id.grade);
-                onGradeSelected(myContext, "Crag", grade.getText().toString());
-            });
-            list.setAdapter(adapter);
+            allPyramid.add(new ArrayList<>(List.of("", "Crag Pyramid", "Sent", "Tried")));
+            allPyramid.addAll(pyramid);
         }
-
-        // retrieve and set the trad pyramid
         pyramid = dbhelper.getPyramid("Trad", dateModifier);
         if (pyramid != null) {
-            RecyclerView list = rootView.findViewById(R.id.trad_pyramid);
-            StatsAdapter adapter = new StatsAdapter(getActivity(), pyramid, view -> {
-                TextView grade = view.findViewById(R.id.grade);
-                onGradeSelected(myContext, "Trad", grade.getText().toString());
-            });
-            list.setAdapter(adapter);
+            allPyramid.add(new ArrayList<>(List.of("", "Trad Pyramid", "Sent", "Tried")));
+            allPyramid.addAll(pyramid);
         }
-
-        // retrieve and set the wall pyramid
         pyramid = dbhelper.getPyramid("Wall", dateModifier);
         if (pyramid != null) {
-            RecyclerView list = rootView.findViewById(R.id.wall_pyramid);
-            StatsAdapter adapter = new StatsAdapter(getActivity(), pyramid, view -> {
-                TextView grade = view.findViewById(R.id.grade);
-                onGradeSelected(myContext, "Wall", grade.getText().toString());
-            });
-            list.setAdapter(adapter);
+            allPyramid.add(new ArrayList<>(List.of("", "Wall Pyramid", "Sent", "Tried")));
+            allPyramid.addAll(pyramid);
         }
-
-        // retrieve and set the gym pyramid
         pyramid = dbhelper.getPyramid("Gym", dateModifier);
         if (pyramid != null) {
-            RecyclerView list = rootView.findViewById(R.id.gym_pyramid);
-            StatsAdapter adapter = new StatsAdapter(getActivity(), pyramid, view -> {
-                TextView grade = view.findViewById(R.id.grade);
-                onGradeSelected(myContext, "Gym", grade.getText().toString());
-            });
-            list.setAdapter(adapter);
+            allPyramid.add(new ArrayList<>(List.of("", "Gym Pyramid", "Sent", "Tried")));
+            allPyramid.addAll(pyramid);
         }
+
+        // populate the list
+        RecyclerView list = rootView.findViewById(R.id.pyramid);
+        StatsAdapter adapter = new StatsAdapter(getActivity(), allPyramid, view -> {
+            TextView grade = view.findViewById(R.id.grade);
+            String gradeVal = grade.getText().toString();
+            String type = (String) grade.getTag();
+            if (!gradeVal.equals("")) onGradeSelected(myContext, type, gradeVal);
+        });
+        list.setAdapter(adapter);
 
         return rootView;
     }

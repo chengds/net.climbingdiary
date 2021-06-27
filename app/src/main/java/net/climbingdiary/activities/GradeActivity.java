@@ -4,6 +4,8 @@ import net.climbingdiary.R;
 import net.climbingdiary.fragments.GradeFragment;
 
 import android.os.Bundle;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.ActionBar;
@@ -50,6 +52,8 @@ public class GradeActivity extends AppCompatActivity {
 
     // Specify that the Home button should show an "Up" caret, indicating that touching the
     // button will take the user one step up in the application's hierarchy.
+    Toolbar toolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
     final ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
     actionBar.setTitle(R.string.grade_details);

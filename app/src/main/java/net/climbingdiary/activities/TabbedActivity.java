@@ -2,6 +2,8 @@ package net.climbingdiary.activities;
 
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
@@ -31,11 +33,13 @@ public class TabbedActivity extends AppCompatActivity {
     tabLayout.setupWithViewPager(viewPager);
 
     // retrieve the actionbar
+    Toolbar toolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
     actionBar = getSupportActionBar();
 
     // Specify that the Home button should show an "Up" caret, indicating that touching the
     // button will take the user one step up in the application's hierarchy.
-    actionBar.setDisplayHomeAsUpEnabled(true);
+    if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
   }
 

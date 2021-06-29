@@ -14,9 +14,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.loader.app.LoaderManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,6 +27,7 @@ import net.climbingdiary.R;
 import net.climbingdiary.activities.EntryActivity;
 import net.climbingdiary.activities.MainActivity;
 import net.climbingdiary.adapters.DiaryAdapter;
+import net.climbingdiary.adapters.StatsAdapter;
 import net.climbingdiary.data.DiaryDbHelper;
 import net.climbingdiary.dialogs.DiaryEntryDialogFragment;
 
@@ -32,6 +36,7 @@ import java.util.Objects;
 public class DiaryFragment extends LoaderFragment {
 
     private Context myContext;
+    private DiaryAdapter myDiary;
 
     public void onEntrySelected(Context parent, long id) {
         // pass the id of the clicked item to the new activity
@@ -40,41 +45,53 @@ public class DiaryFragment extends LoaderFragment {
         startActivity(intent);
     }
 
-  /*****************************************************************************************************
-   *                                          LIFECYCLE METHODS
-   *****************************************************************************************************/
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-          Bundle savedInstanceState) {
-    // create the layout, a list of diary entries
-    View rootView = inflater.inflate(R.layout.fragment_diary, container, false);
+    /*****************************************************************************************************
+     *                                          LIFECYCLE METHODS
+     *****************************************************************************************************/
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState)
+    {
+        // create the layout, a list of diary entries
+        View rootView = inflater.inflate(R.layout.fragment_diary, container, false);
 
-    // connect the list view with the custom diary adapter
-    final ListView entries = (ListView) rootView.findViewById(R.id.diary_entries);
-    mAdapter = new DiaryAdapter(getActivity(), null, 0, R.layout.item_diary);
-    entries.setAdapter(mAdapter);
+        // retrieve fragment manager
+        FragmentManager fm = requireActivity().getSupportFragmentManager();
 
-    // retrieve fragment manager
-    FragmentManager fm = requireActivity().getSupportFragmentManager();
-    
-    // set up long click and click callbacks
-    entries.setOnItemLongClickListener((parent, view, position, id) -> {
-      new RemoveEntry(dbhelper,id).show(fm, "remove_entry");
-      return true;
-    });
-    entries.setOnItemClickListener((parent, view, position, id) -> onEntrySelected(myContext, id));
+        // connect the list view with the custom diary adapter
+        final RecyclerView entries = rootView.findViewById(R.id.diary_entries);
+        DiaryFragment father = this;
+        myDiary = new DiaryAdapter(getActivity(), new DiaryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                TextView date = item.findViewById(R.id.date);
+                String tag = (String) date.getTag();
+                if (!tag.equals("")) onEntrySelected(myContext, Integer.parseInt(tag));
+            }
 
-    // setup callback for add new entry button
-    FloatingActionButton addEntry = rootView.findViewById(R.id.add_entry);
-    addEntry.setOnClickListener(view ->
-      new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry")
-    );
+            @Override
+            public boolean onItemLongClick(View item) {
+                TextView date = item.findViewById(R.id.date);
+                String tag = (String) date.getTag();
+                new RemoveEntry(dbhelper, Integer.parseInt(tag)).show(fm, "remove_entry");
+                return true;
+            }
+        });
+        mAdapter = myDiary.getBaseAdapter();
+        entries.setAdapter(myDiary);
 
-    // Prepare the data loaders
-    initLoader(MainActivity.LOADER_DIARY);
-    
-    return rootView;
-  }
+        // setup callback for add new entry button
+        FloatingActionButton addEntry = rootView.findViewById(R.id.add_entry);
+        addEntry.setOnClickListener(view -> {
+            new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry");
+        });
+
+        // Prepare the data loaders
+        initLoader(MainActivity.LOADER_DIARY);
+
+        return rootView;
+    }
   
     @Override
     public void onAttach(Context context) {

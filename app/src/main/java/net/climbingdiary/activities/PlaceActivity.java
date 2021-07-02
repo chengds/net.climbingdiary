@@ -8,8 +8,7 @@ import net.climbingdiary.R;
 import net.climbingdiary.adapters.TabAdapter;
 import net.climbingdiary.fragments.PlaceRoutesFragment;
 
-public class PlaceActivity extends TabbedActivity
-       implements PlaceRoutesFragment.OnRouteSelectedListener {
+public class PlaceActivity extends TabbedActivity {
 
   private long place_id;            // ID of the climbing place
   private String place_name;        // name of the climbing place
@@ -44,16 +43,5 @@ public class PlaceActivity extends TabbedActivity
     // set title
     actionBar.setTitle(place_name);
   }
-  
-  /*****************************************************************************************************
-   *                                          CALLBACKS
-   *****************************************************************************************************/
-  @Override
-  public void onRouteSelected(long id) {
-    Intent intent = new Intent(this, RouteActivity.class);
-    intent.putExtra(MainActivity.EXTRA_ROUTE_ID, id);
-    intent.putExtra(MainActivity.EXTRA_PLACE_ID, place_id);
-    intent.putExtra(MainActivity.EXTRA_PLACE_NAME, place_name);
-    startActivity(intent);
-  }
+
 }

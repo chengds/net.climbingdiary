@@ -15,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.climbingdiary.R;
 import net.climbingdiary.data.DiaryDbHelper;
+import net.climbingdiary.dialogs.DiaryEntryDialogFragment;
 import net.climbingdiary.fragments.DiaryFragment;
 import net.climbingdiary.fragments.PlacesFragment;
 import net.climbingdiary.fragments.TabbedStatsFragment;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected ActionBar actionBar;
     protected BottomNavigationView navigation;
     protected FragmentManager fm;
+    protected DiaryDbHelper dbhelper;
 
     // Global identifiers
     public final static String EXTRA_ENTRY_ID = "net.climbingdiary.EXTRA_ENTRY_ID";
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         // Open/create the SQL database and create the managing adapter.
-        DiaryDbHelper.getInstance(this);
+        dbhelper = DiaryDbHelper.getInstance(this);
 
         // cancel the launch image before showing the main activity
         setTheme(R.style.AppTheme);
@@ -81,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .replace(R.id.content_main, DiaryFragment.class, null, "diary")
                     .commit();
+
+            // setup callback for add new entry button
+            FloatingActionButton addEntry = findViewById(R.id.add_entry);
+            addEntry.setOnClickListener(view -> {
+                new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry");
+            });
         }
 
     }
@@ -99,6 +108,14 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.content_main, DiaryFragment.class, null, "diary")
                         .addToBackStack("diary")
                         .commit();
+
+                // setup callback for add new entry button
+                FloatingActionButton addEntry = findViewById(R.id.add_entry);
+                addEntry.show();
+                addEntry.setOnClickListener(view -> {
+                    new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry");
+                });
+
             } else if (id == R.id.places) {
                 fm.beginTransaction()
                         .setReorderingAllowed(true)
@@ -106,12 +123,20 @@ public class MainActivity extends AppCompatActivity {
                         .addToBackStack("places")
                         .commit();
 
+                // setup callback for add new entry button
+                FloatingActionButton addEntry = findViewById(R.id.add_entry);
+                addEntry.hide();
+
             } else if (id == R.id.stats) {
                 fm.beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.content_main, TabbedStatsFragment.class, null, "stats")
                         .addToBackStack("stats")
                         .commit();
+
+                // Hide FAB
+                FloatingActionButton addEntry = findViewById(R.id.add_entry);
+                addEntry.hide();
             }
             return true;
         }

@@ -81,12 +81,6 @@ public class DiaryFragment extends LoaderFragment {
         mAdapter = myDiary.getBaseAdapter();
         entries.setAdapter(myDiary);
 
-        // setup callback for add new entry button
-        FloatingActionButton addEntry = rootView.findViewById(R.id.add_entry);
-        addEntry.setOnClickListener(view -> {
-            new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry");
-        });
-
         // Prepare the data loaders
         initLoader(MainActivity.LOADER_DIARY);
 

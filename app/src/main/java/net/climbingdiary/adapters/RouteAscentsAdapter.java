@@ -13,25 +13,23 @@ import android.view.View;
 import android.widget.TextView;
 
 public class RouteAscentsAdapter extends BaseAdapter {
-  private DateFormat df;
+    private final DateFormat df = DateFormat.getDateInstance();
 
-  public RouteAscentsAdapter(Context context, Cursor c, int flags, int layout) {
-    super(context, c, flags, layout);
-    df = DateFormat.getDateInstance();
-  }
+    public RouteAscentsAdapter(Context context, Cursor c, int flags, int layout) {
+        super(context, c, flags, layout);
+    }
   
-  @Override
-  public void bindView(View row, Context context, Cursor c) {
-    // ascent date
-    TextView text1 = (TextView) row.findViewById(R.id.date);                        // date
-    long val = c.getLong(c.getColumnIndex(DiaryEntry.COLUMN_DATE));
-    text1.setText(df.format(new Date(val)));
-    // ascent type
-    TextView text2 = (TextView) row.findViewById(R.id.type);
-    text2.setText(c.getString(c.getColumnIndex(AscentTypes.COLUMN_NAME)));
-    // ascent notes
-    TextView text4 = (TextView) row.findViewById(R.id.notes);
-    text4.setText(c.getString(c.getColumnIndex(Ascents.COLUMN_NOTES)));
-  }
-
+    @Override
+    public void bindView(View row, Context context, Cursor c) {
+        // ascent date
+        TextView text1 = row.findViewById(R.id.date);                        // date
+        long val = c.getLong(c.getColumnIndex(DiaryEntry.COLUMN_DATE));
+        text1.setText(df.format(new Date(val)));
+        // ascent type
+        TextView text2 = row.findViewById(R.id.type);
+        text2.setText(c.getString(c.getColumnIndex(AscentTypes.COLUMN_NAME)));
+        // ascent notes
+        TextView text4 = row.findViewById(R.id.notes);
+        text4.setText(c.getString(c.getColumnIndex(Ascents.COLUMN_NOTES)));
+    }
 }

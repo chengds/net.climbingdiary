@@ -130,17 +130,17 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
             TextView name = new TextView(context);
             name.setText(list.get(1));
             name.setTextSize(14);
-            name.setTextColor(context.getResources().getColor(R.color.accent));
+            name.setTextColor(context.getResources().getColor(R.color.header));
             name.setGravity(Gravity.START);
             name.setBackgroundColor(Color.BLACK);
             boxes.addView(name);
             sent.setText(list.get(2));
             sent.setTextSize(14);
-            sent.setTextColor(context.getResources().getColor(R.color.accent));
+            sent.setTextColor(context.getResources().getColor(R.color.header));
             sent.setPadding(0,0,0,0);
             tried.setText(list.get(3));
             tried.setTextSize(14);
-            tried.setTextColor(context.getResources().getColor(R.color.accent));
+            tried.setTextColor(context.getResources().getColor(R.color.header));
             tried.setPadding(0,0,0,0);
         }
 

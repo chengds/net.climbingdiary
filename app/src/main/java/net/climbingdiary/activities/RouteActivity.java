@@ -1,82 +1,54 @@
 package net.climbingdiary.activities;
 
-import net.climbingdiary.R;
-import net.climbingdiary.fragments.RouteFragment;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.MenuItem;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import net.climbingdiary.R;
+import net.climbingdiary.adapters.TabAdapter;
+import net.climbingdiary.fragments.RouteFragment;
 
 /**
  * RouteActivity is an ActionBarActivity that shows the details of a route
  * selected from the parent PlaceActivity/PlaceRoutesFragment.
  */
-public class RouteActivity extends AppCompatActivity {
+public class RouteActivity extends TabbedActivity {
 
-  private long route_id;            // ID of the route
-  private long place_id;            // ID of the climbing place
-  private String place_name;        // name of the climbing place
+    /*****************************************************************************************************
+     *                                          LIFECYCLE METHODS
+     *****************************************************************************************************/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-  /*****************************************************************************************************
-   *                                          LIFECYCLE METHODS
-   *****************************************************************************************************/
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    
-    // retrieve the entry information to display in the title
-    route_id = getIntent().getLongExtra(MainActivity.EXTRA_ROUTE_ID,0);
-    place_id = getIntent().getLongExtra(MainActivity.EXTRA_PLACE_ID,0);
-    place_name = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_NAME);
+        // retrieve the entry information to display in the title
+        long route_id = getIntent().getLongExtra(MainActivity.EXTRA_ROUTE_ID,0);
+        long place_id = getIntent().getLongExtra(MainActivity.EXTRA_PLACE_ID,0);
+        String place_name = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_NAME);
+        String route_name = getIntent().getStringExtra(MainActivity.EXTRA_ROUTE_NAME);
 
-    // package some extra data in the bundle
-    Bundle data = new Bundle();
-    data.putLong(MainActivity.EXTRA_ROUTE_ID, route_id);
-    data.putLong(MainActivity.EXTRA_PLACE_ID, place_id);
-    data.putString(MainActivity.EXTRA_PLACE_NAME, place_name);
+        // package some extra data in the bundle
+        Bundle data = new Bundle();
+        data.putLong(MainActivity.EXTRA_ROUTE_ID, route_id);
+        data.putLong(MainActivity.EXTRA_PLACE_ID, place_id);
+        data.putString(MainActivity.EXTRA_PLACE_NAME, place_name);
+        data.putString(MainActivity.EXTRA_ROUTE_NAME, route_name);
 
-    // create layout
-    setContentView(R.layout.activity_route);
-    
-    // retrieve fragment management
-    FragmentManager manager = getSupportFragmentManager();
-    FragmentTransaction transaction = manager.beginTransaction();
-    
-    // add the route fragment
-    RouteFragment frag = new RouteFragment();
-    frag.setArguments(data);
-    transaction.add(R.id.frag1, frag);
-    transaction.commit();
+        // create the content fragment
+        mAdapter = new TabAdapter(getSupportFragmentManager(), this, data,
+                new int[] { R.string.route_details }) {
+            @NonNull
+            @Override
+            public Fragment getItem(int i) {
+                Fragment route = new RouteFragment();
+                route.setArguments(data);
+                return route;
+            }
+        };
+        super.onCreate(savedInstanceState);
 
-    // Specify that the Home button should show an "Up" caret, indicating that touching the
-    // button will take the user one step up in the application's hierarchy.
-    // retrieve the actionbar
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    final ActionBar actionBar = getSupportActionBar();
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setTitle(R.string.route_details);
-  }
-
-  /*****************************************************************************************************
-   *                                          CALLBACKS
-   *****************************************************************************************************/
-  // Make the Up button behave like the Back button
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        // make Up/Home the same as the Back button
-        finish();
-        return true;
-
-      default:
-        return super.onOptionsItemSelected(item);
+        // set title
+        actionBar.setTitle(route_name);
+        actionBar.setSubtitle(place_name);
     }
-  }
-
 }

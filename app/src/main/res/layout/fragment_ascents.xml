@@ -21,7 +21,7 @@
             android:layout_width="36sp"
             android:layout_height="wrap_content"
             android:text="@string/type"
-            android:textColor="#FFFF00"
+            android:textColor="@color/header"
             android:paddingRight="4sp" />
                    
         <TextView
@@ -29,14 +29,14 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:text="@string/grade"
-            android:textColor="#FFFF00" />
+            android:textColor="@color/header" />
         
         <TextView
             android:id="@+id/route_name"
             android:layout_width="96sp"
             android:layout_height="wrap_content"
             android:text="@string/route"
-            android:textColor="#FFFF00"
+            android:textColor="@color/header"
             android:paddingRight="4sp" />
         
         <TextView
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notes"
-            android:textColor="#FFFF00" />
+            android:textColor="@color/header" />
         
     </LinearLayout>
     

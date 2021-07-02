@@ -38,6 +38,8 @@ public class PlaceRoutesFragment extends LoaderFragment
         intent.putExtra(MainActivity.EXTRA_ROUTE_ID, id);
         intent.putExtra(MainActivity.EXTRA_PLACE_ID, place_id);
         intent.putExtra(MainActivity.EXTRA_PLACE_NAME, place_name);
+        Routes.Data info = dbhelper.getRoute(id);
+        intent.putExtra(MainActivity.EXTRA_ROUTE_NAME, info.name);
         startActivity(intent);
     }
 
@@ -52,8 +54,8 @@ public class PlaceRoutesFragment extends LoaderFragment
         // retrieve data from arguments bundle
         Bundle data = getArguments();
         if (data == null) throw new Error("Unable to create PlaceRoutes fragment: null bundle.");
-        this.place_id = getArguments().getLong(MainActivity.EXTRA_PLACE_ID);
-        this.place_name = getArguments().getString(MainActivity.EXTRA_PLACE_NAME);
+        this.place_id = data.getLong(MainActivity.EXTRA_PLACE_ID);
+        this.place_name = data.getString(MainActivity.EXTRA_PLACE_NAME);
 
         // create the layout, a list of routes
         View rootView = inflater.inflate(R.layout.fragment_routes, container, false);

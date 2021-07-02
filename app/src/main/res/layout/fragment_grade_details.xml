@@ -11,7 +11,7 @@
         android:layout_height="26sp"
         android:textSize="16sp"
         android:gravity="bottom"
-        android:textColor="#FFFF00" />
+        android:textColor="@color/header" />
 
     <TextView
         android:id="@+id/grade"
@@ -28,7 +28,7 @@
         android:layout_height="26sp"
         android:textSize="16sp"
         android:gravity="bottom"
-        android:textColor="#FFFF00" />
+        android:textColor="@color/header" />
 
     <TextView
         android:id="@+id/type"
@@ -47,14 +47,14 @@
         android:layout_height="24sp"
         android:textSize="16sp"
         android:gravity="bottom"
-        android:textColor="#FFFF00" />
+        android:textColor="@color/header" />
 
     <TextView
         android:id="@+id/header_status"
         android:layout_width="34sp"
         android:layout_height="wrap_content"
         android:text="@string/best"
-        android:textColor="#FFFF00"
+        android:textColor="@color/header"
         android:paddingRight="4sp"
         android:layout_below="@id/lsent"
         android:layout_alignParentLeft="true" />
@@ -64,7 +64,7 @@
         android:layout_width="146sp"
         android:layout_height="wrap_content"
         android:text="@string/route"
-        android:textColor="#FFFF00"
+        android:textColor="@color/header"
         android:paddingRight="4sp"
         android:layout_below="@id/lsent"
         android:layout_toRightOf="@id/header_status" />
@@ -74,7 +74,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/place"
-        android:textColor="#FFFF00"
+        android:textColor="@color/header"
         android:paddingRight="4sp"
         android:layout_below="@id/lsent"
         android:layout_alignParentRight="true"

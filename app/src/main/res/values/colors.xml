@@ -2,6 +2,7 @@
 <resources>
 
     <color name="yellow_accent_700">#ffd600</color>
+    <color name="yellow">#ffff00</color>
     <color name="red_accent_700">#d50000</color>
     <color name="material_orange_700">#f57c00</color>
     <color name="material_pink_300">#f06292</color>
@@ -26,4 +27,5 @@
     <color name="accent">@color/yellow_accent_700</color>
     <color name="active">@color/yellow_accent_700</color>
     <color name="inactive">@color/material_grey_600</color>
+    <color name="header">@color/yellow</color>
 </resources>

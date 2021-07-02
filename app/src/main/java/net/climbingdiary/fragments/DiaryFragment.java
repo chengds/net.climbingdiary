@@ -35,8 +35,10 @@ public class DiaryFragment extends LoaderFragment {
    *                                          LIFECYCLE METHODS
    *****************************************************************************************************/
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-          Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater,
+                           ViewGroup container,
+                           Bundle savedInstanceState)
+  {
     // create the layout, a list of diary entries
     View rootView = inflater.inflate(R.layout.fragment_diary, container, false);
 

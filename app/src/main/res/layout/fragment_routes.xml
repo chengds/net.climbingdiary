@@ -22,34 +22,38 @@
             android:layout_height="wrap_content"
             android:text="@string/grade_abbrv"
             android:textColor="@color/header" />
-        
+
         <TextView
             android:id="@+id/route_name"
-            android:layout_width="96sp"
+            android:layout_width="0px"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="0sp"
+            android:paddingEnd="4sp"
             android:text="@string/route"
-            android:textColor="@color/header"
-            android:paddingRight="4sp" />
-        
+            android:textColor="@color/header" />
+
         <TextView
             android:id="@+id/ascents"
             android:layout_width="26sp"
             android:layout_height="wrap_content"
             android:text="@string/number_abbrv"
             android:textColor="@color/header" />
-                   
+
         <TextView
             android:id="@+id/status"
             android:layout_width="34sp"
             android:layout_height="wrap_content"
+            android:paddingStart="0sp"
+            android:paddingEnd="4sp"
             android:text="@string/best"
-            android:textColor="@color/header"
-            android:paddingRight="4sp" />
-                   
+            android:textColor="@color/header" />
+
         <TextView
             android:id="@+id/route_notes"
-            android:layout_width="match_parent"
+            android:layout_width="0px"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:text="@string/notes"
             android:textColor="@color/header" />
         
@@ -58,12 +62,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="1">
 
         <ListView
+            android:id="@+id/routes_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/routes_list" />
+            android:layout_height="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_route"

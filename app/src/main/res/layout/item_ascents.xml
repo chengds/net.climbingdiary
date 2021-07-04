@@ -11,7 +11,8 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:textSize="12sp"
-        android:paddingRight="4sp" />
+        android:paddingEnd="4sp"
+        android:paddingStart="0sp"/>
 
     <TextView
         android:id="@+id/route_grade"
@@ -21,15 +22,17 @@
 
     <TextView
         android:id="@+id/route_name"
-        android:layout_width="96sp"
+        android:layout_width="0px"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:paddingRight="4sp" />
+        android:paddingEnd="4sp"
+        android:paddingStart="0sp"/>
 
     <TextView
         android:id="@+id/ascent_notes"
-        android:layout_width="0dp"
+        android:layout_width="0px"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:ellipsize="marquee"

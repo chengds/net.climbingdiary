@@ -26,7 +26,7 @@ public class GradeCompletedAdapter extends BaseAdapter {
     TextView text = (TextView) row.findViewById(R.id.status);
     String status = c.getString(c.getColumnIndex(AscentTypes.COLUMN_NAME));
     text.setText(status);
-    Graphics.drawDot(text, status, new int[]{0, 0, 36, 12});
+    text.setBackgroundColor(Graphics.getColor(context, status));
     // route name
     TextView text2 = (TextView) row.findViewById(R.id.route);
     text2.setText(c.getString(c.getColumnIndex(Routes.COLUMN_NAME)));

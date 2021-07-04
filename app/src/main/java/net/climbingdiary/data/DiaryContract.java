@@ -73,26 +73,31 @@ public final class DiaryContract {
     }
   }
 
-  /*****************************************************************************************************
-   *                                          PLACES
-   *****************************************************************************************************/
-  public static abstract class Places implements BaseColumns {
-    public static final String TABLE_NAME = "places";
-    public static final String COLUMN_NAME = "place_name";
+    /*****************************************************************************************************
+     *                                          PLACES
+     *****************************************************************************************************/
+    public static abstract class Places implements BaseColumns {
+        public static final String TABLE_NAME = "places";
+        public static final String COLUMN_NAME = "place_name";
 
-    private static final String SQL_CREATE_TABLE =
-        "CREATE TABLE " + TABLE_NAME + " ("
-        + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-        + COLUMN_NAME + " TEXT );";
-    
-    public static void create(SQLiteDatabase db) {
-      db.execSQL(SQL_CREATE_TABLE);
+        private static final String SQL_CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + " ("
+            + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_NAME + " TEXT );";
+
+        public static void create(SQLiteDatabase db) {
+          db.execSQL(SQL_CREATE_TABLE);
+        }
+
+        public static void destroy(SQLiteDatabase db) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        }
+
+        public static class Data {
+            public long _id;
+            public String name;
+        }
     }
-    
-    public static void destroy(SQLiteDatabase db) {
-      db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-    }
-  }
   
   /*****************************************************************************************************
    *                                          ROUTES

@@ -818,4 +818,20 @@ public class DiaryDbHelper extends SQLiteOpenHelper {
 	    cache_settings.put(name, value);
     }
   }
+
+    // update the place name
+    public void updatePlace(Places.Data info) {
+        // prep the info
+        ContentValues values = new ContentValues();
+        values.put(Places.COLUMN_NAME, info.name);
+
+        if (info._id > 0) {
+            db.update(Places.TABLE_NAME, values, Places._ID + "=?", new String[]{ String.valueOf(info._id) });
+        } else {
+            // this is a new route
+            db.insert(Places.TABLE_NAME, null, values);
+        }
+        mObservable.notifyChanged();
+    }
+
 }

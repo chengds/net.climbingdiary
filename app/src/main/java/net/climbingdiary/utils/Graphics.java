@@ -21,20 +21,6 @@ public class Graphics {
     dot = new ShapeDrawable((new OvalShape()));
     dot.getPaint().setColor(getColor(view.getContext(), type));
 
-    /*if (type.equalsIgnoreCase("redpoint")) {
-      dot = new ShapeDrawable(new OvalShape());
-      dot.getPaint().setColor(Color.RED);
-    } else if (type.equalsIgnoreCase("onsight")) {
-      dot = new ShapeDrawable(new OvalShape());
-      dot.getPaint().setColor(Color.parseColor("#FFD700"));
-    } else if (type.equalsIgnoreCase("flash")) {
-      dot = new ShapeDrawable(new OvalShape());
-      dot.getPaint().setColor(Color.parseColor("#EE7600"));
-    } else if (type.equalsIgnoreCase("pinkpoint")) {
-      dot = new ShapeDrawable(new OvalShape());
-      dot.getPaint().setColor(Color.parseColor("#FF748C"));
-    }*/
-
     if (dot != null) {
       LayerDrawable d = new LayerDrawable(new Drawable[]{dot});
       d.setLayerInset(0, inset[0], inset[1], inset[2], inset[3]);

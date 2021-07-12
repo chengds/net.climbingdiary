@@ -21,58 +21,58 @@ import android.view.MenuItem;
  */
 public class GradeActivity extends AppCompatActivity {
 
-  /*****************************************************************************************************
-   *                                          LIFECYCLE METHODS
-   *****************************************************************************************************/
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    protected ActionBar actionBar;
 
-    // retrieve the selected information
-    String place_type = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_TYPE);
-    String grade_value = getIntent().getStringExtra(MainActivity.EXTRA_GRADE_VALUE);
+    /*****************************************************************************************************
+     *                                          LIFECYCLE METHODS
+     *****************************************************************************************************/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    // package some extra data in the bundle
-    Bundle data = new Bundle();
-    data.putString(MainActivity.EXTRA_PLACE_TYPE, place_type);
-    data.putString(MainActivity.EXTRA_GRADE_VALUE, grade_value);
+        // retrieve the selected information
+        String place_type = getIntent().getStringExtra(MainActivity.EXTRA_PLACE_TYPE);
+        String grade_value = getIntent().getStringExtra(MainActivity.EXTRA_GRADE_VALUE);
+        int time_period = getIntent().getIntExtra(MainActivity.EXTRA_TIME_PERIOD, 0);
 
-    // create layout
-    setContentView(R.layout.activity_grade);
+        // package some extra data in the bundle
+        Bundle data = new Bundle();
+        data.putString(MainActivity.EXTRA_PLACE_TYPE, place_type);
+        data.putString(MainActivity.EXTRA_GRADE_VALUE, grade_value);
+        data.putInt(MainActivity.EXTRA_TIME_PERIOD, time_period);
 
-    // retrieve fragment management
-    FragmentManager manager = getSupportFragmentManager();
-    FragmentTransaction transaction = manager.beginTransaction();
+        // create layout
+        setContentView(R.layout.activity_grade);
 
-    // add the grade details fragment
-    GradeFragment frag = new GradeFragment();
-    frag.setArguments(data);
-    transaction.add(R.id.frag1, frag);
-    transaction.commit();
+        // fragment management
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.frag1, GradeFragment.class, data, "grade_list")
+                .commit();
 
-    // Specify that the Home button should show an "Up" caret, indicating that touching the
-    // button will take the user one step up in the application's hierarchy.
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    final ActionBar actionBar = getSupportActionBar();
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setTitle(R.string.grade_details);
-  }
-
-  /*****************************************************************************************************
-   *                                          CALLBACKS
-   *****************************************************************************************************/
-  // Make the Up button behave like the Back button
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        // make Up/Home the same as the Back button
-        finish();
-        return true;
-
-      default:
-        return super.onOptionsItemSelected(item);
+        // Specify that the Home button should show an "Up" caret, indicating that touching the
+        // button will take the user one step up in the application's hierarchy.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if ((actionBar = getSupportActionBar()) != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.grade_details);
+        }
     }
-  }
+
+    /*****************************************************************************************************
+     *                                          CALLBACKS
+     *****************************************************************************************************/
+    // Make the Up button behave like the Back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // make Up/Home the same as the Back button
+            finish();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
 }

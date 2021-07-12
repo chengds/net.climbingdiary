@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="20dp"
+    android:layout_height="16dp"
     android:orientation="horizontal" >
 
     <TextView
@@ -9,6 +9,7 @@
         android:layout_width="38sp"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
+        android:singleLine="true"
         android:textSize="12sp"
         android:paddingEnd="2sp"
         android:paddingStart="2sp"/>
@@ -26,6 +27,7 @@
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="12sp"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:paddingEnd="4sp"
@@ -35,6 +37,7 @@
         android:id="@+id/ascent_notes"
         android:layout_width="0px"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:layout_weight="2" />

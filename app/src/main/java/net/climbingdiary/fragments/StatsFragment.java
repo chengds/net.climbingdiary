@@ -25,10 +25,10 @@ import android.widget.TextView;
 public class StatsFragment extends Fragment {
 
     private Context myContext;
-    private final int dateModifier;                       // Specifies entries of all time, last year, last month
+    private final int timePeriod;                       // Specifies entries of all time, last year, last month
 
-    public StatsFragment(int modifier) {
-        dateModifier = modifier;
+    public StatsFragment(int period) {
+        timePeriod = period;
     }
 
     public void onGradeSelected(Context context, String type, String grade) {
@@ -36,6 +36,7 @@ public class StatsFragment extends Fragment {
         Intent intent = new Intent(context, GradeActivity.class);
         intent.putExtra(MainActivity.EXTRA_PLACE_TYPE, type);
         intent.putExtra(MainActivity.EXTRA_GRADE_VALUE, grade);
+        intent.putExtra(MainActivity.EXTRA_TIME_PERIOD, timePeriod);
         startActivity(intent);
     }
 
@@ -55,22 +56,22 @@ public class StatsFragment extends Fragment {
 
         // retrieve all the pyramids with their respective headers
         ArrayList<ArrayList<String>> allPyramid = new ArrayList<>();
-        ArrayList<ArrayList<String>> pyramid = dbhelper.getPyramid("Crag", dateModifier);
+        ArrayList<ArrayList<String>> pyramid = dbhelper.getPyramid("Crag", timePeriod);
         if (pyramid != null) {
             allPyramid.add(new ArrayList<>(List.of("", "Crag Pyramid", "Sent", "Tried")));
             allPyramid.addAll(pyramid);
         }
-        pyramid = dbhelper.getPyramid("Trad", dateModifier);
+        pyramid = dbhelper.getPyramid("Trad", timePeriod);
         if (pyramid != null) {
             allPyramid.add(new ArrayList<>(List.of("", "Trad Pyramid", "Sent", "Tried")));
             allPyramid.addAll(pyramid);
         }
-        pyramid = dbhelper.getPyramid("Wall", dateModifier);
+        pyramid = dbhelper.getPyramid("Wall", timePeriod);
         if (pyramid != null) {
             allPyramid.add(new ArrayList<>(List.of("", "Wall Pyramid", "Sent", "Tried")));
             allPyramid.addAll(pyramid);
         }
-        pyramid = dbhelper.getPyramid("Gym", dateModifier);
+        pyramid = dbhelper.getPyramid("Gym", timePeriod);
         if (pyramid != null) {
             allPyramid.add(new ArrayList<>(List.of("", "Gym Pyramid", "Sent", "Tried")));
             allPyramid.addAll(pyramid);

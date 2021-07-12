@@ -9,8 +9,7 @@
         android:layout_width="80sp"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:textSize="12sp"
-        android:paddingRight="4sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/type"
@@ -19,7 +18,8 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:textSize="12sp"
-        android:paddingRight="4sp" />
+        android:paddingEnd="2sp"
+        android:paddingStart="2sp"/>
 
     <TextView
         android:id="@+id/notes"
@@ -27,6 +27,8 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        android:paddingEnd="2sp"
+        android:paddingStart="2sp"/>
     
 </LinearLayout>

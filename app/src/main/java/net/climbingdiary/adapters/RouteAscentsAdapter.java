@@ -7,6 +7,8 @@ import net.climbingdiary.R;
 import net.climbingdiary.data.DiaryContract.AscentTypes;
 import net.climbingdiary.data.DiaryContract.Ascents;
 import net.climbingdiary.data.DiaryContract.DiaryEntry;
+import net.climbingdiary.utils.Graphics;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
@@ -26,8 +28,10 @@ public class RouteAscentsAdapter extends BaseAdapter {
         long val = c.getLong(c.getColumnIndex(DiaryEntry.COLUMN_DATE));
         text1.setText(df.format(new Date(val)));
         // ascent type
+        String type = c.getString(c.getColumnIndex(AscentTypes.COLUMN_NAME));
         TextView text2 = row.findViewById(R.id.type);
-        text2.setText(c.getString(c.getColumnIndex(AscentTypes.COLUMN_NAME)));
+        text2.setText(type);
+        text2.setBackgroundColor(Graphics.getColor(context, type));
         // ascent notes
         TextView text4 = row.findViewById(R.id.notes);
         text4.setText(c.getString(c.getColumnIndex(Ascents.COLUMN_NOTES)));

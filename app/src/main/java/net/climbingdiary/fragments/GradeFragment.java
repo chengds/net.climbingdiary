@@ -2,6 +2,8 @@ package net.climbingdiary.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,56 +23,57 @@ import net.climbingdiary.data.DiaryContract.Grades;
  */
 public class GradeFragment extends LoaderFragment {
 
-  private String place_type;
-  private Grades.Data info;
+    private String place_type;
+    private int time_period;
+    private Grades.Data info;
 
-  /*****************************************************************************************************
-   *                                          LIFECYCLE METHODS
-   *****************************************************************************************************/
-  @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                           @Nullable Bundle savedInstanceState) {
+    /*****************************************************************************************************
+     *                                          LIFECYCLE METHODS
+     *****************************************************************************************************/
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState)
+    {
+        // retrieve place type and grade value from arguments bundle
+        Bundle data = getArguments();
+        if (data == null) throw new Error("Unable to create RouteFragment: null bundle.");
 
-    // retrieve place type and grade value from arguments bundle
-    Bundle data = getArguments();
-    if (data == null) {
-      throw new Error("Unable to create RouteFragment: null bundle.");
+        // retrieve details
+        place_type  = data.getString(MainActivity.EXTRA_PLACE_TYPE);
+        String value = data.getString(MainActivity.EXTRA_GRADE_VALUE);
+        time_period = data.getInt(MainActivity.EXTRA_TIME_PERIOD);
+        if (dbhelper.getSetting("useFrenchGrades").equals("on")) {
+            info = dbhelper.getGradeFR(value);
+        } else {
+            info = dbhelper.getGradeYDS(value);
+        }
+
+        // create the layout
+        View rootView = inflater.inflate(R.layout.fragment_grade_details, container, false);
+
+        // fill in the info
+        TextView text1 = rootView.findViewById(R.id.type);
+        text1.setText(place_type);
+        TextView text2 = rootView.findViewById(R.id.grade);
+        text2.setText(info.yds + " - " + info.french);
+
+        // connect the list view with the custom diary adapter
+        final ListView completed = rootView.findViewById(R.id.completed);
+        mAdapter = new GradeCompletedAdapter(getActivity(), null, 0, R.layout.item_grade_routes);
+        completed.setAdapter(mAdapter);
+
+        // Prepare the data loaders
+        initLoader(MainActivity.LOADER_GRADE_COMPLETED);
+
+        return rootView;
     }
 
-    // retrieve  details
-    place_type  = data.getString(MainActivity.EXTRA_PLACE_TYPE);
-    String value = data.getString(MainActivity.EXTRA_GRADE_VALUE);
-    if (dbhelper.getSetting("useFrenchGrades").equals("on")) {
-      info = dbhelper.getGradeFR(value);
-    } else {
-      info = dbhelper.getGradeYDS(value);
+    /*****************************************************************************************************
+    *                                          DATA RETRIEVAL
+    *****************************************************************************************************/
+    @Override
+    public Cursor dataRetrieval() {
+        return dbhelper.getCompleted(info._id, place_type, time_period);
     }
-
-    // create the layout
-    View rootView = inflater.inflate(R.layout.fragment_grade_details, container, false);
-
-    // fill in the info
-    TextView text1 = (TextView) rootView.findViewById(R.id.type);
-    text1.setText(place_type);
-    TextView text2 = (TextView) rootView.findViewById(R.id.grade);
-    text2.setText(info.yds + " - " + info.french);
-
-    // connect the list view with the custom diary adapter
-    final ListView completed = (ListView) rootView.findViewById(R.id.completed);
-    mAdapter = new GradeCompletedAdapter(getActivity(), null, 0, R.layout.item_grade_routes);
-    completed.setAdapter(mAdapter);
-
-    // Prepare the data loaders
-    initLoader(MainActivity.LOADER_GRADE_COMPLETED);
-
-    return rootView;
-  }
-
-  /*****************************************************************************************************
-   *                                          DATA RETRIEVAL
-   *****************************************************************************************************/
-  @Override
-  public Cursor dataRetrieval() {
-    return dbhelper.getCompleted(info._id, place_type, 0);
-  }
 }

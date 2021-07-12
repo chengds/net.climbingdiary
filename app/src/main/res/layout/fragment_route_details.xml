@@ -65,7 +65,9 @@
         android:text="@string/type"
         android:textColor="@color/header"
         android:layout_below="@id/label_ascents"
-        android:layout_toEndOf="@id/header_date" />
+        android:layout_toEndOf="@id/header_date"
+        android:paddingEnd="2sp"
+        android:paddingStart="2sp"/>
     
     <TextView
         android:id="@+id/header_notes"
@@ -75,13 +77,16 @@
         android:textColor="@color/header"
         android:layout_below="@id/label_ascents"
         android:layout_toEndOf="@id/header_type"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:paddingEnd="2sp"
+        android:paddingStart="2sp"/>
     
 
     <ListView
         android:id="@+id/ascents"
         android:layout_below="@id/header_date"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true" />
 
 </RelativeLayout>

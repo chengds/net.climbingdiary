@@ -30,7 +30,9 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:text="@string/grade"
-            android:textColor="@color/header" />
+            android:textColor="@color/header"
+            android:paddingEnd="2sp"
+            android:paddingStart="2sp" />
         
         <TextView
             android:id="@+id/route_name"

@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_ROUTE_NAME = "net.climbingdiary.EXTRA_ROUTE_NAME";
     public final static String EXTRA_GRADE_VALUE = "net.climbingdiary.EXTRA_GRADE_VALUE";
     public final static String EXTRA_PLACE_TYPE = "net.climbingdiary.EXTRA_PLACE_TYPE";
+    public final static String EXTRA_TIME_PERIOD = "net.climbingdiary.EXTRA_TIME_PERIOD";
 
     public final static int LOADER_DIARY = 0;           // IDs of data loaders
     public final static int LOADER_PLACES = 1;

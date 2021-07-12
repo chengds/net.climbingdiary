@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/lgrade"
@@ -15,7 +17,7 @@
 
     <TextView
         android:id="@+id/grade"
-        android:layout_toRightOf="@id/lgrade"
+        android:layout_toEndOf="@id/lgrade"
         android:layout_width="match_parent"
         android:layout_height="26sp"
         android:textSize="20sp" />
@@ -32,7 +34,7 @@
 
     <TextView
         android:id="@+id/type"
-        android:layout_toRightOf="@id/ltype"
+        android:layout_toEndOf="@id/ltype"
         android:layout_below="@id/grade"
         android:layout_width="match_parent"
         android:layout_height="26sp"
@@ -55,9 +57,10 @@
         android:layout_height="wrap_content"
         android:text="@string/best"
         android:textColor="@color/header"
-        android:paddingRight="4sp"
+        android:paddingEnd="2sp"
+        android:paddingStart="2sp"
         android:layout_below="@id/lsent"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/header_route"
@@ -65,9 +68,10 @@
         android:layout_height="wrap_content"
         android:text="@string/route"
         android:textColor="@color/header"
-        android:paddingRight="4sp"
+        android:paddingEnd="4sp"
+        android:paddingStart="4sp"
         android:layout_below="@id/lsent"
-        android:layout_toRightOf="@id/header_status" />
+        android:layout_toEndOf="@id/header_status" />
 
     <TextView
         android:id="@+id/header_place"
@@ -75,15 +79,17 @@
         android:layout_height="wrap_content"
         android:text="@string/place"
         android:textColor="@color/header"
-        android:paddingRight="4sp"
+        android:paddingEnd="4sp"
+        android:paddingStart="4sp"
         android:layout_below="@id/lsent"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/header_route" />
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/header_route" />
 
     <ListView
         android:id="@+id/completed"
         android:layout_below="@id/header_status"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true" />
 
 </RelativeLayout>

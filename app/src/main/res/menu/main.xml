@@ -5,6 +5,7 @@
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:contentDescription="@string/action_settings"
+        android:onClick="openSettings"
         app:showAsAction="never"/>
 
 </menu>

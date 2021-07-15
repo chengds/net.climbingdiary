@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.view.MenuItem;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,7 +21,10 @@ import net.climbingdiary.fragments.DiaryFragment;
 import net.climbingdiary.fragments.PlacesFragment;
 import net.climbingdiary.fragments.TabbedStatsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements BottomNavigationView.OnNavigationItemSelectedListener
+{
 
     // Local
     protected BottomNavigationView navigation;
@@ -62,18 +66,12 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
-        // setup appbar menu callback
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
-
         // setup bottom navigation bar
         navigation = findViewById(R.id.bottom_navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(this);
 
-        if (savedInstanceState == null) {
-            // package some extra data in the bundle
-            //Bundle bundle = new Bundle();
-
+        if (savedInstanceState == null)
+        {
             // start the default fragment without adding it to the stack
             fm = getSupportFragmentManager();
             fm.beginTransaction()
@@ -90,59 +88,58 @@ public class MainActivity extends AppCompatActivity {
     /*****************************************************************************************************
      *                                          CALLBACKS
      *****************************************************************************************************/
-    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == R.id.diary) {
-                fm.beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.content_main, DiaryFragment.class, null, "diary")
-                        .addToBackStack("diary")
-                        .commit();
+    private void refreshView() {
+        Fragment fragment;
+        String tag;
+        if ((fragment = fm.findFragmentById(R.id.content_main)) == null) return;
+        if ((tag = fragment.getTag()) == null) return;
 
-                // setup callback for add new entry button
-                FloatingActionButton addEntry = findViewById(R.id.add_entry);
-                addEntry.show();
-                addEntry.setOnClickListener(view -> new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry"));
-
-            } else if (id == R.id.places) {
-                fm.beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.content_main, PlacesFragment.class, null, "places")
-                        .addToBackStack("places")
-                        .commit();
-
-                // Hide FAB
-                FloatingActionButton addEntry = findViewById(R.id.add_entry);
-                addEntry.hide();
-
-            } else if (id == R.id.stats) {
-                fm.beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.content_main, TabbedStatsFragment.class, null, "stats")
-                        .addToBackStack("stats")
-                        .commit();
-
-                // Hide FAB
-                FloatingActionButton addEntry = findViewById(R.id.add_entry);
-                addEntry.hide();
-            }
-            return true;
+        // refresh stats fragment to correctly show boxes or grades settings
+        if (tag.equals("stats")) {
+            fm.popBackStack();
+            navigation.setSelectedItemId(R.id.stats);
         }
-    };
+    }
+
+    public void openSettings(MenuItem item) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() ==  R.id.action_settings) {
-            // open the settings page
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.diary) {
+            fm.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.content_main, DiaryFragment.class, null, "diary")
+                    .addToBackStack("diary")
+                    .commit();
+
+            // setup callback for add new entry button
+            ((FloatingActionButton)findViewById(R.id.add_entry)).show();
+
+        } else if (id == R.id.places) {
+            fm.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.content_main, PlacesFragment.class, null, "places")
+                    .addToBackStack("places")
+                    .commit();
+
+            // Hide FAB
+            ((FloatingActionButton)findViewById(R.id.add_entry)).hide();
+
+        } else if (id == R.id.stats) {
+            fm.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.content_main, TabbedStatsFragment.class, null, "stats")
+                    .addToBackStack("stats")
+                    .commit();
+
+            // Hide FAB
+            ((FloatingActionButton)findViewById(R.id.add_entry)).hide();
         }
+        return true;
     }
 
     @Override
@@ -170,13 +167,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        refreshView();
+    }
 
-        Fragment fragment = fm.findFragmentById(R.id.content_main);
-        if (fragment == null) return;
-        String tag = fragment.getTag();
-        if (tag == null) return;
-
-        // refresh stats fragment to correctly show boxes
-        if (tag.equals("stats")) navigation.setSelectedItemId(R.id.stats);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshView();
     }
 }

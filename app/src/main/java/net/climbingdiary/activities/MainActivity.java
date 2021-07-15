@@ -5,15 +5,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import android.view.Menu;
 import android.view.MenuItem;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,7 +22,7 @@ import net.climbingdiary.fragments.TabbedStatsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected ActionBar actionBar;
+    // Local
     protected BottomNavigationView navigation;
     protected FragmentManager fm;
     protected DiaryDbHelper dbhelper;
@@ -41,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_PLACE_TYPE = "net.climbingdiary.EXTRA_PLACE_TYPE";
     public final static String EXTRA_TIME_PERIOD = "net.climbingdiary.EXTRA_TIME_PERIOD";
 
-    public final static int LOADER_DIARY = 0;           // IDs of data loaders
+    // IDs of data loaders
+    public final static int LOADER_DIARY = 0;
     public final static int LOADER_PLACES = 1;
     public final static int LOADER_ASCENTS = 2;
     public final static int LOADER_PLACEROUTES = 3;
@@ -65,12 +62,9 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
-        // setup the actionbar
+        // setup appbar menu callback
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if ((actionBar = getSupportActionBar()) != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
-        }
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
         // setup bottom navigation bar
         navigation = findViewById(R.id.bottom_navigation);
@@ -89,11 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
             // setup callback for add new entry button
             FloatingActionButton addEntry = findViewById(R.id.add_entry);
-            addEntry.setOnClickListener(view -> {
-                new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry");
-            });
+            addEntry.setOnClickListener(view -> new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry"));
         }
-
     }
 
     /*****************************************************************************************************
@@ -114,9 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 // setup callback for add new entry button
                 FloatingActionButton addEntry = findViewById(R.id.add_entry);
                 addEntry.show();
-                addEntry.setOnClickListener(view -> {
-                    new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry");
-                });
+                addEntry.setOnClickListener(view -> new DiaryEntryDialogFragment(dbhelper).show(fm, "diary_entry"));
 
             } else if (id == R.id.places) {
                 fm.beginTransaction()
@@ -125,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         .addToBackStack("places")
                         .commit();
 
-                // setup callback for add new entry button
+                // Hide FAB
                 FloatingActionButton addEntry = findViewById(R.id.add_entry);
                 addEntry.hide();
 
@@ -143,13 +132,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
